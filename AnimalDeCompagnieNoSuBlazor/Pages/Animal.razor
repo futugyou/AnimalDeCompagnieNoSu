@@ -1,0 +1,35 @@
+﻿@namespace AnimalDeCompagnieNoSuBlazor.Pages
+@page "/animal"
+aaaaaa
+<PageContainer Title="animal list">
+    <ChildContent>
+        <AntList TItem="AnimalRawdata" DataSource="_data"
+                 ItemLayout="ListItemLayout.Horizontal"
+                 Grid="_listGridType">
+            <ListItem NoFlex Grid="_listGridType">
+                <Card Bordered Actions="new[] { actionSetting, actionEdit, actionEllipsis }">
+                    <TitleTemplate>@(context.Name)</TitleTemplate>
+                    <Extra>
+                        <a slot="extra" href="#">More</a>
+                    </Extra>
+                    <Cover><img alt="example" src="@(context.ShortDescribe)" /></Cover>
+                    <Body>
+                        this is body
+                    </Body>
+                </Card>
+            </ListItem>
+        </AntList>
+    </ChildContent>
+</PageContainer>
+
+
+@code
+{
+    private RenderFragment actionSetting =@<Template>
+        <Icon Type="setting" /></Template>;
+private RenderFragment actionEdit =@<Template>
+    <Icon Type="edit" /></Template>;
+private RenderFragment actionEllipsis =@<Template>
+    <Icon Type="ellipsis" /></Template>;
+
+}
