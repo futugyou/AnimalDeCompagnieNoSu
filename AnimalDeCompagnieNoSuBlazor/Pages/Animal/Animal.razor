@@ -1,0 +1,51 @@
+﻿@namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
+@page "/animal"
+@inject NavigationManager NavigationManager
+
+<PageContainer Title="信息墙">
+    <Breadcrumb>
+        <Breadcrumb>
+            <BreadcrumbItem>主页</BreadcrumbItem>
+            <BreadcrumbItem>信息墙</BreadcrumbItem>
+        </Breadcrumb>
+    </Breadcrumb>
+    <ChildContent>
+        <div class="cardList">
+            <AntList TItem="AnimalRawdata" DataSource="_data"
+                     ItemLayout="ListItemLayout.Horizontal"
+                     Grid="_listGridType">
+                <ListItem NoFlex Grid="_listGridType">
+                    <Card Bordered Class="card" Actions="new[] { actionSetting, actionEdit, actionEllipsis }">
+                        <TitleTemplate>@(context.Name)</TitleTemplate>
+                        <Extra>
+                            <a slot="extra" href="/animal/@(context.Id)">详细信息</a>
+                        </Extra>
+                        <Cover><img alt="example" src="@(context.Photoes[0])" /></Cover>
+                        <Body>
+                            this is body
+                            <Tag Color="magenta">@(context.Type)</Tag>
+                        </Body>                        
+                    </Card>
+                </ListItem>
+            </AntList>
+        </div>
+        <BackTop>
+            <div class="ant-back-top-inner">TOP</div>
+        </BackTop>
+    </ChildContent>
+</PageContainer>
+
+
+@code
+{
+    private RenderFragment actionSetting =@<Template>
+        <Icon Type="setting" />
+    </Template>;
+private RenderFragment actionEdit =@<Template>
+    <Icon Type="edit" />
+</Template>;
+private RenderFragment actionEllipsis =@<Template>
+    <Icon Type="ellipsis" />
+</Template>;
+
+}
