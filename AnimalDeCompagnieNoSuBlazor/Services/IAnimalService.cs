@@ -9,7 +9,8 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
     public interface IAnimalService
     {
         Task<List<AnimalListViewModel>> GetAnimalList();
-        Task<AnimalViewModel> GetAnimal();
+        Task<AnimalViewModel> GetAnimal(int aid);
+        Task<AnimalUpdateModel> GetAnimalForUpdate(int aid);
         Task<AnimalViewModel> UpdateAnimal(AnimalUpdateModel animalUpdateModel);
     }
 }

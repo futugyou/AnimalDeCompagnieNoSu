@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using AntDesign;
 using System;
 using Microsoft.AspNetCore.Components.Web;
+using AnimalDeCompagnieNoSuBlazor.Services;
 
 namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 {
@@ -13,9 +14,9 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         [Parameter]
         public string Id { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
-        private AnimalViewModel AnimalViewModel { get; set; }
-
-        private void GotoUpdateInfoPage(MouseEventArgs e)
+        [Inject] private IAnimalService AnimalService { get; set; }
+        private AnimalViewModel AnimalViewModel = new AnimalViewModel();
+    private void GotoUpdateInfoPage(MouseEventArgs e)
         {
             NavigationManager.NavigateTo("/animal/updateinfo/" + AnimalViewModel.Id);
         }
@@ -35,21 +36,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             {
                 NavigationManager.NavigateTo("/animal");
             }
-            AnimalViewModel = new AnimalViewModel()
-            {
-                Id = aid,
-                Type = "cat",
-                SubType = "British shorthair",
-                Name = "this is name " + Id,
-                Birthday = DateTime.Now.AddDays(-10),
-                Idcard = "cat-" + DateTime.Now.ToString("yyyyMMdd-HHssmm-") + Id,
-                Age = 10,
-                Photoes = {
-                    "/images/cat01.jpg",
-                    "/images/cat02.jpg",
-                    "/images/cat03.jpg"
-                },
-            };
+            AnimalViewModel = await AnimalService.GetAnimal(aid);
         }
     }
 }

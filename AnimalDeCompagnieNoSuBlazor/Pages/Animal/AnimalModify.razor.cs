@@ -1,9 +1,11 @@
 ﻿using AnimalDeCompagnieNoSuBlazor.Models;
+using AnimalDeCompagnieNoSuBlazor.Services;
 using AntDesign;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
@@ -12,15 +14,22 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
     {
         [Parameter]
         public string Id { get; set; }
-        [Inject] NavigationManager NavigationManager { get; set; }
-        private AnimalUpdateModel AnimalUpdateModel { get; set; }
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
+        [Inject]
+        private IAnimalTypeService AnimalTypeService { get; set; }
+        [Inject]
+        private IAnimalService AnimalService { get; set; }
+
+
+        private AnimalUpdateModel AnimalUpdateModel = new AnimalUpdateModel();
 
         bool previewVisible = false;
         string previewTitle = string.Empty;
         string imgUrl = string.Empty;
 
         List<UploadFileItem> fileList = new List<UploadFileItem>();
-
+        List<CascaderNode> selectNodes = new List<CascaderNode>();
         void HandleChange(UploadInfo fileinfo)
         {
             if (fileinfo.File.State == UploadState.Success)
@@ -45,25 +54,14 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+
             if (!int.TryParse(Id, out var aid) || aid == 0)
             {
                 NavigationManager.NavigateTo("/animal");
             }
-            AnimalUpdateModel = new AnimalUpdateModel()
-            {
-                Id = aid,
-                Type = "cat",
-                SubType = "British shorthair",
-                Name = "this is name " + Id,
-                Birthday = DateTime.Now.AddDays(-10),
-                Idcard = "cat-" + DateTime.Now.ToString("yyyyMMdd-HHssmm-") + Id,
-                Age = 10,
-                Photoes = {
-                    "/images/cat01.jpg",
-                    "/images/cat02.jpg",
-                    "/images/cat03.jpg"
-                },
-            };
+            AnimalUpdateModel = await AnimalService.GetAnimalForUpdate(aid);
+            await GetAnimalTypeData();
+
             fileList = new List<UploadFileItem>
             {
                 new UploadFileItem
@@ -90,28 +88,34 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             };
         }
 
-        List<CascaderNode> selectNodes = new List<CascaderNode>()
+        private async Task GetAnimalTypeData()
         {
-            new CascaderNode()
-            {
-                Value = "1",
-                Label = "cat",
-                Children = new CascaderNode[] {
-                    new CascaderNode { Value = "11", Label = "british shorthair", },
-                    new CascaderNode { Value = "12", Label = "Ragdoll" },
-                }
-            },
-            new CascaderNode()
-            {
-                Value = "2",
-                Label = "god",
-                Children = new CascaderNode[] {
-                    new CascaderNode { Value = "21", Label = "collie" },
-                    new CascaderNode { Value = "22", Label = "Shepherds" },
-                    new CascaderNode { Value = "23", Label = "golden retriever" },
-                }
-            }
-        };
+            var subtypestring = await AnimalTypeService.GetAllAnimalTypes();
+            selectNodes = System.Text.Json.JsonSerializer.Deserialize<List<CascaderNode>>(subtypestring);
+        }
+
+        //List<CascaderNode> selectNodes = new List<CascaderNode>()
+        //{
+        //    new CascaderNode()
+        //    {
+        //        Value = "1",
+        //        Label = "cat",
+        //        Children = new CascaderNode[] {
+        //            new CascaderNode { Value = "11", Label = "british shorthair", },
+        //            new CascaderNode { Value = "12", Label = "Ragdoll" },
+        //        }
+        //    },
+        //    new CascaderNode()
+        //    {
+        //        Value = "2",
+        //        Label = "dog",
+        //        Children = new CascaderNode[] {
+        //            new CascaderNode { Value = "21", Label = "collie" },
+        //            new CascaderNode { Value = "22", Label = "Shepherds" },
+        //            new CascaderNode { Value = "23", Label = "golden retriever" },
+        //        }
+        //    }
+        //};
 
     }
 }

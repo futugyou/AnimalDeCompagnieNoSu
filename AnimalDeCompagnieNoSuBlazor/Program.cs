@@ -23,6 +23,8 @@ namespace AnimalDeCompagnieNoSuBlazor
             builder.Services.AddAntDesign();
             builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
             builder.Services.AddScoped<IAnimalService, AnimalService>();
+            builder.Services.AddScoped<IAnimalTypeService, AnimalTypeService>();
+
             await builder.Build().RunAsync();
         }
     }

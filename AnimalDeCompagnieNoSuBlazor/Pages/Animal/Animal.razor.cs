@@ -17,11 +17,11 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         };
 
         private AnimalListViewModel[] _data = { };
-        [Inject] private IAnimalService _animalService { get; set; }
+        [Inject] private IAnimalService AnimalService { get; set; }
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            var list = await _animalService.GetAnimalList();
+            var list = await AnimalService.GetAnimalList();
             _data = list.ToArray();
         }
     }

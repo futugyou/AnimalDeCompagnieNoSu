@@ -1,0 +1,42 @@
+[
+  {
+    "Value": "1",
+    "Label": "cat",
+    "Children": [
+      {
+        "Value": "11",
+        "Label": "british shorthair"
+      },
+      {
+        "Value": "12",
+        "Label": "Ragdoll"
+      },
+      {
+        "Value": "10",
+        "Label": "others"
+      }
+    ]
+  },
+  {
+    "Value": "2",
+    "Label": "dog",
+    "Children": [
+      {
+        "Value": "21",
+        "Label": "collie"
+      },
+      {
+        "Value": "22",
+        "Label": "Shepherds"
+      },
+      {
+        "Value": "23",
+        "Label": "golden retriever"
+      },
+      {
+        "Value": "20",
+        "Label": "others"
+      }
+    ]
+  }
+]

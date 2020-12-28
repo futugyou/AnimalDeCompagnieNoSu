@@ -16,9 +16,14 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
             _httpClient = httpClient;
         }
 
-        public async Task<AnimalViewModel> GetAnimal()
+        public async Task<AnimalViewModel> GetAnimal(int aid)
         {
             return await _httpClient.GetFromJsonAsync<AnimalViewModel>("data/animal.json");
+        }
+
+        public async Task<AnimalUpdateModel> GetAnimalForUpdate(int aid)
+        {
+            return await _httpClient.GetFromJsonAsync<AnimalUpdateModel>("data/animal-for-update.json");
         }
 
         public async Task<List<AnimalListViewModel>> GetAnimalList()

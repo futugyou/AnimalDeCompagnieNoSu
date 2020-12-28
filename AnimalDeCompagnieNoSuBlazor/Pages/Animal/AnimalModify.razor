@@ -26,7 +26,7 @@
                     <Input Disabled @bind-Value="@context.Idcard" />
                 </FormItem>
                 <FormItem Label="种类">
-                    <Cascader Options="@selectNodes" @bind-Value="@context.Name"></Cascader>
+                    <Cascader Options="@selectNodes" @bind-Value="@context.SubType"></Cascader>
                 </FormItem>
                 <FormItem Label="生日">
                     <DatePicker TValue="DateTime?" Format="yyyy/MM/dd" @bind-Value="@context.Birthday" />

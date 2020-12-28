@@ -1,8 +1,7 @@
 ﻿@using AnimalDeCompagnieNoSuBlazor.Pages.Animal
 @page "/animal/{id}"
 
-<PageContainer Title="@(AnimalViewModel.Name)"
-               Class="pageHeader">
+<PageContainer Title="@(AnimalViewModel.Name)" Class="pageHeader">
     <Breadcrumb>
         <Breadcrumb>
             <BreadcrumbItem>主页</BreadcrumbItem>
@@ -13,29 +12,8 @@
     <Extra>
         <Button Type="primary" OnClick="GotoUpdateInfoPage">信息修改</Button>
     </Extra>
-    <ExtraContent>
-        <div class="moreInfo">
-            <Statistic Title="疫苗状态" Value="@("已接种疫苗")" />
-            <Statistic Title="生育状态" Value="@("已绝育")" />
-        </div>
-    </ExtraContent>
-    <ChildContent>
-        <Carousel Effect="@CarouselEffect.Fade" Autoplay="TimeSpan.FromSeconds(4)">
-            @if (AnimalViewModel.Photoes != null && AnimalViewModel.Photoes.Count > 0)
-            {
-                @for (int i = 0; i < AnimalViewModel.Photoes.Count; i++)
-                {
-                    var photo = AnimalViewModel.Photoes[i];
-                    <CarouselSlick>
-                        <div class="image-display-center">
-                            <img class="img" style="display:initial" alt="cat" src="@(photo)" />
-                        </div>
-                    </CarouselSlick>
-                }
-            }
-        </Carousel>
-    </ChildContent>
     <Content>
+
         <Descriptions Class="headerList" Bordered Column="@column">
             <DescriptionsItem Title="名字">@(AnimalViewModel.Name)</DescriptionsItem>
             <DescriptionsItem Title="识别号">@(AnimalViewModel.Idcard)</DescriptionsItem>
@@ -46,4 +24,25 @@
             <DescriptionsItem Title="简介">@(AnimalViewModel.ShortDescribe)</DescriptionsItem>
         </Descriptions>
     </Content>
+    <ExtraContent>
+        <div class="moreInfo">
+            <Statistic Title="疫苗状态" Value="@("已接种疫苗")" />
+            <Statistic Title="生育状态" Value="@("已绝育")" />
+        </div>
+    </ExtraContent>
+    <ChildContent>
+        @if (AnimalViewModel.Photoes.Count > 0)
+        {
+            <Carousel Effect="@CarouselEffect.Fade" Autoplay="TimeSpan.FromSeconds(4)">
+                @foreach (var photo in AnimalViewModel.Photoes)
+                {
+                    <CarouselSlick>
+                        <div class="image-display-center">
+                            <img class="img" style="display:initial" alt="cat" src="@(photo)" />
+                        </div>
+                    </CarouselSlick>
+                }
+            </Carousel>
+        }
+    </ChildContent>
 </PageContainer>
