@@ -14,7 +14,7 @@
     </Content>
     <ChildContent>
         <Card>
-            <Form Model="@AnimalRawdata"
+            <Form Model="@AnimalUpdateModel"
                   Style="margin-top: 8px;"
                   LabelCol="new ColLayoutParam { Span = 7 }"
                   WrapperCol="new ColLayoutParam { Span = 17 }"
@@ -24,6 +24,9 @@
                 </FormItem>
                 <FormItem Label="识别号">
                     <Input Disabled @bind-Value="@context.Idcard" />
+                </FormItem>
+                <FormItem Label="种类">
+                    <Cascader Options="@selectNodes" @bind-Value="@context.Name"></Cascader>
                 </FormItem>
                 <FormItem Label="生日">
                     <DatePicker TValue="DateTime?" Format="yyyy/MM/dd" @bind-Value="@context.Birthday" />

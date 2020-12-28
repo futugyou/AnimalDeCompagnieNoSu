@@ -13,7 +13,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         [Parameter]
         public string Id { get; set; }
         [Inject] NavigationManager NavigationManager { get; set; }
-        private AnimalRawdata AnimalRawdata { get; set; }
+        private AnimalUpdateModel AnimalUpdateModel { get; set; }
 
         bool previewVisible = false;
         string previewTitle = string.Empty;
@@ -49,13 +49,15 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             {
                 NavigationManager.NavigateTo("/animal");
             }
-            AnimalRawdata = new AnimalRawdata()
+            AnimalUpdateModel = new AnimalUpdateModel()
             {
                 Id = aid,
                 Type = "cat",
+                SubType = "British shorthair",
                 Name = "this is name " + Id,
+                Birthday = DateTime.Now.AddDays(-10),
                 Idcard = "cat-" + DateTime.Now.ToString("yyyyMMdd-HHssmm-") + Id,
-                Age = aid % 9,
+                Age = 10,
                 Photoes = {
                     "/images/cat01.jpg",
                     "/images/cat02.jpg",
@@ -87,5 +89,29 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
                 }
             };
         }
+
+        List<CascaderNode> selectNodes = new List<CascaderNode>()
+        {
+            new CascaderNode()
+            {
+                Value = "1",
+                Label = "cat",
+                Children = new CascaderNode[] {
+                    new CascaderNode { Value = "11", Label = "british shorthair", },
+                    new CascaderNode { Value = "12", Label = "Ragdoll" },
+                }
+            },
+            new CascaderNode()
+            {
+                Value = "2",
+                Label = "god",
+                Children = new CascaderNode[] {
+                    new CascaderNode { Value = "21", Label = "collie" },
+                    new CascaderNode { Value = "22", Label = "Shepherds" },
+                    new CascaderNode { Value = "23", Label = "golden retriever" },
+                }
+            }
+        };
+
     }
 }

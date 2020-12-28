@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using AnimalDeCompagnieNoSuBlazor.Models;
 using Microsoft.AspNetCore.Components;
 using AntDesign;
+using System;
+using AnimalDeCompagnieNoSuBlazor.Services;
 
 namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 {
@@ -14,23 +16,12 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             Column = 4
         };
 
-        private AnimalRawdata[] _data = { };
+        private AnimalListViewModel[] _data = { };
+        [Inject] private IAnimalService _animalService { get; set; }
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            var list = new List<AnimalRawdata>();
-            for (int i = 1; i <= 20; i++)
-            {
-                var data = new AnimalRawdata()
-                {
-                    Id = i,
-                    Type = "cat",
-                    Name = "this is name " + i,
-                    Age = i % 9,
-                    Photoes = { "/images/cat01.jpg" },
-                };
-                list.Add(data);
-            }
+            var list = await _animalService.GetAnimalList();
             _data = list.ToArray();
         }
     }
