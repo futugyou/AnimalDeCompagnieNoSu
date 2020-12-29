@@ -39,28 +39,20 @@
                 </FormItem>
                 <FormItem Label="照片">
                     <Upload Action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                            Name="avatar"
+                            Name="photoes"
                             @bind-FileList="fileList"
                             ShowButton="fileList?.Count < 8"
                             ListType="picture-card"
-                            OnPreview="(file) =>
-                                       {
-                                           Console.WriteLine(file.FileName);
-                                           Console.WriteLine(file.Url);
-                                           previewVisible = true;
-                                           previewTitle = file.FileName;
-                                           imgUrl = file.Url;
-                                       }"
-                            OnChange="HandleChange">
+                            OnPreview="HandlePreview"
+                            OnChange="HandleChange"
+                            OnRemove="HandleRemove">
                         <div>
                             <Icon Type="plus"></Icon>
                             <div className="ant-upload-text">Upload</div>
                         </div>
 
                     </Upload>
-                    <Modal Visible="previewVisible"
-                           Title="previewTitle"
-                           OnCancel="() => previewVisible = false">
+                    <Modal Visible="previewVisible" Title="previewTitle" OnCancel="HandleModalCancel">
                         <img style="width: 100%" src="@imgUrl" />
                     </Modal>
                 </FormItem>

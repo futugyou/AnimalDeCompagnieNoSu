@@ -21,21 +21,86 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         [Inject]
         private IAnimalService AnimalService { get; set; }
 
+        private AnimalUpdateModel AnimalUpdateModel = new();
+        private bool previewVisible = false;
+        private string previewTitle = string.Empty;
+        private string imgUrl = string.Empty;
+        private List<UploadFileItem> fileList = new();
+        private List<CascaderNode> selectNodes = new();
 
-        private AnimalUpdateModel AnimalUpdateModel = new AnimalUpdateModel();
-
-        bool previewVisible = false;
-        string previewTitle = string.Empty;
-        string imgUrl = string.Empty;
-
-        List<UploadFileItem> fileList = new List<UploadFileItem>();
-        List<CascaderNode> selectNodes = new List<CascaderNode>();
-        void HandleChange(UploadInfo fileinfo)
+        private void HandleChange(UploadInfo fileinfo)
         {
             if (fileinfo.File.State == UploadState.Success)
             {
                 fileinfo.File.Url = fileinfo.File.ObjectURL;
             }
+        }
+
+        private void HandlePreview(UploadFileItem file)
+        {
+            Console.WriteLine(file.FileName);
+            Console.WriteLine(file.Url);
+            previewVisible = true;
+            previewTitle = file.FileName;
+            imgUrl = file.Url;
+        }
+
+        private void HandleModalCancel()
+        {
+            previewVisible = false;
+        }
+
+        private Task<bool> HandleRemove(UploadFileItem file)
+        {
+            return Task.FromResult(true);
+        }
+
+        private void HandleSubmit()
+        {
+
+        }
+
+        private void OnAnimalTypeSelected(List<CascaderNode> nodeList, string value, string label)
+        {
+            Console.WriteLine($"label is {label} value is {value}");
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+
+            if (!int.TryParse(Id, out var aid) || aid == 0)
+            {
+                NavigationManager.NavigateTo("/animal");
+            }
+            await GetAnimalTypeData();
+            AnimalUpdateModel = await AnimalService.GetAnimalForUpdate(aid);
+            MakePhotoeShow(AnimalUpdateModel?.Photoes);
+        }
+
+        private void MakePhotoeShow(List<string> photoes)
+        {
+            if (photoes != null && photoes.Count > 0)
+            {
+                foreach (var photo in photoes)
+                {
+                    var id = Guid.NewGuid().ToString();
+                    var file = new UploadFileItem
+                    {
+                        Id = id,
+                        FileName = photo,
+                        State = UploadState.Success,
+                        Url = photo
+                    };
+                    fileList.Add(file);
+                }
+            }
+        }
+
+        private async Task GetAnimalTypeData()
+        {
+            var subtypestring = await AnimalTypeService.GetAllAnimalTypes();
+            selectNodes = System.Text.Json.JsonSerializer.Deserialize<List<CascaderNode>>(subtypestring);
         }
 
         public class ResponseModel
@@ -48,78 +113,5 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
             public string thumbUrl { get; set; }
         }
-        private void HandleSubmit()
-        {
-        }
-        private void OnAnimalTypeSelected(List<CascaderNode> nodeList, string value, string label)
-        {
-            Console.WriteLine($"label is {label} value is {value}");
-        } 
-        protected override async Task OnInitializedAsync()
-        {
-            await base.OnInitializedAsync();
-
-            if (!int.TryParse(Id, out var aid) || aid == 0)
-            {
-                NavigationManager.NavigateTo("/animal");
-            }
-            await GetAnimalTypeData();
-            AnimalUpdateModel = await AnimalService.GetAnimalForUpdate(aid);
-
-            fileList = new List<UploadFileItem>
-            {
-                new UploadFileItem
-                {
-                    Id = "1",
-                    FileName = "cat01.jpg",
-                    State = UploadState.Success,
-                    Url =  "/images/cat01.jpg",
-                },
-                new UploadFileItem
-                {
-                    Id = "2",
-                    FileName = "cat02.jpg",
-                    State = UploadState.Success,
-                    Url = "/images/cat02.jpg",
-                },
-                new UploadFileItem
-                {
-                    Id = "3",
-                    FileName = "cat03.jpg",
-                    State = UploadState.Success,
-                    Url =  "/images/cat03.jpg"
-                }
-            };
-        }
-
-        private async Task GetAnimalTypeData()
-        {
-            var subtypestring = await AnimalTypeService.GetAllAnimalTypes();
-            selectNodes = System.Text.Json.JsonSerializer.Deserialize<List<CascaderNode>>(subtypestring);
-        }
-
-        //List<CascaderNode> selectNodes = new List<CascaderNode>()
-        //{
-        //    new CascaderNode()
-        //    {
-        //        Value = "1",
-        //        Label = "cat",
-        //        Children = new CascaderNode[] {
-        //            new CascaderNode { Value = "11", Label = "british shorthair", },
-        //            new CascaderNode { Value = "12", Label = "Ragdoll" },
-        //        }
-        //    },
-        //    new CascaderNode()
-        //    {
-        //        Value = "2",
-        //        Label = "dog",
-        //        Children = new CascaderNode[] {
-        //            new CascaderNode { Value = "21", Label = "collie" },
-        //            new CascaderNode { Value = "22", Label = "Shepherds" },
-        //            new CascaderNode { Value = "23", Label = "golden retriever" },
-        //        }
-        //    }
-        //};
-
     }
 }
