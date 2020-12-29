@@ -26,7 +26,10 @@
                     <Input Disabled @bind-Value="@context.Idcard" />
                 </FormItem>
                 <FormItem Label="种类">
-                    <Cascader Options="@selectNodes" @bind-Value="@context.SubType"></Cascader>
+                    @if (selectNodes.Count > 0)
+                    {
+                        <Cascader Options="@selectNodes" @bind-Value="@context.SubType" OnChange="OnAnimalTypeSelected"></Cascader>
+                    }
                 </FormItem>
                 <FormItem Label="生日">
                     <DatePicker TValue="DateTime?" Format="yyyy/MM/dd" @bind-Value="@context.Birthday" />
@@ -40,13 +43,14 @@
                             @bind-FileList="fileList"
                             ShowButton="fileList?.Count < 8"
                             ListType="picture-card"
-                            OnPreview="(file)=> {
-                           Console.WriteLine(file.FileName);
-                           Console.WriteLine(file.Url);
-                           previewVisible = true;
-                           previewTitle = file.FileName;
-                           imgUrl = file.Url;
-                       }"
+                            OnPreview="(file) =>
+                                       {
+                                           Console.WriteLine(file.FileName);
+                                           Console.WriteLine(file.Url);
+                                           previewVisible = true;
+                                           previewTitle = file.FileName;
+                                           imgUrl = file.Url;
+                                       }"
                             OnChange="HandleChange">
                         <div>
                             <Icon Type="plus"></Icon>
@@ -56,7 +60,7 @@
                     </Upload>
                     <Modal Visible="previewVisible"
                            Title="previewTitle"
-                           OnCancel="()=> previewVisible=false">
+                           OnCancel="() => previewVisible = false">
                         <img style="width: 100%" src="@imgUrl" />
                     </Modal>
                 </FormItem>

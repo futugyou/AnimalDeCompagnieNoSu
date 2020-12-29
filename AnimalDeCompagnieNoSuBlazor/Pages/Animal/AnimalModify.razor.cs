@@ -51,6 +51,10 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         private void HandleSubmit()
         {
         }
+        private void OnAnimalTypeSelected(List<CascaderNode> nodeList, string value, string label)
+        {
+            Console.WriteLine($"label is {label} value is {value}");
+        } 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
@@ -59,8 +63,8 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             {
                 NavigationManager.NavigateTo("/animal");
             }
-            AnimalUpdateModel = await AnimalService.GetAnimalForUpdate(aid);
             await GetAnimalTypeData();
+            AnimalUpdateModel = await AnimalService.GetAnimalForUpdate(aid);
 
             fileList = new List<UploadFileItem>
             {
