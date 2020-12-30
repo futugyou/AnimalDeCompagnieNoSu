@@ -31,7 +31,21 @@
       },
       {
         "Value": "23",
-        "Label": "golden retriever"
+        "Label": "golden retriever",
+        "Children": [
+          {
+            "Value": "231",
+            "Label": "small"
+          },
+          {
+            "Value": "232",
+            "Label": "big"
+          },
+          {
+            "Value": "233",
+            "Label": "nomal"
+          }
+        ]
       },
       {
         "Value": "20",

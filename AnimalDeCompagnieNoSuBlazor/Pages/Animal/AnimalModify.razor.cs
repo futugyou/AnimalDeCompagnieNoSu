@@ -27,12 +27,13 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         private string imgUrl = string.Empty;
         private List<UploadFileItem> fileList = new();
         private List<CascaderNode> selectNodes = new();
-
+        private string with = "80%";
         private void HandleChange(UploadInfo fileinfo)
         {
             if (fileinfo.File.State == UploadState.Success)
             {
                 fileinfo.File.Url = fileinfo.File.ObjectURL;
+                AnimalUpdateModel.Photoes.Add(fileinfo.File.Url);
             }
         }
 
@@ -52,17 +53,45 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         private Task<bool> HandleRemove(UploadFileItem file)
         {
+            AnimalUpdateModel.Photoes.Remove(file.Url);
             return Task.FromResult(true);
         }
 
-        private void HandleSubmit()
+        private async Task HandleSubmitAsync()
         {
+            AnimalUpdateModel.Type = GetAnimalTypeBySubType(selectNodes, null, AnimalUpdateModel.SubType);
+            await AnimalService.UpdateAnimal(AnimalUpdateModel);
+            NavigationManager.NavigateTo("/animal/" + AnimalUpdateModel.Id);
+        }
 
+        private void ReturnToDetail()
+        {
+            NavigationManager.NavigateTo("/animal/" + AnimalUpdateModel.Id);
         }
 
         private void OnAnimalTypeSelected(List<CascaderNode> nodeList, string value, string label)
         {
-            Console.WriteLine($"label is {label} value is {value}");
+
+        }
+
+        private string GetAnimalTypeBySubType(List<CascaderNode> nodeList, string parent, string target)
+        {
+            if (nodeList == null) return null;
+            if (nodeList.Any(p => p.Value == target))
+            {
+                return parent == null ? target : parent;
+            }
+
+            foreach (var item in nodeList)
+            {
+                var t = GetAnimalTypeBySubType(item.Children?.ToList(), item.Value, target);
+                if (t == null)
+                {
+                    continue;
+                }
+                return parent == null ? t : parent + "," + t;
+            }
+            return null;
         }
 
         protected override async Task OnInitializedAsync()
