@@ -12,6 +12,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Models
         public string Type { get; set; }
         public string SubType { get; set; }
         public string Name { get; set; }
+        public string Avatar { get; set; }
         public double Age { get; set; }
         public string ShortDescribe { get; set; }
         public List<string> Photoes { get; set; } = new List<string>();

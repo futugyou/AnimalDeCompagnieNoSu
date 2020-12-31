@@ -6,5 +6,6 @@
   "Birthday": "2010-12-24",
   "Age": 10,
   "Idcard": "cat-20201224-080712-1",
+  "Avatar": "/images/head.jpg",
   "Photoes": [ "/images/cat01.jpg", "/images/cat02.jpg", "/images/cat03.jpg" ]
 }
