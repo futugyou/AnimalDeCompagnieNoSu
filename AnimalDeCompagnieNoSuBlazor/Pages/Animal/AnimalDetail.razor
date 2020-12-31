@@ -13,7 +13,6 @@
         <Button Type="primary" OnClick="GotoUpdateInfoPage">信息修改</Button>
     </Extra>
     <Content>
-
         <Descriptions Class="headerList" Bordered Column="@column">
             <DescriptionsItem Title="名字">@(AnimalViewModel.Name)</DescriptionsItem>
             <DescriptionsItem Title="识别号">@(AnimalViewModel.Idcard)</DescriptionsItem>
@@ -31,18 +30,43 @@
         </div>
     </ExtraContent>
     <ChildContent>
-        @if (AnimalViewModel.Photoes.Count > 0)
-        {
-            <Carousel Effect="@CarouselEffect.Fade" Autoplay="TimeSpan.FromSeconds(4)">
-                @foreach (var photo in AnimalViewModel.Photoes)
-                {
-                    <CarouselSlick>
-                        <div class="image-display-center">
-                            <img class="img" style="display:initial" alt="cat" src="@(photo)" />
-                        </div>
-                    </CarouselSlick>
-                }
-            </Carousel>
-        }
+        <Tabs DefaultActiveKey="photoes">
+            <TabPane Key="photoes">
+                <Tab>
+                    <span><Icon Type="picture" />照片墙</span>
+                </Tab>
+                <ChildContent>
+                    @if (AnimalViewModel.Photoes.Count > 0)
+                    {
+                        <Carousel Effect="@CarouselEffect.Fade" Autoplay="TimeSpan.FromSeconds(4)">
+                            @foreach (var photo in AnimalViewModel.Photoes)
+                            {
+                                <CarouselSlick>
+                                    <div class="image-display-center">
+                                        <img class="img" style="display:initial" alt="cat" src="@(photo)" />
+                                    </div>
+                                </CarouselSlick>
+                            }
+                        </Carousel>
+                    }
+                </ChildContent>
+            </TabPane>
+            <TabPane Key="events">
+                <Tab>
+                    <span><Icon Type="schedule" />重大事件</span>
+                </Tab>
+                <ChildContent>
+                    <Timeline Mode="alternate">
+                        @if (AnimalEvents != null)
+                        {
+                            @foreach (var @event in AnimalEvents)
+                            {
+                                <TimelineItem>@(@event.Event) @(@event.EventTime)</TimelineItem>
+                            }
+                        }
+                    </Timeline>
+                </ChildContent>
+            </TabPane>
+        </Tabs>
     </ChildContent>
 </PageContainer>

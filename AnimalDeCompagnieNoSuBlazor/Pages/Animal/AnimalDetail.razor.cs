@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using AnimalDeCompagnieNoSuBlazor.Models;
 using Microsoft.AspNetCore.Components;
-using AntDesign;
+using AntDesign.Pro.Layout;
 using System;
 using Microsoft.AspNetCore.Components.Web;
 using AnimalDeCompagnieNoSuBlazor.Services;
+using System.Linq;
 
 namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 {
@@ -13,10 +14,25 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
     {
         [Parameter]
         public string Id { get; set; }
-        [Inject] private NavigationManager NavigationManager { get; set; }
-        [Inject] private IAnimalService AnimalService { get; set; }
-        private AnimalViewModel AnimalViewModel = new AnimalViewModel();
-    private void GotoUpdateInfoPage(MouseEventArgs e)
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
+        [Inject]
+        private IAnimalService AnimalService { get; set; }
+        [Inject]
+        private IAnimalEventService AnimalEventService { get; set; }
+
+
+
+        private AnimalViewModel AnimalViewModel = new();
+        private List<AnimalEvent> AnimalEvents = new();
+
+        private readonly IList<TabPaneItem> _tabList = new List<TabPaneItem>
+        {
+            new TabPaneItem {Key = "photoes", Tab = "照片墙"},
+            new TabPaneItem {Key = "events", Tab = "重大事件"}
+        };
+
+        private void GotoUpdateInfoPage(MouseEventArgs e)
         {
             NavigationManager.NavigateTo("/animal/updateinfo/" + AnimalViewModel.Id);
         }
@@ -37,6 +53,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
                 NavigationManager.NavigateTo("/animal");
             }
             AnimalViewModel = await AnimalService.GetAnimal(aid);
+            AnimalEvents = (await AnimalEventService.GetBigEventByAnimalId(aid)).OrderBy(p => p.EventTime).ToList();
         }
     }
 }
