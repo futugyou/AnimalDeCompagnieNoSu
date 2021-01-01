@@ -14,22 +14,28 @@
             <AntDesign.Col Span="6">
                 <Card>
                     <div class="col-detail">
-                        <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" />
+                        <div class="box">
+                            <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" />
+                        </div>
                         <div className="name">@AnimalViewModel.Name</div>
                         <div>@AnimalViewModel.Idcard</div>
                     </div>
-                    <Descriptions Class="headerList">
+                </Card>
+                <Card>
+                    <Descriptions Bordered="false" Column="2" Layout="@DescriptionsLayout.Horizontal">
                         <DescriptionsItem Title="种类">@(AnimalViewModel.Type)</DescriptionsItem>
                         <DescriptionsItem Title="子类别">@(AnimalViewModel.SubType)</DescriptionsItem>
-                        <DescriptionsItem Title="生日">@(AnimalViewModel.Birthday)</DescriptionsItem>
                         <DescriptionsItem Title="年龄">@(AnimalViewModel.Age)</DescriptionsItem>
-                        <DescriptionsItem Title="简介">@(AnimalViewModel.ShortDescribe)</DescriptionsItem>
+                        <DescriptionsItem Title="生日">@(AnimalViewModel.Birthday?.ToString("d"))</DescriptionsItem>
+                        <DescriptionsItem Title="简介" Class="animal-describe">@(AnimalViewModel.ShortDescribe)</DescriptionsItem>
                     </Descriptions>
                     <Divider Dashed />
                     <Statistic Title="疫苗状态" Value="@("已接种疫苗")" />
                     <Statistic Title="生育状态" Value="@("已绝育")" />
                     <Divider Dashed />
-                    <Button Type="primary" OnClick="GotoUpdateInfoPage">信息修改</Button>
+                    <div class="col-detail">
+                        <Button Type="primary" OnClick="GotoUpdateInfoPage">信息修改</Button>
+                    </div>
                 </Card>
             </AntDesign.Col>
             <AntDesign.Col Span="18">
@@ -58,7 +64,7 @@
                             </TabPane>
                             <TabPane Key="events">
                                 <Tab>
-                                    <span><Icon Type="schedule" />重大事件</span>
+                                    <span><Icon Type="schedule" />大事件</span>
                                 </Tab>
                                 <ChildContent>
                                     <Timeline Mode="alternate">
