@@ -2,6 +2,7 @@
 using AnimalDeCompagnieNoSuBlazor.Services;
 using AntDesign;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,14 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
     {
         [Parameter]
         public string Id { get; set; }
+
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+        [Inject]
+        ModalService ModalService { get; set; }
+        [Inject]
+        MessageService MessageService { get; set; }
+
         [Inject]
         private IAnimalTypeService AnimalTypeService { get; set; }
         [Inject]
@@ -28,6 +35,8 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         private List<UploadFileItem> fileList = new();
         private List<CascaderNode> selectNodes = new();
         private string with = "80%";
+        Form<AnimalUpdateModel> form;
+
         private void HandleChange(UploadInfo fileinfo)
         {
             if (fileinfo.File.State == UploadState.Success)
@@ -66,7 +75,32 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         private void ReturnToDetail()
         {
+            if (form.IsModified)
+            {
+                ModalService.Confirm(new ConfirmOptions()
+                {
+                    Title = "确定放弃现有更改吗？",
+                    Icon = icon,
+                    OnOk = new Func<ModalClosingEventArgs, Task>(async (e) => await ReturnOk()),
+                    OnCancel = new Func<ModalClosingEventArgs, Task>(async (e) => await ReturnCancel()),
+                    OkType = "danger",
+                });
+            }
+            else
+            {
+                NavigationManager.NavigateTo("/animal/" + AnimalUpdateModel.Id);
+            }
+        }
+
+        private static Task ReturnCancel()
+        {
+            return Task.CompletedTask;
+        }
+
+        private Task ReturnOk()
+        {
             NavigationManager.NavigateTo("/animal/" + AnimalUpdateModel.Id);
+            return Task.CompletedTask;
         }
 
         private void OnAnimalTypeSelected(List<CascaderNode> nodeList, string value, string label)
