@@ -1,4 +1,5 @@
 ﻿@using AnimalDeCompagnieNoSuBlazor.Pages.Animal
+@using AnimalDeCompagnieNoSuBlazor.Extensions
 @page "/animal/updateinfo/{id}"
 
 <PageContainer Title="基本信息修改">
@@ -20,51 +21,59 @@
                   WrapperCol="new ColLayoutParam { Span = 17 }"
                   OnFinish="HandleSubmitAsync"
                   ValidateOnChange="true">
-                <FormItem Label="名字">
-                    <Input Placeholder="Give the target a name" @bind-Value="@context.Name" />
-                </FormItem>
-                <FormItem Label="识别号">
-                    <Input Disabled @bind-Value="@context.Idcard" />
-                </FormItem>
-                <FormItem Label="种类">
-                    @if (selectNodes.Count > 0)
-                    {
-                        <Cascader Options="@selectNodes" @bind-Value="@context.SubType" OnChange="OnAnimalTypeSelected"></Cascader>
-                    }
-                </FormItem>
-                <FormItem Label="生日">
-                    <DatePicker TValue="DateTime?" Format="yyyy/MM/dd" @bind-Value="@context.Birthday" />
-                </FormItem>
-                <FormItem Label="描述">
-                    <TextArea MinRows="4" @bind-Value="@context.ShortDescribe"></TextArea>
-                </FormItem>
-                <FormItem Label="照片">
-                    <Upload Action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                            Name="photoes"
-                            @bind-FileList="fileList"
-                            ShowButton="fileList?.Count < 8"
-                            ListType="picture-card"
-                            OnPreview="HandlePreview"
-                            OnChange="HandleChange"
-                            OnRemove="HandleRemove">
-                        <div>
-                            <Icon Type="plus"></Icon>
-                            <div className="ant-upload-text">Upload</div>
-                        </div>
+                <Validator>
+                    <CustomValidator @ref="customValidator"></CustomValidator>
+                    <ValidationSummary />
+                    @*<DataAnnotationsValidator />*@
+                </Validator>
+                <ChildContent>
+                    <FormItem Label="名字">
+                        <Input Placeholder="Give the target a name" @bind-Value="@context.Name" />
+                    </FormItem>
+                    <FormItem Label="识别号">
+                        <Input Disabled readonly @bind-Value="@context.Idcard" />
+                    </FormItem>
+                    <FormItem Label="种类">
+                        @if (selectNodes.Count > 0)
+                        {
+                            <Cascader Options="@selectNodes" @bind-Value="@context.SubType" OnChange="OnAnimalTypeSelected"></Cascader>
+                        }
+                    </FormItem>
+                    <FormItem Label="生日">
+                        <DatePicker TValue="DateTime?" Format="yyyy/MM/dd" @bind-Value="@context.Birthday" />
+                    </FormItem>
+                    <FormItem Label="描述">
+                        <TextArea MinRows="4" @bind-Value="@context.ShortDescribe"></TextArea>
+                    </FormItem>
+                    <FormItem Label="照片">
+                        <Upload Action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                Name="photoes"
+                                @bind-FileList="fileList"
+                                ShowButton="fileList?.Count < 8"
+                                ListType="picture-card"
+                                OnPreview="HandlePreview"
+                                OnChange="HandleChange"
+                                OnRemove="HandleRemove">
+                            <div>
+                                <Icon Type="plus"></Icon>
+                                <div className="ant-upload-text">Upload</div>
+                            </div>
 
-                    </Upload>
-                    <Modal Visible="previewVisible" Title="预览图" Width="with" OnCancel="HandleModalCancel">
-                        <img style="width: 100%" src="@imgUrl" />
-                    </Modal>
-                </FormItem>
-                <FormItem Style="margin-top:32px">
-                    <Button Type="@ButtonType.Primary" HtmlType="submit" Disabled="!form.IsModified">
-                        提交
-                    </Button>
-                    <Button Style="margin-left:8px" OnClick="ReturnToDetail">
-                        取消
-                    </Button>
-                </FormItem>
+                        </Upload>
+                        <Modal Visible="previewVisible" Title="预览图" Width="with" OnCancel="HandleModalCancel">
+                            <img style="width: 100%" src="@imgUrl" />
+                        </Modal>
+                    </FormItem>
+                    <FormItem Style="margin-top:32px">
+                        <Button Type="@ButtonType.Primary" HtmlType="submit" Disabled="!form.IsModified">
+                            提交
+                        </Button>
+                        <Button Style="margin-left:8px" OnClick="ReturnToDetail">
+                            取消
+                        </Button>
+                    </FormItem>
+                </ChildContent>
+
             </Form>
         </Card>
     </ChildContent>
@@ -72,4 +81,5 @@
 
 @code{
     RenderFragment icon =@<Icon Type="exclamation-circle" Theme="outline"></Icon>;
+private CustomValidator customValidator;
 }

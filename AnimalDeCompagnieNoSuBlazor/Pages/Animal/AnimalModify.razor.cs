@@ -1,4 +1,5 @@
-﻿using AnimalDeCompagnieNoSuBlazor.Models;
+﻿using AnimalDeCompagnieNoSuBlazor.Extensions;
+using AnimalDeCompagnieNoSuBlazor.Models;
 using AnimalDeCompagnieNoSuBlazor.Services;
 using AntDesign;
 using Microsoft.AspNetCore.Components;
@@ -68,9 +69,27 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         private async Task HandleSubmitAsync()
         {
-            AnimalUpdateModel.Type = GetAnimalTypeBySubType(selectNodes, null, AnimalUpdateModel.SubType);
-            await AnimalService.UpdateAnimal(AnimalUpdateModel);
-            NavigationManager.NavigateTo("/animal/" + AnimalUpdateModel.Id);
+            customValidator.ClearErrors();
+
+            var errors = new Dictionary<string, List<string>>();
+
+            if (string.IsNullOrEmpty(AnimalUpdateModel.SubType))
+            {
+                errors.Add(nameof(AnimalUpdateModel.SubType),
+                    new List<string>() { "For a 'Defense' ship classification, " +
+                "'adnimal subtype' is required." });
+            }
+
+            if (errors.Count() > 0)
+            {
+                customValidator.DisplayErrors(errors);
+            }
+            else
+            {
+                AnimalUpdateModel.Type = GetAnimalTypeBySubType(selectNodes, null, AnimalUpdateModel.SubType);
+                await AnimalService.UpdateAnimal(AnimalUpdateModel);
+                NavigationManager.NavigateTo("/animal/" + AnimalUpdateModel.Id);
+            }
         }
 
         private void ReturnToDetail()
