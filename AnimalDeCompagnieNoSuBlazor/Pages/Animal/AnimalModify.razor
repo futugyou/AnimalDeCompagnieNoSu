@@ -23,12 +23,11 @@
                   ValidateOnChange="true">
                 <Validator>
                     <CustomValidator @ref="customValidator"></CustomValidator>
-                    <ValidationSummary />
                     @*<DataAnnotationsValidator />*@
                 </Validator>
                 <ChildContent>
                     <FormItem Label="名字">
-                        <Input Placeholder="Give the target a name" @bind-Value="@context.Name" />
+                        <Input required Placeholder="Give the target a name" @bind-Value="@context.Name" />
                     </FormItem>
                     <FormItem Label="识别号">
                         <Input Disabled readonly @bind-Value="@context.Idcard" />
@@ -36,7 +35,7 @@
                     <FormItem Label="种类">
                         @if (selectNodes.Count > 0)
                         {
-                            <Cascader Options="@selectNodes" @bind-Value="@context.SubType" OnChange="OnAnimalTypeSelected"></Cascader>
+                            <Cascader required Options="@selectNodes" @bind-Value="@context.SubType" OnChange="OnAnimalTypeSelected"></Cascader>
                         }
                     </FormItem>
                     <FormItem Label="生日">

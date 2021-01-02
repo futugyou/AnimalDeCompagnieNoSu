@@ -69,6 +69,14 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         private async Task HandleSubmitAsync()
         {
+            string key = $"updatable-{DateTime.Now.Ticks}";
+            var config = new MessageConfig()
+            {
+                Duration = 0,
+                Content = "处理中...",
+                Key = key
+            };
+            _ = MessageService.Loading(config);
             customValidator.ClearErrors();
 
             var errors = new Dictionary<string, List<string>>();
@@ -80,15 +88,33 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
                 "'adnimal subtype' is required." });
             }
 
-            if (errors.Count() > 0)
+            if (errors.Count > 0)
             {
                 customValidator.DisplayErrors(errors);
+                config.Content = "请填写必要项！";
+                config.Duration = 4;
+                _ = MessageService.Warning(config);
             }
             else
             {
                 AnimalUpdateModel.Type = GetAnimalTypeBySubType(selectNodes, null, AnimalUpdateModel.SubType);
-                await AnimalService.UpdateAnimal(AnimalUpdateModel);
-                NavigationManager.NavigateTo("/animal/" + AnimalUpdateModel.Id);
+                try
+                {
+                    var updateResult = await AnimalService.UpdateAnimal(AnimalUpdateModel);
+                    config.Duration = 3;
+                    config.Content = "更新信息成功！";
+                    //config.OnClose += () => NavigationManager.NavigateTo("/animal/" + AnimalUpdateModel.Id, true);
+                    await MessageService.Success(config).ContinueWith(_ =>
+                    {
+                        NavigationManager.NavigateTo("/animal/" + AnimalUpdateModel.Id);
+                    });
+                }
+                catch (Exception)
+                {
+                    config.Duration = 4;
+                    config.Content = "更新信息失败！";
+                    _ = MessageService.Error(config);
+                }
             }
         }
 
@@ -102,6 +128,8 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
                     Icon = icon,
                     OnOk = new Func<ModalClosingEventArgs, Task>(async (e) => await ReturnOk()),
                     OnCancel = new Func<ModalClosingEventArgs, Task>(async (e) => await ReturnCancel()),
+                    OkText = "确认",
+                    CancelText = "取消",
                     OkType = "danger",
                 });
             }
