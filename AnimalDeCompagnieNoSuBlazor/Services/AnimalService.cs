@@ -33,6 +33,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
 
         public async Task<AnimalViewModel> UpdateAnimal(AnimalUpdateModel animalUpdateModel)
         {
+            await Task.Delay(3000);
             return await _httpClient.GetFromJsonAsync<AnimalViewModel>("data/animal.json");
         }
     }
