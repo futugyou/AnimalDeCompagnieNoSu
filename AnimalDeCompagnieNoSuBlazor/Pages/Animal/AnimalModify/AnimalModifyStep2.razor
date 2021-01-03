@@ -1,0 +1,37 @@
+﻿@namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
+
+<Form Model="@AnimalUpdateModel"
+      Style="margin-top: 8px;"
+      LabelCol="new ColLayoutParam { Span = 7 }"
+      WrapperCol="new ColLayoutParam { Span = 17 }"
+      OnFinish="HandleSubmitAsync"
+      ValidateOnChange="true">
+    <ChildContent>
+        <FormItem>
+            <Upload Action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    Name="photoes"
+                    @bind-FileList="fileList"
+                    ShowButton="fileList?.Count < 8"
+                    ListType="picture-card"
+                    OnPreview="HandlePreview"
+                    OnChange="HandleChange"
+                    OnRemove="HandleRemove">
+                <div>
+                    <Icon Type="plus"></Icon>
+                    <div className="ant-upload-text">Upload</div>
+                </div>
+            </Upload>
+            <Modal Visible="previewVisible" Title="预览图" Width="with" OnCancel="HandleModalCancel">
+                <img style="width: 100%" src="@imgUrl" />
+            </Modal>
+        </FormItem>
+        <FormItem Style="margin-top:32px; text-align:center;">
+            <Button Type="@ButtonType.Primary" HtmlType="submit">
+                提交
+            </Button>
+            <Button Style="margin-left:8px" OnClick="ReturnToDetail">
+                上一步
+            </Button>
+        </FormItem>
+    </ChildContent>
+</Form>

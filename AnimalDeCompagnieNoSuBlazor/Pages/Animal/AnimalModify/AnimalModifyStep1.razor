@@ -1,0 +1,47 @@
+﻿@namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
+@using AnimalDeCompagnieNoSuBlazor.Extensions
+
+<Form @ref="form" Model="@AnimalUpdateModel"
+      Style="margin-top: 8px;"
+      LabelCol="new ColLayoutParam { Span = 7 }"
+      WrapperCol="new ColLayoutParam { Span = 17 }"
+      OnFinish="HandleSubmitAsync"
+      ValidateOnChange="true">
+    <Validator>
+        <CustomValidator @ref="customValidator"></CustomValidator>
+        @*<DataAnnotationsValidator />*@
+    </Validator>
+    <ChildContent>
+        <FormItem Label="名字">
+            <Input required Placeholder="Give the target a name" @bind-Value="@context.Name"  AllowClear="true"/>
+        </FormItem>
+        <FormItem Label="识别号">
+            <Input Disabled readonly @bind-Value="@context.Idcard" />
+        </FormItem>
+        <FormItem Label="种类">
+            @if (selectNodes.Count > 0)
+            {
+                <Cascader required Options="@selectNodes" @bind-Value="@context.SubType" OnChange="OnAnimalTypeSelected"></Cascader>
+            }
+        </FormItem>
+        <FormItem Label="生日">
+            <DatePicker TValue="DateTime?" Format="yyyy/MM/dd" @bind-Value="@context.Birthday" />
+        </FormItem>
+        <FormItem Label="描述">
+            <TextArea MinRows="4" @bind-Value="@context.ShortDescribe"></TextArea>
+        </FormItem>
+        <FormItem Style="margin-top:32px; text-align:center;">
+            <Button Type="@ButtonType.Primary" HtmlType="submit" Disabled="!form.IsModified">
+                下一步
+            </Button>
+            <Button Style="margin-left:8px" OnClick="ReturnToDetail">
+                取消
+            </Button>
+        </FormItem>
+    </ChildContent>
+</Form>
+
+@code{
+    RenderFragment icon =@<Icon Type="exclamation-circle" Theme="outline"></Icon>;
+private CustomValidator customValidator;
+}
