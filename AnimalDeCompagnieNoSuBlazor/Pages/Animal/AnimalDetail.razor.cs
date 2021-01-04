@@ -7,6 +7,7 @@ using System;
 using Microsoft.AspNetCore.Components.Web;
 using AnimalDeCompagnieNoSuBlazor.Services;
 using System.Linq;
+using AntDesign;
 
 namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 {
@@ -16,15 +17,15 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         public string Id { get; set; }
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+
         [Inject]
         private IAnimalService AnimalService { get; set; }
         [Inject]
         private IAnimalEventService AnimalEventService { get; set; }
 
-
-
         private AnimalViewModel AnimalViewModel = new();
         private List<AnimalEvent> AnimalEvents = new();
+        private bool uploadImageVisable = false;
 
         private readonly IList<TabPaneItem> _tabList = new List<TabPaneItem>
         {
@@ -32,10 +33,33 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             new TabPaneItem {Key = "events", Tab = "重大事件"}
         };
 
+        private void HandleChange(UploadInfo fileinfo)
+        {
+            if (fileinfo.File.State == UploadState.Success)
+            {
+                fileinfo.File.Url = fileinfo.File.ObjectURL;
+                AnimalViewModel.Avatar = "/images/head.jpg";
+                //TODO: save data
+            }
+        }
+
+        private void HandleOk(MouseEventArgs e)
+        {
+            uploadImageVisable = false;
+        }
+
+        private void HandleCancel(MouseEventArgs e)
+        {
+            uploadImageVisable = false;
+        }
         private void GotoUpdateInfoPage(MouseEventArgs e)
         {
             NavigationManager.NavigateTo("/animal/updateinfo/" + AnimalViewModel.Id);
-        } 
+        }
+        private void OpenFaceChange()
+        {
+            uploadImageVisable = true;
+        }
 
         protected override async Task OnInitializedAsync()
         {

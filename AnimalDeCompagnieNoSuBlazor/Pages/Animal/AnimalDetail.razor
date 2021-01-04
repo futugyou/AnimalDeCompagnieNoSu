@@ -15,7 +15,21 @@
                 <Card>
                     <div class="col-detail">
                         <div class="box">
-                            <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" />
+                            <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" @onclick="OpenFaceChange" />
+                            <Modal Visible="@uploadImageVisable"
+                                   OnOk="@HandleOk"
+                                   OnCancel="@HandleCancel">
+                                <Upload Action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                        Name="Avatar"
+                                        ListType="picture-card"
+                                        OnChange="HandleChange"
+                                        Class="image-display-center">
+                                    <div>
+                                        <Icon Type="plus"></Icon>
+                                        <div className="ant-upload-text">上传</div>
+                                    </div>
+                                </Upload>
+                            </Modal>
                         </div>
                         <div className="name">@AnimalViewModel.Name</div>
                         <div>@AnimalViewModel.Idcard</div>
