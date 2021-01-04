@@ -38,6 +38,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         private string imgUrl = string.Empty;
         private List<UploadFileItem> fileList = new();
         private string with = "80%";
+        private bool loading = false;
 
         private void HandleChange(UploadInfo fileinfo)
         {
@@ -71,6 +72,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         private async Task HandleSubmitAsync()
         {
+            loading = true;
             string key = $"updatable-{DateTime.Now.Ticks}";
             var config = new MessageConfig()
             {
@@ -97,6 +99,10 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
                 config.Content = "更新信息失败！";
                 await MessageService.Error(config);
             }
+            finally
+            {
+                loading = false;
+            }
         }
 
         private void ReturnToDetail()
@@ -113,7 +119,6 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         private void MakePhotoeShow(List<string> photoes)
         {
-            fileList.Clear();
             if (photoes != null && photoes.Count > 0)
             {
                 foreach (var photo in photoes)

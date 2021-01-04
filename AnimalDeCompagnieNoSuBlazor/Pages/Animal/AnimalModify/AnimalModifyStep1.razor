@@ -13,7 +13,7 @@
     </Validator>
     <ChildContent>
         <FormItem Label="名字">
-            <Input required Placeholder="Give the target a name" @bind-Value="@context.Name"  AllowClear="true"/>
+            <Input required Placeholder="Give the target a name" @bind-Value="@context.Name" AllowClear="true" />
         </FormItem>
         <FormItem Label="识别号">
             <Input Disabled readonly @bind-Value="@context.Idcard" />
@@ -31,7 +31,7 @@
             <TextArea MinRows="4" @bind-Value="@context.ShortDescribe"></TextArea>
         </FormItem>
         <FormItem Style="margin-top:32px; text-align:center;">
-            <Button Type="@ButtonType.Primary" HtmlType="submit" Disabled="!form.IsModified">
+            <Button Type="@ButtonType.Primary" HtmlType="submit">
                 下一步
             </Button>
             <Button Style="margin-left:8px" OnClick="ReturnToDetail">

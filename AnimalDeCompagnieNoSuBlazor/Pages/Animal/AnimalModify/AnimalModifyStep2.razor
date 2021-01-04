@@ -2,12 +2,13 @@
 
 <Form Model="@AnimalUpdateModel"
       Style="margin-top: 8px;"
-      LabelCol="new ColLayoutParam { Span = 7 }"
-      WrapperCol="new ColLayoutParam { Span = 17 }"
+      LabelCol="new ColLayoutParam { Span = 6 }"
+      WrapperCol="new ColLayoutParam { Span = 18 }"
       OnFinish="HandleSubmitAsync"
-      ValidateOnChange="true">
+      ValidateOnChange="true"
+      Loading="loading">
     <ChildContent>
-        <FormItem>
+        <FormItem WrapperColOffset="3" WrapperColSpan="18">
             <Upload Action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     Name="photoes"
                     @bind-FileList="fileList"
@@ -15,17 +16,18 @@
                     ListType="picture-card"
                     OnPreview="HandlePreview"
                     OnChange="HandleChange"
-                    OnRemove="HandleRemove">
+                    OnRemove="HandleRemove"
+                    Class="image-display-center">
                 <div>
                     <Icon Type="plus"></Icon>
-                    <div className="ant-upload-text">Upload</div>
+                    <div className="ant-upload-text">上传</div>
                 </div>
             </Upload>
             <Modal Visible="previewVisible" Title="预览图" Width="with" OnCancel="HandleModalCancel">
                 <img style="width: 100%" src="@imgUrl" />
             </Modal>
         </FormItem>
-        <FormItem Style="margin-top:32px; text-align:center;">
+        <FormItem WrapperColOffset="3" WrapperColSpan="18" Style="margin-top:32px; text-align:center;">
             <Button Type="@ButtonType.Primary" HtmlType="submit">
                 提交
             </Button>
