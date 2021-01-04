@@ -44,7 +44,8 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             if (fileinfo.File.State == UploadState.Success)
             {
                 fileinfo.File.Url = fileinfo.File.ObjectURL;
-                AnimalUpdateModel.Photoes.Add(fileinfo.File.Url);
+                // AnimalUpdateModel.Photoes.Add(fileinfo.File.Url);
+                AnimalUpdateModel.Photoes.Add("/images/cat03.jpg");
             }
         }
 
@@ -112,6 +113,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         private void MakePhotoeShow(List<string> photoes)
         {
+            fileList.Clear();
             if (photoes != null && photoes.Count > 0)
             {
                 foreach (var photo in photoes)
@@ -122,7 +124,9 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
                         Id = id,
                         FileName = photo,
                         State = UploadState.Success,
-                        Url = photo
+                        Url = photo,
+                        Ext = ".jpg",
+                        Type = "image/jpeg",
                     };
                     fileList.Add(file);
                 }
