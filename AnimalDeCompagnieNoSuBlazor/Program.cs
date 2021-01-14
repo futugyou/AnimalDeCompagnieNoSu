@@ -25,7 +25,7 @@ namespace AnimalDeCompagnieNoSuBlazor
             builder.Services.AddScoped<IAnimalService, AnimalService>();
             builder.Services.AddScoped<IAnimalTypeService, AnimalTypeService>();
             builder.Services.AddScoped<IAnimalEventService, AnimalEventService>();
-
+            builder.Services.AddScoped<IRescueService, RescueService>();
             await builder.Build().RunAsync();
         }
     }
