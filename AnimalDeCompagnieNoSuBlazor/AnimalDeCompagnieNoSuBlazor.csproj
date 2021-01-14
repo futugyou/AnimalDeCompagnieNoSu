@@ -6,11 +6,11 @@
   </PropertyGroup> 
 
   <ItemGroup>
-    <PackageReference Include="AntDesign" Version="0.5.0-nightly-2012300110" />
+    <PackageReference Include="AntDesign" Version="0.6.0-nightly-2101140256" />
     <PackageReference Include="AntDesign.Charts" Version="0.2.0" />
-    <PackageReference Include="AntDesign.Pro.Layout" Version="0.1.0-nightly-201127071242" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.1" PrivateAssets="all" />
+    <PackageReference Include="AntDesign.Pro.Layout" Version="0.1.0-nightly-210113091622" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.2" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
