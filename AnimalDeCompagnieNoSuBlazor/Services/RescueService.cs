@@ -1,4 +1,5 @@
-﻿using AnimalDeCompagnieNoSuBlazor.Pages.Dashboard;
+﻿using AnimalDeCompagnieNoSuBlazor.Models;
+using AnimalDeCompagnieNoSuBlazor.Pages.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,12 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
         private readonly HttpClient _httpClient;
         public RescueService(HttpClient httpClient) => _httpClient = httpClient;
 
-        public async  Task<List<ChartDataItem>> GetRescueDataAsync()
+        public async Task<List<ChartFunnelType>> GetFunnelDataAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<List<ChartFunnelType>>("/data/funnel-data.json");
+        }
+
+        public async Task<List<ChartDataItem>> GetRescueDataAsync()
         {
             return await _httpClient.GetFromJsonAsync<List<ChartDataItem>>("/data/rescue.json");
         }

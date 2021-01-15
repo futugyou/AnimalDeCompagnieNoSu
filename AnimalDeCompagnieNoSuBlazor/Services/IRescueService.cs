@@ -1,4 +1,5 @@
-﻿using AnimalDeCompagnieNoSuBlazor.Pages.Dashboard;
+﻿using AnimalDeCompagnieNoSuBlazor.Models;
+using AnimalDeCompagnieNoSuBlazor.Pages.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
     interface IRescueService
     {
         Task<List<ChartDataItem>> GetRescueDataAsync();
+        Task<List<ChartFunnelType>> GetFunnelDataAsync();
     }
 }

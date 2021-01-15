@@ -1,0 +1,62 @@
+﻿[
+  {
+    "action": "浏览人数",
+    "pv": 100,
+    "quarter": "2020q1"
+  },
+  {
+    "action": "商谈人数",
+    "pv": 20,
+    "quarter": "2020q1"
+  },
+  {
+    "action": "最终领养",
+    "pv": 7,
+    "quarter": "2020q1"
+  },
+  {
+    "action": "浏览人数",
+    "pv": 110,
+    "quarter": "2020q2"
+  },
+  {
+    "action": "商谈人数",
+    "pv": 24,
+    "quarter": "2020q2"
+  },
+  {
+    "action": "最终领养",
+    "pv": 17,
+    "quarter": "2020q2"
+  },
+  {
+    "action": "浏览人数",
+    "pv": 90,
+    "quarter": "2020q3"
+  },
+  {
+    "action": "商谈人数",
+    "pv": 10,
+    "quarter": "2020q3"
+  },
+  {
+    "action": "最终领养",
+    "pv": 4,
+    "quarter": "2020q3"
+  },
+  {
+    "action": "浏览人数",
+    "pv": 120,
+    "quarter": "2020q4"
+  },
+  {
+    "action": "商谈人数",
+    "pv": 30,
+    "quarter": "2020q4"
+  },
+  {
+    "action": "最终领养",
+    "pv": 15,
+    "quarter": "2020q4"
+  }
+]

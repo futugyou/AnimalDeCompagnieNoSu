@@ -12,47 +12,79 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
     {
         [Inject]
         private IRescueService RescueService { get; set; }
+
+        private IChartComponent _rescueChart;
+        private IChartComponent _funnelChart;
+        private IChartComponent _liquidChart;
+
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
             var data = await RescueService.GetRescueDataAsync();
-            await _saleChart.ChangeData(data);
+            await _rescueChart.ChangeData(data);
+            var funnelData = await RescueService.GetFunnelDataAsync();
+            await _funnelChart.ChangeData(funnelData);
+            _liquidConfig1.Value = 1111;
+            await _liquidChart.UpdateConfig(_liquidConfig1);
         }
 
-        private readonly ColumnConfig _saleChartConfig = new ColumnConfig
+        private readonly ColumnConfig _rescueChartConfig = new ColumnConfig
         {
-            Title = new AntDesign.Charts.Title
+            Title = new Title
             {
                 Visible = true,
-                Text = "Stores Sales Trend"
+                Text = "每月救助数量"
             },
             ForceFit = true,
             Padding = "auto",
             XField = "x",
-            YField = "y"
+            YField = "y",
+            Meta = new
+            {
+                X = new
+                {
+                    Alias = "月份"
+                },
+                Y = new
+                {
+                    Alias = "救助数量"
+                },
+            },
         };
-        private IChartComponent _saleChart;
-        [Parameter]
-        public SaleItem[] Items { get; set; } =
-       {
-            new SaleItem {Id = 1, Title = "Gongzhuan No.0 shop", Total = "323,234"},
-            new SaleItem {Id = 2, Title = "Gongzhuan No.1 shop", Total = "323,234"},
-            new SaleItem {Id = 3, Title = "Gongzhuan No.2 shop", Total = "323,234"},
-            new SaleItem {Id = 4, Title = "Gongzhuan No.3 shop", Total = "323,234"},
-            new SaleItem {Id = 5, Title = "Gongzhuan No.4 shop", Total = "323,234"},
-            new SaleItem {Id = 6, Title = "Gongzhuan No.5 shop", Total = "323,234"},
-            new SaleItem {Id = 7, Title = "Gongzhuan No.6 shop", Total = "323,234"}
+
+        private readonly FunnelConfig _funnelConfig = new FunnelConfig
+        {
+            Title = new Title
+            {
+                Visible = true,
+                Text = "求助意向转换"
+            },
+            XField = "action",
+            YField = "pv",
+            CompareField = "quarter",
+            Transpose = true,
+        };
+
+        private readonly LiquidConfig _liquidConfig1 = new LiquidConfig
+        {
+            Title = new Title
+            {
+                Visible = true,
+                Text = "水波图"
+            },
+            Description = new Description
+            {
+                Visible = true,
+                Text = "水波图 - 收容占比显示"
+            },
+            Min = 0,
+            Max = 10000,
+            Value = 4657,
+            Statistic = new LiquidStatisticStyle
+            {
+                //Formatter
+            }
         };
     }
-    public class SaleItem
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Total { get; set; }
-    }
-    public class ChartDataItem
-    {
-        public string X { get; set; }
-        public int Y { get; set; }
-    }
+
 }
