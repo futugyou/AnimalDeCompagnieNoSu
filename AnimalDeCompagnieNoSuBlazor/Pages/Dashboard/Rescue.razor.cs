@@ -28,7 +28,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
             await _liquidChart.UpdateConfig(_liquidConfig1);
         }
 
-        private readonly ColumnConfig _rescueChartConfig = new ColumnConfig
+        private readonly GroupedColumnConfig _rescueChartConfig = new GroupedColumnConfig
         {
             Title = new Title
             {
@@ -39,6 +39,10 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
             Padding = "auto",
             XField = "x",
             YField = "y",
+            YAxis = new ValueAxis
+            {
+                Min = 0
+            },
             Meta = new
             {
                 X = new
@@ -50,6 +54,8 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
                     Alias = "救助数量"
                 },
             },
+            GroupField = "type",
+            Color = new[] { "#1ca9e6", "#f88c24" }
         };
 
         private readonly FunnelConfig _funnelConfig = new FunnelConfig

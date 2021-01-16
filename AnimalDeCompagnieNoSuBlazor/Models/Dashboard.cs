@@ -9,6 +9,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Models
     {
         public string X { get; set; }
         public int Y { get; set; }
+        public string Type { get; set; }
     }
 
     public class ChartFunnelType
