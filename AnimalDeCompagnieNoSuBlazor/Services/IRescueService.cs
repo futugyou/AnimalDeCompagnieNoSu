@@ -11,5 +11,6 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
     {
         Task<List<ChartDataItem>> GetRescueDataAsync();
         Task<List<ChartFunnelType>> GetFunnelDataAsync();
+        Task<List<ChartPieType>> GetRescueTypeAsync();
     }
 }

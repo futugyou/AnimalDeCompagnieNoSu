@@ -16,6 +16,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
         private IChartComponent _rescueChart;
         private IChartComponent _funnelChart;
         private IChartComponent _liquidChart;
+        private IChartComponent _pieChart;
 
         protected override async Task OnInitializedAsync()
         {
@@ -24,8 +25,10 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
             await _rescueChart.ChangeData(data);
             var funnelData = await RescueService.GetFunnelDataAsync();
             await _funnelChart.ChangeData(funnelData);
-            _liquidConfig1.Value = 1111;
-            await _liquidChart.UpdateConfig(_liquidConfig1);
+            _liquidConfig.Value = 1111;
+            await _liquidChart.UpdateConfig(_liquidConfig);
+            var piedata = await RescueService.GetRescueTypeAsync();
+            await _pieChart.ChangeData(piedata);
         }
 
         private readonly GroupedColumnConfig _rescueChartConfig = new GroupedColumnConfig
@@ -71,7 +74,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
             Transpose = true,
         };
 
-        private readonly LiquidConfig _liquidConfig1 = new LiquidConfig
+        private readonly LiquidConfig _liquidConfig = new LiquidConfig
         {
             Title = new Title
             {
@@ -89,6 +92,29 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
             Statistic = new LiquidStatisticStyle
             {
                 //Formatter
+            }
+        };
+
+        readonly PieConfig _typeConfig = new PieConfig
+        {
+            ForceFit = true,
+            Title = new Title
+            {
+                Visible = true,
+                Text = "救助分类"
+            },
+            Description = new Description
+            {
+                Visible = false,
+                Text = " "
+            },
+            Radius = 0.8,
+            AngleField = "count",
+            ColorField = "type",
+            Label = new PieLabelConfig
+            {
+                Visible = true,
+                Type = "inner"
             }
         };
     }

@@ -23,5 +23,10 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
         {
             return await _httpClient.GetFromJsonAsync<List<ChartDataItem>>("/data/rescue.json");
         }
+
+        public async Task<List<ChartPieType>> GetRescueTypeAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<List<ChartPieType>>("/data/rescue-type.json");
+        }
     }
 }

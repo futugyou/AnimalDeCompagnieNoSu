@@ -6,7 +6,7 @@
         <GroupedColumn  @ref="_rescueChart" TItem="ChartDataItem" Config="_rescueChartConfig" />
     </AntDesign.Col>
     <AntDesign.Col Span="12">
-        <Liquid  @ref="_liquidChart"  TItem="string" Config="_liquidConfig1" />
+        <Liquid  @ref="_liquidChart"  TItem="string" Config="_liquidConfig" />
     </AntDesign.Col>
 </Row>
 <Row>
@@ -14,6 +14,6 @@
         <Funnel @ref="_funnelChart" TItem="ChartFunnelType" Config="_funnelConfig" />
     </AntDesign.Col>
     <AntDesign.Col Span="12">
-        
+        <Pie @ref="_pieChart" TItem="ChartPieType"  Config="_typeConfig" />
     </AntDesign.Col>
 </Row>

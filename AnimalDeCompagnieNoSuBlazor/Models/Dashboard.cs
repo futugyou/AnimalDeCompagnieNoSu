@@ -18,4 +18,10 @@ namespace AnimalDeCompagnieNoSuBlazor.Models
         public int PV { get; set; }
         public string Quarter { get; set; }
     }
+
+    public class ChartPieType
+    {
+        public int Count { get; set; }
+        public string Type { get; set; }
+    }
 }
