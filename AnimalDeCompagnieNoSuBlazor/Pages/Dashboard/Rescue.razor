@@ -14,15 +14,29 @@
         </ChildContent>
     </TabPane>
     <TabPane Key="3">
-        <Tab>收容占比</Tab>
+        <Tab>使用资源</Tab>
         <ChildContent>
-            <Liquid @ref="_liquidChart" TItem="string" Config="_liquidConfig" />
+            <Row>
+                <AntDesign.Col Span="12">
+                    <Liquid @ref="_liquidhouseChart" TItem="string" Config="_liquidhouseConfig" />
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+                    <Liquid @ref="_liquidfoodChart" TItem="string" Config="_liquidfoodConfig" />
+                </AntDesign.Col>
+            </Row>
         </ChildContent>
     </TabPane>
     <TabPane Key="4">
         <Tab>救助分类</Tab>
         <ChildContent>
-            <Pie @ref="_pieChart" TItem="ChartPieType" Config="_typeConfig" />
+            <Row>
+                <AntDesign.Col Span="12">
+                    <Pie @ref="_pieChart" TItem="ChartPieType" Config="_typeConfig" />
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+                    <Pie @ref="_pieageChart" TItem="ChartPieageType" Config="_pieageConfig" />
+                </AntDesign.Col>
+            </Row>
         </ChildContent>
     </TabPane>
 </Tabs>

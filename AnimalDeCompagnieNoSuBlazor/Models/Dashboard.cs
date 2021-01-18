@@ -24,4 +24,10 @@ namespace AnimalDeCompagnieNoSuBlazor.Models
         public int Count { get; set; }
         public string Type { get; set; }
     }
+    public class ChartPieageType
+    {
+        public int Count { get; set; }
+        public string Agerang { get; set; }
+    }
+    
 }

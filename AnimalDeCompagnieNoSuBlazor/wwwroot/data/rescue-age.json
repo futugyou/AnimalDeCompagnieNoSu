@@ -1,0 +1,26 @@
+[
+  {
+    "count": 10,
+    "agerang": "0~1 years"
+  },
+  {
+    "count": 23,
+    "agerang": "1~2 years"
+  },
+  {
+    "count": 45,
+    "agerang": "2~3 years"
+  },
+  {
+    "count": 21,
+    "agerang": "3~4 years"
+  },
+  {
+    "count": 61,
+    "agerang": "4~5 years"
+  },
+  {
+    "count": 33,
+    "agerang": "above 5 years"
+  }
+]

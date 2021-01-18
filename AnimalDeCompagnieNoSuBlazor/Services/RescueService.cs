@@ -19,6 +19,11 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
             return await _httpClient.GetFromJsonAsync<List<ChartFunnelType>>("/data/funnel-data.json");
         }
 
+        public async Task<List<ChartPieageType>> GetRescueAgeRangAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<List<ChartPieageType>>("/data/rescue-age.json");
+        }
+
         public async Task<List<ChartDataItem>> GetRescueDataAsync()
         {
             return await _httpClient.GetFromJsonAsync<List<ChartDataItem>>("/data/rescue.json");

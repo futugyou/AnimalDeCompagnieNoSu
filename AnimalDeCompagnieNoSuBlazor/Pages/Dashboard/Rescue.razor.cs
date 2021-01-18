@@ -15,8 +15,10 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
 
         private IChartComponent _rescueChart;
         private IChartComponent _funnelChart;
-        private IChartComponent _liquidChart;
+        private IChartComponent _liquidhouseChart;
+        private IChartComponent _liquidfoodChart;
         private IChartComponent _pieChart;
+        private IChartComponent _pieageChart;
 
         protected override async Task OnInitializedAsync()
         {
@@ -37,12 +39,17 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
                     await _funnelChart.ChangeData(funnelData);
                     break;
                 case "3":
-                    _liquidConfig.Value = 1111;
-                    await _liquidChart.UpdateConfig(_liquidConfig);
+                    _liquidfoodConfig.Value = 5670;
+                    var task1 = _liquidfoodChart.UpdateConfig(_liquidfoodConfig);
+                    _liquidhouseConfig.Value = 1111;
+                    var task2 = _liquidhouseChart.UpdateConfig(_liquidhouseConfig);
+                    await Task.WhenAll(task1, task2);
                     break;
                 case "4":
                     var piedata = await RescueService.GetRescueTypeAsync();
                     await _pieChart.ChangeData(piedata);
+                    var pieagedata = await RescueService.GetRescueAgeRangAsync();
+                    await _pieageChart.ChangeData(pieagedata);
                     break;
                 default:
                     break;
@@ -90,7 +97,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
             Transpose = true,
         };
 
-        private readonly LiquidConfig _liquidConfig = new LiquidConfig
+        private readonly LiquidConfig _liquidhouseConfig = new LiquidConfig
         {
             Title = new Title
             {
@@ -99,25 +106,66 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
             },
             Description = new Description
             {
-                Visible = false,
-                Text = "水波图 - 收容占比显示"
+                Visible = true,
+                Text = "目前救助站的收容数量"
             },
             Min = 0,
             Max = 10000,
-            Value = 4657,
+            Value = 0,
             Statistic = new LiquidStatisticStyle
             {
                 //Formatter
             }
         };
-
-        readonly PieConfig _typeConfig = new PieConfig
+        private readonly LiquidConfig _liquidfoodConfig = new LiquidConfig
+        {
+            Title = new Title
+            {
+                Visible = true,
+                Text = "存粮占比"
+            },
+            Description = new Description
+            {
+                Visible = true,
+                Text = "目前救助站的饲料数量"
+            },
+            Min = 0,
+            Max = 10000,
+            Value = 1000,
+            Statistic = new LiquidStatisticStyle
+            {
+                //Formatter
+            }
+        };
+        private readonly PieConfig _pieageConfig = new PieConfig
         {
             ForceFit = true,
             Title = new Title
             {
                 Visible = true,
-                Text = "救助分类"
+                Text = "年龄段分类"
+            },
+            Description = new Description
+            {
+                Visible = false,
+                Text = " "
+            },
+            Radius = 0.8,
+            AngleField = "count",
+            ColorField = "agerang",
+            Label = new PieLabelConfig
+            {
+                Visible = true,
+                Type = "inner"
+            }
+        };
+        private readonly PieConfig _typeConfig = new PieConfig
+        {
+            ForceFit = true,
+            Title = new Title
+            {
+                Visible = true,
+                Text = "种类分类"
             },
             Description = new Description
             {
