@@ -1,19 +1,28 @@
 ﻿@namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
 @inherits AntDomComponentBase
-
-<Row>
-    <AntDesign.Col Span="12">
-        <StackedArea @ref="_rescueChart" TItem="ChartDataItem" Config="_rescueChartConfig" />
-    </AntDesign.Col>
-    <AntDesign.Col Span="12">
-        <Liquid  @ref="_liquidChart"  TItem="string" Config="_liquidConfig" />
-    </AntDesign.Col>
-</Row>
-<Row>
-    <AntDesign.Col Span="12">
-        <Funnel @ref="_funnelChart" TItem="ChartFunnelType" Config="_funnelConfig" />
-    </AntDesign.Col>
-    <AntDesign.Col Span="12">
-        <Pie @ref="_pieChart" TItem="ChartPieType"  Config="_typeConfig" />
-    </AntDesign.Col>
-</Row>
+<Tabs ActiveKeyChanged="OnTabChanged" TabPosition="@TabPosition.Top">
+    <TabPane Key="1">
+        <Tab>每月救助数量</Tab>
+        <ChildContent>
+            <StackedArea @ref="_rescueChart" TItem="ChartDataItem" Config="_rescueChartConfig" />
+        </ChildContent>
+    </TabPane>
+    <TabPane Key="2">
+        <Tab>求助意向</Tab>
+        <ChildContent>
+            <Funnel @ref="_funnelChart" TItem="ChartFunnelType" Config="_funnelConfig" />
+        </ChildContent>
+    </TabPane>
+    <TabPane Key="3">
+        <Tab>收容占比</Tab>
+        <ChildContent>
+            <Liquid @ref="_liquidChart" TItem="string" Config="_liquidConfig" />
+        </ChildContent>
+    </TabPane>
+    <TabPane Key="4">
+        <Tab>救助分类</Tab>
+        <ChildContent>
+            <Pie @ref="_pieChart" TItem="ChartPieType" Config="_typeConfig" />
+        </ChildContent>
+    </TabPane>
+</Tabs>

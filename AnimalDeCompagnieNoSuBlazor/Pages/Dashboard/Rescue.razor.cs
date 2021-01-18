@@ -21,22 +21,41 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            var data = await RescueService.GetRescueDataAsync();
-            await _rescueChart.ChangeData(data);
-            var funnelData = await RescueService.GetFunnelDataAsync();
-            await _funnelChart.ChangeData(funnelData);
-            _liquidConfig.Value = 1111;
-            await _liquidChart.UpdateConfig(_liquidConfig);
-            var piedata = await RescueService.GetRescueTypeAsync();
-            await _pieChart.ChangeData(piedata);
-        } 
+            await OnTabChanged("1");
+        }
+
+        private async Task OnTabChanged(string v)
+        {
+            switch (v)
+            {
+                case "1":
+                    var data = await RescueService.GetRescueDataAsync();
+                    await _rescueChart.ChangeData(data);
+                    break;
+                case "2":
+                    var funnelData = await RescueService.GetFunnelDataAsync();
+                    await _funnelChart.ChangeData(funnelData);
+                    break;
+                case "3":
+                    _liquidConfig.Value = 1111;
+                    await _liquidChart.UpdateConfig(_liquidConfig);
+                    break;
+                case "4":
+                    var piedata = await RescueService.GetRescueTypeAsync();
+                    await _pieChart.ChangeData(piedata);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private readonly StackedAreaConfig _rescueChartConfig = new StackedAreaConfig
         {
             Title = new Title
             {
                 Visible = true,
                 Text = "每月救助数量"
-            }, 
+            },
             XField = "x",
             YField = "y",
             YAxis = new ValueAxis
@@ -76,11 +95,11 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
             Title = new Title
             {
                 Visible = true,
-                Text = "水波图"
+                Text = "收容占比"
             },
             Description = new Description
             {
-                Visible = true,
+                Visible = false,
                 Text = "水波图 - 收容占比显示"
             },
             Min = 0,
