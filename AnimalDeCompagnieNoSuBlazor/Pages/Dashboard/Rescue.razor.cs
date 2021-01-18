@@ -29,17 +29,14 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
             await _liquidChart.UpdateConfig(_liquidConfig);
             var piedata = await RescueService.GetRescueTypeAsync();
             await _pieChart.ChangeData(piedata);
-        }
-
-        private readonly GroupedColumnConfig _rescueChartConfig = new GroupedColumnConfig
+        } 
+        private readonly StackedAreaConfig _rescueChartConfig = new StackedAreaConfig
         {
             Title = new Title
             {
                 Visible = true,
                 Text = "每月救助数量"
-            },
-            ForceFit = true,
-            Padding = "auto",
+            }, 
             XField = "x",
             YField = "y",
             YAxis = new ValueAxis
@@ -57,7 +54,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
                     Alias = "救助数量"
                 },
             },
-            GroupField = "type",
+            SeriesField = "type",
             Color = new[] { "#1ca9e6", "#f88c24" }
         };
 
