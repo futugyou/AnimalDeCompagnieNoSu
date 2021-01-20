@@ -10,14 +10,14 @@
 
 @code
 {
-    static RenderFragment HeartSvg =@<img style="width:1.5em; height:1.5em;" src="logo.svg" />;
+    static RenderFragment LogoSvg =@<img style="width:1.5em; height:1.5em;" src="ico/logo.svg" />;
 
     private readonly LinkItem[] _links =
     {
         new LinkItem{ Key = "ant", BlankTarget = true, Title = "Ant Design Pro" ,
             Href="https://github.com/ant-design-blazor"},
         new LinkItem{ Key = "", BlankTarget = true,
-            Title = OneOf<string, RenderFragment>.FromT1(@<Icon Component="HeartSvg" />),
+            Title = OneOf<string, RenderFragment>.FromT1(@<Icon Component="LogoSvg" />),
             Href="https://github.com/futugyou/AnimalDeCompagnieNoSu"}
     };
 }

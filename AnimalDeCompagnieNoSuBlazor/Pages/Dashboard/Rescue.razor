@@ -3,21 +3,21 @@
 @page "/maindata"
 
 <GridContent>
-    <Tabs ActiveKeyChanged="OnTabChanged" TabPosition="@TabPosition.Top">
+    <Tabs ActiveKeyChanged="OnTabChanged" TabPosition="@TabPosition.Top" Size="@TabSize.Large">
         <TabPane Key="1">
-            <Tab>每月救助数量</Tab>
+            <Tab> <Icon Type="line-chart" Theme="outline" />每月救助数量</Tab>
             <ChildContent>
                 <StackedArea @ref="_rescueChart" TItem="ChartDataItem" Config="_rescueChartConfig" />
             </ChildContent>
         </TabPane>
         <TabPane Key="2">
-            <Tab>求助意向</Tab>
+            <Tab><Icon Type="dot-chart" Theme="outline" />求助意向</Tab>
             <ChildContent>
                 <Funnel @ref="_funnelChart" TItem="ChartFunnelType" Config="_funnelConfig" />
             </ChildContent>
         </TabPane>
         <TabPane Key="3">
-            <Tab>使用资源</Tab>
+            <Tab><Icon Type="crown" Theme="outline" />使用资源</Tab>
             <ChildContent>
                 <Row>
                     <AntDesign.Col Span="12">
@@ -30,7 +30,7 @@
             </ChildContent>
         </TabPane>
         <TabPane Key="4">
-            <Tab>救助分类</Tab>
+            <Tab><Icon Type="pie-chart" Theme="outline" />救助分类</Tab>
             <ChildContent>
                 <Row>
                     <AntDesign.Col Span="12">

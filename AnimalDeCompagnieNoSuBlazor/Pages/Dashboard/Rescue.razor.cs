@@ -111,7 +111,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
             },
             Min = 0,
             Max = 10000,
-            Value = 0,
+            Value = 2222,
             Statistic = new LiquidStatisticStyle
             {
                 //Formatter
