@@ -1,42 +1,46 @@
 ﻿@namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
 @inherits AntDomComponentBase
-<Tabs ActiveKeyChanged="OnTabChanged" TabPosition="@TabPosition.Top">
-    <TabPane Key="1">
-        <Tab>每月救助数量</Tab>
-        <ChildContent>
-            <StackedArea @ref="_rescueChart" TItem="ChartDataItem" Config="_rescueChartConfig" />
-        </ChildContent>
-    </TabPane>
-    <TabPane Key="2">
-        <Tab>求助意向</Tab>
-        <ChildContent>
-            <Funnel @ref="_funnelChart" TItem="ChartFunnelType" Config="_funnelConfig" />
-        </ChildContent>
-    </TabPane>
-    <TabPane Key="3">
-        <Tab>使用资源</Tab>
-        <ChildContent>
-            <Row>
-                <AntDesign.Col Span="12">
-                    <Liquid @ref="_liquidhouseChart" TItem="string" Config="_liquidhouseConfig" />
-                </AntDesign.Col>
-                <AntDesign.Col Span="12">
-                    <Liquid @ref="_liquidfoodChart" TItem="string" Config="_liquidfoodConfig" />
-                </AntDesign.Col>
-            </Row>
-        </ChildContent>
-    </TabPane>
-    <TabPane Key="4">
-        <Tab>救助分类</Tab>
-        <ChildContent>
-            <Row>
-                <AntDesign.Col Span="12">
-                    <Pie @ref="_pieChart" TItem="ChartPieType" Config="_typeConfig" />
-                </AntDesign.Col>
-                <AntDesign.Col Span="12">
-                    <Pie @ref="_pieageChart" TItem="ChartPieageType" Config="_pieageConfig" />
-                </AntDesign.Col>
-            </Row>
-        </ChildContent>
-    </TabPane>
-</Tabs>
+@page "/maindata"
+
+<GridContent>
+    <Tabs ActiveKeyChanged="OnTabChanged" TabPosition="@TabPosition.Top">
+        <TabPane Key="1">
+            <Tab>每月救助数量</Tab>
+            <ChildContent>
+                <StackedArea @ref="_rescueChart" TItem="ChartDataItem" Config="_rescueChartConfig" />
+            </ChildContent>
+        </TabPane>
+        <TabPane Key="2">
+            <Tab>求助意向</Tab>
+            <ChildContent>
+                <Funnel @ref="_funnelChart" TItem="ChartFunnelType" Config="_funnelConfig" />
+            </ChildContent>
+        </TabPane>
+        <TabPane Key="3">
+            <Tab>使用资源</Tab>
+            <ChildContent>
+                <Row>
+                    <AntDesign.Col Span="12">
+                        <Liquid @ref="_liquidhouseChart" TItem="string" Config="_liquidhouseConfig" />
+                    </AntDesign.Col>
+                    <AntDesign.Col Span="12">
+                        <Liquid @ref="_liquidfoodChart" TItem="string" Config="_liquidfoodConfig" />
+                    </AntDesign.Col>
+                </Row>
+            </ChildContent>
+        </TabPane>
+        <TabPane Key="4">
+            <Tab>救助分类</Tab>
+            <ChildContent>
+                <Row>
+                    <AntDesign.Col Span="12">
+                        <Pie @ref="_pieChart" TItem="ChartPieType" Config="_typeConfig" />
+                    </AntDesign.Col>
+                    <AntDesign.Col Span="12">
+                        <Pie @ref="_pieageChart" TItem="ChartPieageType" Config="_pieageConfig" />
+                    </AntDesign.Col>
+                </Row>
+            </ChildContent>
+        </TabPane>
+    </Tabs>
+</GridContent>

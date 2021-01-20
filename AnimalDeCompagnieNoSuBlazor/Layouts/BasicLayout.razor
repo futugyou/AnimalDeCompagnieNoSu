@@ -1,14 +1,16 @@
 ﻿@namespace AnimalDeCompagnieNoSuBlazor
 @inherits LayoutComponentBase
 
-<AntDesign.Pro.Layout.BasicLayout Logo="@("https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg")"
-                                  MenuData="_menuData">
+<AntDesign.Pro.Layout.BasicLayout Logo="@("logo.svg")" MenuData="_menuData">
     <RightContentRender>
         <RightContent />
     </RightContentRender>
     <ChildContent>
         @Body
     </ChildContent>
+    <FooterRender>
+        <FooterLayout></FooterLayout>
+    </FooterRender>
 </AntDesign.Pro.Layout.BasicLayout>
 <SettingDrawer />
 
@@ -28,6 +30,13 @@
             Path = "/animal",
             Name = "信息墙",
             Key = "animal",
+            Icon = "smile",
+        },
+        new MenuDataItem
+        {
+            Path = "/maindata",
+            Name = "救助数据",
+            Key = "maindata",
             Icon = "smile",
         }
     };
