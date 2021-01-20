@@ -2,33 +2,32 @@
 @page "/animal"
 @inject NavigationManager NavigationManager
 
+<div class="cardList">
+    <AntList TItem="AnimalListViewModel" DataSource="_data"
+             ItemLayout="ListItemLayout.Horizontal"
+             Grid="_listGridType">
+        <ListItem NoFlex Grid="_listGridType">
+            <Card Bordered Class="card" Actions="new[] { actionSetting, actionEdit, actionEllipsis }">
+                <TitleTemplate>
+                    <div>@(context.Name)</div>
+                    <Tag Color="magenta">@(context.Type)</Tag>
+                    <Tag Color="green">@(context.SubType)</Tag>
+                </TitleTemplate>
+                <Extra>
+                    <a slot="extra" href="/animal/@(context.Id)">详细信息</a>
+                </Extra>
+                <Cover><img alt="example" src="@(context.Photoe)" /></Cover>
+                <Body>
+                    this is body
 
-        <div class="cardList">
-            <AntList TItem="AnimalListViewModel" DataSource="_data"
-                     ItemLayout="ListItemLayout.Horizontal"
-                     Grid="_listGridType">
-                <ListItem NoFlex Grid="_listGridType">
-                    <Card Bordered Class="card" Actions="new[] { actionSetting, actionEdit, actionEllipsis }">
-                        <TitleTemplate>
-                            <div>@(context.Name)</div>
-                            <Tag Color="magenta">@(context.Type)</Tag>
-                            <Tag Color="green">@(context.SubType)</Tag>
-                        </TitleTemplate>
-                        <Extra>
-                            <a slot="extra" href="/animal/@(context.Id)">详细信息</a>
-                        </Extra>
-                        <Cover><img alt="example" src="@(context.Photoe)" /></Cover>
-                        <Body>
-                            this is body
-
-                        </Body>
-                    </Card>
-                </ListItem>
-            </AntList>
-        </div>
-        <BackTop>
-            <div class="ant-back-top-inner"><Icon Type="rocket" Theme="outline" /></div>
-        </BackTop>
+                </Body>
+            </Card>
+        </ListItem>
+    </AntList>
+</div>
+<BackTop>
+    <div class="ant-back-top-inner"><Icon Type="rocket" Theme="outline" /></div>
+</BackTop>
 
 
 @code

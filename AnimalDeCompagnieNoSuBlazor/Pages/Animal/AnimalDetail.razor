@@ -1,90 +1,90 @@
 ﻿@namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 @page "/animal/{id}"
 
-        <Row Gutter="24">
-            <AntDesign.Col Span="6">
-                <Card>
-                    <div class="col-detail">
-                        <div class="box">
-                            <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" @onclick="OpenFaceChange" />
-                            <Modal Visible="@uploadImageVisable"
-                                   OnOk="@HandleOk"
-                                   OnCancel="@HandleCancel">
-                                <Upload Action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                        Name="Avatar"
-                                        ListType="picture-card"
-                                        OnChange="HandleChange"
-                                        Class="image-display-center">
-                                    <div>
-                                        <Icon Type="plus"></Icon>
-                                        <div className="ant-upload-text">上传</div>
-                                    </div>
-                                </Upload>
-                            </Modal>
-                        </div>
-                        <div className="name">@AnimalViewModel.Name</div>
-                        <div>@AnimalViewModel.Idcard</div>
-                    </div>
-                </Card>
-                <Card>
-                    <Descriptions Bordered="false" Column="2" Layout="@DescriptionsLayout.Horizontal">
-                        <DescriptionsItem Title="种类">@(AnimalViewModel.Type)</DescriptionsItem>
-                        <DescriptionsItem Title="子类别">@(AnimalViewModel.SubType)</DescriptionsItem>
-                        <DescriptionsItem Title="年龄">@(AnimalViewModel.Age)</DescriptionsItem>
-                        <DescriptionsItem Title="生日">@(AnimalViewModel.Birthday?.ToString("d"))</DescriptionsItem>
-                        <DescriptionsItem Title="简介" Class="animal-describe">@(AnimalViewModel.ShortDescribe)</DescriptionsItem>
-                    </Descriptions>
-                    <Divider Dashed />
-                    <Statistic Title="疫苗状态" Value="@("已接种疫苗")" />
-                    <Statistic Title="生育状态" Value="@("已绝育")" />
-                    <Divider Dashed />
-                    <div class="col-detail">
-                        <Button Type="@ButtonType.Primary" OnClick="GotoUpdateInfoPage">信息修改</Button>
-                    </div>
-                </Card>
-            </AntDesign.Col>
-            <AntDesign.Col Span="18">
-                <Card>
-                    <CardTabs>
-                        <Tabs DefaultActiveKey="photoes" TabPosition="@TabPosition.Top">
-                            <TabPane Key="photoes">
-                                <Tab>
-                                    <span><Icon Type="picture" />照片墙</span>
-                                </Tab>
-                                <ChildContent>
-                                    @if (AnimalViewModel.Photoes.Count > 0)
+<Row Gutter="24">
+    <AntDesign.Col Span="6">
+        <Card>
+            <div class="col-detail">
+                <div class="box">
+                    <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" @onclick="OpenFaceChange" />
+                    <Modal Visible="@uploadImageVisable"
+                           OnOk="@HandleOk"
+                           OnCancel="@HandleCancel">
+                        <Upload Action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                Name="Avatar"
+                                ListType="picture-card"
+                                OnChange="HandleChange"
+                                Class="image-display-center">
+                            <div>
+                                <Icon Type="plus"></Icon>
+                                <div className="ant-upload-text">上传</div>
+                            </div>
+                        </Upload>
+                    </Modal>
+                </div>
+                <div className="name">@AnimalViewModel.Name</div>
+                <div>@AnimalViewModel.Idcard</div>
+            </div>
+        </Card>
+        <Card>
+            <Descriptions Bordered="false" Column="2" Layout="@DescriptionsLayout.Horizontal">
+                <DescriptionsItem Title="种类">@(AnimalViewModel.Type)</DescriptionsItem>
+                <DescriptionsItem Title="子类别">@(AnimalViewModel.SubType)</DescriptionsItem>
+                <DescriptionsItem Title="年龄">@(AnimalViewModel.Age)</DescriptionsItem>
+                <DescriptionsItem Title="生日">@(AnimalViewModel.Birthday?.ToString("d"))</DescriptionsItem>
+                <DescriptionsItem Title="简介" Class="animal-describe">@(AnimalViewModel.ShortDescribe)</DescriptionsItem>
+            </Descriptions>
+            <Divider Dashed />
+            <Statistic Title="疫苗状态" Value="@("已接种疫苗")" />
+            <Statistic Title="生育状态" Value="@("已绝育")" />
+            <Divider Dashed />
+            <div class="col-detail">
+                <Button Type="@ButtonType.Primary" OnClick="GotoUpdateInfoPage">信息修改</Button>
+            </div>
+        </Card>
+    </AntDesign.Col>
+    <AntDesign.Col Span="18">
+        <Card>
+            <CardTabs>
+                <Tabs DefaultActiveKey="photoes" TabPosition="@TabPosition.Top">
+                    <TabPane Key="photoes">
+                        <Tab>
+                            <span><Icon Type="picture" />照片墙</span>
+                        </Tab>
+                        <ChildContent>
+                            @if (AnimalViewModel.Photoes.Count > 0)
+                            {
+                                <Carousel Effect="@CarouselEffect.Fade" Autoplay="TimeSpan.FromSeconds(4)">
+                                    @foreach (var photo in AnimalViewModel.Photoes)
                                     {
-                                        <Carousel Effect="@CarouselEffect.Fade" Autoplay="TimeSpan.FromSeconds(4)">
-                                            @foreach (var photo in AnimalViewModel.Photoes)
-                                            {
-                                                <CarouselSlick>
-                                                    <div class="image-display-center">
-                                                        <img class="img" style="display:initial" alt="cat" src="@(photo)" />
-                                                    </div>
-                                                </CarouselSlick>
-                                            }
-                                        </Carousel>
+                                        <CarouselSlick>
+                                            <div class="image-display-center">
+                                                <img class="img" style="display:initial" alt="cat" src="@(photo)" />
+                                            </div>
+                                        </CarouselSlick>
                                     }
-                                </ChildContent>
-                            </TabPane>
-                            <TabPane Key="events">
-                                <Tab>
-                                    <span><Icon Type="schedule" />大事件</span>
-                                </Tab>
-                                <ChildContent>
-                                    <Timeline Mode="alternate">
-                                        @if (AnimalEvents != null)
-                                        {
-                                            @foreach (var @event in AnimalEvents)
-                                            {
-                                                <TimelineItem>@(@event.Event) @(@event.EventTime)</TimelineItem>
-                                            }
-                                        }
-                                    </Timeline>
-                                </ChildContent>
-                            </TabPane>
-                        </Tabs>
-                    </CardTabs>
-                </Card>
-            </AntDesign.Col>
-        </Row>
+                                </Carousel>
+                            }
+                        </ChildContent>
+                    </TabPane>
+                    <TabPane Key="events">
+                        <Tab>
+                            <span><Icon Type="schedule" />大事件</span>
+                        </Tab>
+                        <ChildContent>
+                            <Timeline Mode="alternate">
+                                @if (AnimalEvents != null)
+                                {
+                                    @foreach (var @event in AnimalEvents)
+                                    {
+                                        <TimelineItem>@(@event.Event) @(@event.EventTime)</TimelineItem>
+                                    }
+                                }
+                            </Timeline>
+                        </ChildContent>
+                    </TabPane>
+                </Tabs>
+            </CardTabs>
+        </Card>
+    </AntDesign.Col>
+</Row>
