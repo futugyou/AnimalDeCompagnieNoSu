@@ -2,14 +2,7 @@
 @page "/animal"
 @inject NavigationManager NavigationManager
 
-<PageContainer Title="信息墙">
-    <Breadcrumb>
-        <Breadcrumb>
-            <BreadcrumbItem>主页</BreadcrumbItem>
-            <BreadcrumbItem>信息墙</BreadcrumbItem>
-        </Breadcrumb>
-    </Breadcrumb>
-    <ChildContent>
+
         <div class="cardList">
             <AntList TItem="AnimalListViewModel" DataSource="_data"
                      ItemLayout="ListItemLayout.Horizontal"
@@ -34,10 +27,8 @@
             </AntList>
         </div>
         <BackTop>
-            <div class="ant-back-top-inner">TOP</div>
+            <div class="ant-back-top-inner"><Icon Type="rocket" Theme="outline" /></div>
         </BackTop>
-    </ChildContent>
-</PageContainer>
 
 
 @code
