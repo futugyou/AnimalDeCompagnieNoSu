@@ -23,7 +23,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            await OnTabChanged("0");
+            await OnTabChanged("1");
         }
 
         private async Task OnTabChanged(string v)
@@ -181,11 +181,5 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
                 Type = "inner"
             }
         };
-
-        private IEnumerable<(string type, string content)> GetListData(DateTime dateTime)
-        {
-            yield return (dateTime.Month + "", dateTime.Day + "");
-        }
     }
-
 }

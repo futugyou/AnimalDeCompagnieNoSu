@@ -3,12 +3,6 @@
 @page "/maindata"
 
 <Tabs ActiveKeyChanged="OnTabChanged" TabPosition="@TabPosition.Top" Size="@TabSize.Large">
-    <TabPane Key="0">
-        <Tab><Icon Type="calendar" Theme="outline" />日历</Tab>
-        <ChildContent>
-            <AntDesign.Calendar DateCellRender="DateCellRender" MonthCellRender="MonthCellRender" OnPanelChange="OnPanelChange" />
-        </ChildContent>
-    </TabPane>
     <TabPane Key="1">
         <Tab><Icon Type="line-chart" Theme="outline" />救助数量</Tab>
         <ChildContent>
@@ -48,32 +42,3 @@
         </ChildContent>
     </TabPane>
 </Tabs>
-@code{
-    private RenderFragment DateCellRender(DateTime value)
-    {
-        var listData = GetListData(value);
-        return@<Template>
-        <ul class="events">
-            @foreach (var data in listData)
-            {
-                <li key="@data.content">
-                    <Badge Status="@data.type" Text="@data.content" />
-                </li>
-            }
-        </ul>
-    </Template>;
-}
-private void OnPanelChange(DateTime value, string mode)
-{
-Console.WriteLine($"{value.ToString("yyyy-MM-dd")} {mode}");
-}
-private RenderFragment MonthCellRender(DateTime value)
-{
-return @<Template>
-    <div className="notes-month">
-        <section>@value.Day</section>
-        <span>Backlog number</span>
-    </div>
-</Template>;
-}
-} 
