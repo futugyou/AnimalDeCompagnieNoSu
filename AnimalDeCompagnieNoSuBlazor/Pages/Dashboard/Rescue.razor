@@ -1,7 +1,25 @@
 ﻿@namespace AnimalDeCompagnieNoSuBlazor.Pages.Dashboard
 @inherits AntDomComponentBase
 @page "/maindata"
-
+<PageHeader>
+    <PageHeaderTitle>数据汇总</PageHeaderTitle>
+    <PageHeaderSubtitle>功能完善中...</PageHeaderSubtitle>
+    <PageHeaderTags>
+        <Tag Color="blue">汇总时间</Tag>
+        <Tag Color="blue">@DateTime.Now.ToString("yyyy/MM/dd")</Tag>
+    </PageHeaderTags>
+    <PageHeaderExtra>
+        <Button Type="@ButtonType.Primary">错误提交</Button>
+    </PageHeaderExtra>
+    <PageHeaderContent>
+        <Row Type="flex">
+            <Statistic Title="累计收容数" Value="5674"></Statistic>
+            <Statistic Title="累计领养数" Value="1568" Style="margin-left:30px;"></Statistic>
+            <Statistic Title="目前收容率" Value="76" Suffix="%" Style="margin-left:30px;"></Statistic>
+            <Statistic Title="经费剩余" Value="3345.08" Prefix="$" Style="margin-left:30px;"></Statistic>
+        </Row>
+    </PageHeaderContent>
+</PageHeader>
 <Tabs ActiveKeyChanged="OnTabChanged" TabPosition="@TabPosition.Top" Size="@TabSize.Large">
     <TabPane Key="1">
         <Tab><Icon Type="line-chart" Theme="outline" />救助数量</Tab>
