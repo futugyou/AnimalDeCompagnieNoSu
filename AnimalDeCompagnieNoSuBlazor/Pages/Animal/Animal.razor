@@ -1,7 +1,53 @@
 ﻿@namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 @page "/animal"
 @inject NavigationManager NavigationManager
-
+<PageHeader>
+    <PageHeaderTitle>搜索</PageHeaderTitle>
+    <PageHeaderSubtitle>功能完善中...</PageHeaderSubtitle>
+    <PageHeaderContent>
+        <Row Gutter="24">
+            <AntDesign.Col Span="4">
+                <Text>种类</Text>
+                <Select Mode="multiple"
+                        DataSource="@_typeItems"
+                        ValueName="@nameof(SelectType.Value)"
+                        LabelName="@nameof(SelectType.Text)"
+                        @bind-Values="@_selectedTypeValues"
+                        EnableSearch
+                        HideSelected
+                        AllowClear="true"
+                        OnSelectedItemsChanged="OnSelectedTypesChangedHandler">
+                </Select>
+            </AntDesign.Col>
+            <AntDesign.Col Span="4">
+                <Text>绝育</Text>
+                <Select Mode="multiple"
+                        DataSource="@_truefalseItems"
+                        ValueName="@nameof(SelectType.Value)"
+                        LabelName="@nameof(SelectType.Text)"
+                        @bind-Values="@_selectedSterilizationValues"
+                        EnableSearch
+                        HideSelected
+                        AllowClear="true"
+                        OnSelectedItemsChanged="OnSelectedSterilizationChangedHandler">
+                </Select>
+            </AntDesign.Col>
+            <AntDesign.Col Span="4">
+                <Text>疫苗</Text>
+                <Select Mode="multiple"
+                        DataSource="@_truefalseItems"
+                        ValueName="@nameof(SelectType.Value)"
+                        LabelName="@nameof(SelectType.Text)"
+                        @bind-Values="@_selectedVaccinValues"
+                        EnableSearch
+                        HideSelected
+                        AllowClear="true"
+                        OnSelectedItemsChanged="OnSelectedVaccinChangedHandler">
+                </Select>
+            </AntDesign.Col>
+        </Row>
+    </PageHeaderContent>
+</PageHeader>
 <div class="cardList">
     <AntList TItem="AnimalListViewModel" DataSource="_data"
              ItemLayout="ListItemLayout.Horizontal"
