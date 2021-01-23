@@ -7,7 +7,7 @@
   </PropertyGroup> 
 
   <ItemGroup>
-    <PackageReference Include="AntDesign" Version="0.6.0-nightly-2101220722" />
+    <PackageReference Include="AntDesign" Version="0.6.0-nightly-2101221736" />
     <PackageReference Include="AntDesign.Charts" Version="0.2.0" />
     <PackageReference Include="AntDesign.Pro.Layout" Version="0.1.0-nightly-210113091622" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.2" />
