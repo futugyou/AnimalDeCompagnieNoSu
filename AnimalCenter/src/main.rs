@@ -1,4 +1,4 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, guard, post, web, App, HttpResponse, HttpServer, Responder};
 use std::sync::Mutex;
 
 struct AppState {
@@ -47,6 +47,11 @@ async fn main() -> std::io::Result<()> {
                 app_name: String::from("hello world"),
             })
             .app_data(app_counter.clone())
+            .service(
+                web::scope("/guard")
+                    .guard(guard::Header("Host", "www.rust-lang.org")) //that means Header must had Host, and value is www.rust-lang.org
+                    .route("", web::get().to(manual_hello)),
+            )
             .service(index)
             .service(hello)
             .service(echo)
