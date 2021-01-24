@@ -1,5 +1,8 @@
-use actix_web::{get, guard, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, guard, post, rt::System, web, App, HttpResponse, HttpServer, Responder};
+mod animal;
+use std::sync::mpsc;
 use std::sync::Mutex;
+use std::thread;
 
 struct AppState {
     app_name: String,
@@ -35,6 +38,15 @@ async fn index(data: web::Data<AppState>, data2: web::Data<AppStatwWithCounter>)
     format!("{} {}", app_name, app_counter)
 }
 
+fn config1(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::resource("/test1")
+            .route(web::get().to(|| HttpResponse::Ok().body("get test1")))
+            .route(web::post().to(|| HttpResponse::Ok().body("post test1")))
+            .route(web::head().to(|| HttpResponse::MethodNotAllowed())),
+    );
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let app_counter = web::Data::new(AppStatwWithCounter {
@@ -47,6 +59,8 @@ async fn main() -> std::io::Result<()> {
                 app_name: String::from("hello world"),
             })
             .app_data(app_counter.clone())
+            .configure(animal::animalconfig)
+            .configure(config1)
             .service(
                 web::scope("/guard")
                     .guard(guard::Header("Host", "www.rust-lang.org")) //that means Header must had Host, and value is www.rust-lang.org
