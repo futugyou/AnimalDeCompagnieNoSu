@@ -1,6 +1,7 @@
 mod animal;
 
 use actix_web::{get, guard, post, web, App, HttpResponse, HttpServer, Responder, Result};
+use animal::{AnimalSchema, QueryRoot};
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig};
 use async_graphql::{EmptyMutation, EmptySubscription, Schema};
 use async_graphql_actix_web::{Request, Response};
@@ -53,7 +54,7 @@ async fn index_playground() -> Result<HttpResponse> {
     Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(playground_source(
-            GraphQLPlaygroundConfig::new("/").subscription_endpoint("/"),
+            GraphQLPlaygroundConfig::new("/graphql").subscription_endpoint("/graphql"),
         )))
 }
 
@@ -62,12 +63,13 @@ async fn main() -> std::io::Result<()> {
     let app_counter = web::Data::new(AppStatwWithCounter {
         app_counter: Mutex::new(0),
     });
-
+    let schema = Schema::new(QueryRoot, EmptyMutation, EmptySubscription);
     HttpServer::new(move || {
         App::new()
             .data(AppState {
                 app_name: String::from("hello world"),
             })
+            .data(schema.clone())
             .app_data(app_counter.clone())
             .configure(animal::animalconfig)
             .configure(config1)
@@ -86,8 +88,16 @@ async fn main() -> std::io::Result<()> {
                     .guard(guard::Get())
                     .to(index_playground),
             )
+            .service(
+                web::resource("/graphql")
+                    .guard(guard::Post())
+                    .to(graphql_index),
+            )
     })
     .bind("127.0.0.1:8080")?
     .run()
     .await
+}
+async fn graphql_index(schema: web::Data<AnimalSchema>, req: Request) -> Response {
+    schema.execute(req.into_inner()).await.into()
 }
