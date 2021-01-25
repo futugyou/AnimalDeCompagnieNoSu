@@ -1,5 +1,9 @@
-use actix_web::{get, guard, post, web, App, HttpResponse, HttpServer, Responder};
 mod animal;
+
+use actix_web::{get, guard, post, web, App, HttpResponse, HttpServer, Responder, Result};
+use async_graphql::http::{playground_source, GraphQLPlaygroundConfig};
+use async_graphql::{EmptyMutation, EmptySubscription, Schema};
+use async_graphql_actix_web::{Request, Response};
 use std::sync::Mutex;
 
 struct AppState {
@@ -45,6 +49,14 @@ fn config1(cfg: &mut web::ServiceConfig) {
     );
 }
 
+async fn index_playground() -> Result<HttpResponse> {
+    Ok(HttpResponse::Ok()
+        .content_type("text/html; charset=utf-8")
+        .body(playground_source(
+            GraphQLPlaygroundConfig::new("/").subscription_endpoint("/"),
+        )))
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let app_counter = web::Data::new(AppStatwWithCounter {
@@ -69,6 +81,11 @@ async fn main() -> std::io::Result<()> {
             .service(echo)
             .service(web::scope("/app").route("/hello", web::get().to(manual_hello)))
             .route("/hey", web::get().to(manual_hello))
+            .service(
+                web::resource("/graphql")
+                    .guard(guard::Get())
+                    .to(index_playground),
+            )
     })
     .bind("127.0.0.1:8080")?
     .run()
