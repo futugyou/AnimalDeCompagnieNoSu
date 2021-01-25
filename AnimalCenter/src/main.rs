@@ -1,8 +1,6 @@
-use actix_web::{get, guard, post, rt::System, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, guard, post, web, App, HttpResponse, HttpServer, Responder};
 mod animal;
-use std::sync::mpsc;
 use std::sync::Mutex;
-use std::thread;
 
 struct AppState {
     app_name: String,
