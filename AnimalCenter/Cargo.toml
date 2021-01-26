@@ -14,3 +14,9 @@ async-graphql="2.5.1"
 async-graphql-actix-web = "2.5.1"
 slab = "0.4.2"
 envfile="0.2.1"
+async-trait = "0.1.42"
+
+[dependencies.mongodb]
+version = "1.1.1"
+default-features = false
+features = ["async-std-runtime"]

@@ -1,7 +1,6 @@
 mod animal;
-mod config;
+mod infrastruct;
 
-use crate::config::{Config, IConfig};
 use actix_web::{get, guard, post, web, App, HttpResponse, HttpServer, Responder, Result};
 use animal::{AnimalSchema, QueryRoot};
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig};
@@ -62,8 +61,6 @@ async fn index_playground() -> Result<HttpResponse> {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let _config = Config {};
-    let conn = _config.get_config_with_key("MONGODB_URI");
     let app_counter = web::Data::new(AppStatwWithCounter {
         app_counter: Mutex::new(0),
     });
