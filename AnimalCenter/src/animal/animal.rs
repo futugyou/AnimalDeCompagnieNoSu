@@ -21,6 +21,6 @@ impl QueryRoot {
 }
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Animal {
-    name: String,
-    name_type: String,
+    pub name: String,
+    pub animal_type: String,
 }
