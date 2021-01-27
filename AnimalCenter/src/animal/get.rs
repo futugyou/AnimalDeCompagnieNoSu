@@ -1,4 +1,3 @@
-use crate::animal::animal::Animal;
 use crate::infrastruct::context::dbcontext::{DBContext, IDbContext};
 use actix_web::{web, HttpRequest, HttpResponse};
 use futures::stream::StreamExt;
@@ -6,6 +5,8 @@ use mongodb::{
     bson::{doc, Bson},
     options::FindOptions,
 };
+
+use super::animal::Animal;
 
 pub async fn animal_handler(item: Option<web::Json<Animal>>, req: HttpRequest) -> HttpResponse {
     println!("request: {:?}", req.path());
