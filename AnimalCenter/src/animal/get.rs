@@ -5,10 +5,30 @@ use mongodb::{
     bson::{doc, Bson},
     options::FindOptions,
 };
+use serde::{Deserialize, Serialize};
 
-use super::animal::Animal;
+#[derive(Debug, Serialize, Deserialize)]
+pub struct AnimalSearchRequest {
+    #[serde(default)]
+    pub name: String,
+    #[serde(default)]
+    #[serde(rename = "type")]
+    pub animal_type: String,
+}
 
-pub async fn animal_handler(item: Option<web::Json<Animal>>, req: HttpRequest) -> HttpResponse {
+#[derive(Debug, Serialize, Deserialize)]
+pub struct AnimalSearchResponse {
+    #[serde(default)]
+    pub name: String,
+    #[serde(default)]
+    #[serde(rename = "type")]
+    pub animal_type: String,
+}
+
+pub async fn animal_handler(
+    item: Option<web::Json<AnimalSearchRequest>>,
+    req: HttpRequest,
+) -> HttpResponse {
     println!("request: {:?}", req.path());
     println!("model: {:?}", item);
     let dbcontext = DBContext {};
@@ -21,7 +41,7 @@ pub async fn animal_handler(item: Option<web::Json<Animal>>, req: HttpRequest) -
                 filter.insert("name", query.name);
             }
             if query.animal_type != "" {
-                filter.insert("animal_type", query.animal_type);
+                filter.insert("type", query.animal_type);
             }
         }
         None => {}
@@ -30,9 +50,9 @@ pub async fn animal_handler(item: Option<web::Json<Animal>>, req: HttpRequest) -
     let find_options = FindOptions::builder().sort(doc! { "name": 1 }).build();
     let mut cursor = collection.find(filter, find_options).await.unwrap();
 
-    let mut animals = Vec::<Animal>::new();
+    let mut animals = Vec::<AnimalSearchResponse>::new();
     while let Some(result) = cursor.next().await {
-        let animal: Animal = bson::from_bson(Bson::Document(result.unwrap())).unwrap();
+        let animal = bson::from_bson(Bson::Document(result.unwrap())).unwrap();
         animals.push(animal)
     }
     HttpResponse::Ok().json(animals)
