@@ -23,6 +23,12 @@ pub struct AnimalSearchResponse {
     #[serde(default)]
     #[serde(rename = "type")]
     pub animal_type: String,
+    #[serde(default)]
+    pub sub_type: String,
+    #[serde(default)]
+    pub birthday: String,
+    #[serde(default)]
+    pub idcard: String,
 }
 
 pub async fn animal_handler(
