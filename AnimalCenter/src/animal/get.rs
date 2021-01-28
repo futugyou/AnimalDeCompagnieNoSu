@@ -1,5 +1,8 @@
 use crate::infrastruct::context::dbcontext::{DBContext, IDbContext};
+use crate::infrastruct::date_format_option;
+
 use actix_web::{web, HttpRequest, HttpResponse};
+use chrono::{DateTime, Utc};
 use futures::stream::StreamExt;
 use mongodb::{
     bson::{doc, Bson},
@@ -25,8 +28,8 @@ pub struct AnimalSearchResponse {
     pub animal_type: String,
     #[serde(default)]
     pub sub_type: String,
-    #[serde(default)]
-    pub birthday: String,
+    #[serde(with = "date_format_option", default)]
+    pub birthday: Option<DateTime<Utc>>,
     #[serde(default)]
     pub idcard: String,
 }
@@ -58,7 +61,9 @@ pub async fn animal_handler(
 
     let mut animals = Vec::<AnimalSearchResponse>::new();
     while let Some(result) = cursor.next().await {
-        let animal = bson::from_bson(Bson::Document(result.unwrap())).unwrap();
+        let basn = Bson::Document(result.unwrap());
+        let b = bson::from_bson(basn);
+        let animal = b.unwrap();
         animals.push(animal)
     }
     HttpResponse::Ok().json(animals)

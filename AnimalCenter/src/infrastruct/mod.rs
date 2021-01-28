@@ -38,3 +38,46 @@ pub mod date_format {
             .map_err(serde::de::Error::custom)
     }
 }
+
+pub mod date_format_option {
+    use chrono::{DateTime, TimeZone, Utc};
+    use serde::{self, Deserialize, Deserializer, Serializer};
+
+    const FORMAT: &'static str = "%Y-%m-%dT%H:%M:%SZ";
+
+    pub fn serialize<S>(date: &Option<DateTime<Utc>>, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match date {
+            Some(d) => {
+                let s = format!("{}", d.format(FORMAT));
+                serializer.serialize_str(&s)
+            }
+            None => {
+                let s = "1900-01-01T01:01:01Z";
+                serializer.serialize_str(s)
+            }
+        }
+    }
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<DateTime<Utc>>, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let s = std::collections::HashMap::<String, String>::deserialize(deserializer);
+        //let s = String::deserialize(deserializer);
+        let mut str = String::from("1900-01-01T01:01:01Z");
+        let _ = match s {
+            Ok(a) => {
+                str = a.get("$date").unwrap().to_string();
+            }
+            Err(_) => (),
+        };
+
+        let r = Utc.datetime_from_str(&str, FORMAT);
+        match r {
+            Ok(t) => Ok(Option::from(t)),
+            Err(e) => Err(serde::de::Error::custom(e)),
+        }
+    }
+}

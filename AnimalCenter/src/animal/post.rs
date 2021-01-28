@@ -20,6 +20,7 @@ pub struct AnimalUpdateRequest {
     #[serde(with = "date_format")]
     pub birthday: DateTime<Utc>,
 }
+
 pub async fn animal_handler(
     item: Option<web::Json<AnimalUpdateRequest>>,
     req: HttpRequest,
@@ -32,7 +33,12 @@ pub async fn animal_handler(
             let dbcontext = DBContext {};
             let dbclient = dbcontext.get_db_context().await;
             let collection = dbclient.database("react-app").collection("animal");
-            let docs = doc! { "name": animal.name, "animal_type": animal.animal_type };
+            let docs = doc! {
+                    "name": animal.name,
+                    "type": animal.animal_type,
+                    "birthday":animal.birthday,
+                    "sub_type":animal.sub_type ,
+            };
             let result = collection.insert_one(docs, None).await.unwrap();
             HttpResponse::Ok().json(result)
         }
