@@ -1,5 +1,6 @@
 use crate::infrastruct::context::dbcontext::{DBContext, IDbContext};
 use crate::infrastruct::date_format_option;
+use crate::infrastruct::deserialize_object_id;
 
 use actix_web::{web, HttpRequest, HttpResponse};
 use chrono::{DateTime, Utc};
@@ -21,6 +22,8 @@ pub struct AnimalSearchRequest {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AnimalSearchResponse {
+    #[serde(alias = "_id", default, deserialize_with = "deserialize_object_id")]
+    pub id: String,
     #[serde(default)]
     pub name: String,
     #[serde(default)]
@@ -62,6 +65,7 @@ pub async fn animal_handler(
     let mut animals = Vec::<AnimalSearchResponse>::new();
     while let Some(result) = cursor.next().await {
         let basn = Bson::Document(result.unwrap());
+        println!("{:?}", basn);
         let b = bson::from_bson(basn);
         let animal = b.unwrap();
         animals.push(animal)
