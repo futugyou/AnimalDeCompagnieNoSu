@@ -50,10 +50,16 @@ pub async fn animal_handler(
         Some(i) => {
             let query = i.into_inner();
             if query.name != "" {
-                filter.insert("name", query.name);
+                filter.insert("name", doc! {"$regex": query.name});
             }
             if query.animal_type != "" {
-                filter.insert("type", query.animal_type);
+                filter.insert(
+                    "$or",
+                    vec![
+                        doc! {"type":&query.animal_type },
+                        doc! { "sub_type":&query.animal_type},
+                    ],
+                );
             }
         }
         None => {}
@@ -65,7 +71,6 @@ pub async fn animal_handler(
     let mut animals = Vec::<AnimalSearchResponse>::new();
     while let Some(result) = cursor.next().await {
         let basn = Bson::Document(result.unwrap());
-        println!("{:?}", basn);
         let b = bson::from_bson(basn);
         let animal = b.unwrap();
         animals.push(animal)
