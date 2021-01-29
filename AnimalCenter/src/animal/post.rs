@@ -4,6 +4,7 @@ use crate::infrastruct::date_format;
 use actix_web::{web, HttpRequest, HttpResponse};
 use chrono::{DateTime, Utc};
 use mongodb::bson::doc;
+use rand::Rng;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -35,9 +36,10 @@ pub async fn animal_handler(
             let collection = dbclient.database("react-app").collection("animal");
             let docs = doc! {
                     "name": animal.name,
-                    "type": animal.animal_type,
+                    "type": &animal.animal_type,
                     "birthday":animal.birthday,
-                    "sub_type":animal.sub_type ,
+                    "sub_type":animal.sub_type,
+                    "idcard":format!("{}-{}-{:>04}",&animal.animal_type,Utc::now().format("%Y%m%d-%H%M%S"),rand::thread_rng().gen_range(0001..9999)),
             };
             let result = collection.insert_one(docs, None).await.unwrap();
             HttpResponse::Ok().json(result)
