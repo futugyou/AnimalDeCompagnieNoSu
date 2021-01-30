@@ -17,7 +17,7 @@ pub struct AnimalSearchRequest {
     pub name: String,
     #[serde(default)]
     #[serde(rename = "type")]
-    pub animal_type: String,
+    pub animal_type: Vec<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -52,12 +52,12 @@ pub async fn animal_handler(
             if query.name != "" {
                 filter.insert("name", doc! {"$regex": query.name});
             }
-            if query.animal_type != "" {
+            if query.animal_type.len() > 0 {
                 filter.insert(
                     "$or",
                     vec![
-                        doc! {"type":&query.animal_type },
-                        doc! { "sub_type":&query.animal_type},
+                        doc! {"type":doc!{"$in":&query.animal_type}},
+                        doc! {"sub_type":doc!{"$in":&query.animal_type}},
                     ],
                 );
             }
