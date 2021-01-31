@@ -9,13 +9,10 @@ use crate::route_fake::*;
 use actix_web::{guard, web, App, HttpServer};
 use animal::{AnimalSchema, QueryRoot};
 use async_graphql::{EmptyMutation, EmptySubscription, Schema};
-use std::sync::Mutex;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let app_counter = web::Data::new(AppStatwWithCounter {
-        app_counter: Mutex::new(0),
-    });
+    let app_counter = web::Data::new(AppStatwWithCounter::new());
     let schema = Schema::new(QueryRoot, EmptyMutation, EmptySubscription);
     HttpServer::new(move || {
         App::new()

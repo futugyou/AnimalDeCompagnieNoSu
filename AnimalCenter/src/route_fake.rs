@@ -9,6 +9,14 @@ pub struct AppStatwWithCounter {
     pub app_counter: Mutex<i32>,
 }
 
+impl AppStatwWithCounter {
+    pub fn new() -> Self {
+        Self {
+            app_counter: Mutex::new(0),
+        }
+    }
+}
+
 #[get("/")]
 pub async fn hello(
     data: web::Data<AppState>,
