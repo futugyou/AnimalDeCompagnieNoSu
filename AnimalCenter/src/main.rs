@@ -42,7 +42,7 @@ async fn main() -> std::io::Result<()> {
             .route("/hey", web::get().to(manual_hello))
             // #endregion
             // #region -> base curd service
-            .configure(route::animalroute)
+            .service(route::bussisscope())
             // #endregion
             // #region -> graphql
             .data(schema.clone())
