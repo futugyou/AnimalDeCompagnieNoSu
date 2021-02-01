@@ -1,41 +1,13 @@
-use crate::infrastruct::context::dbcontext::{DBContext, IDbContext};
-use crate::infrastruct::date_format_option;
-use crate::infrastruct::deserialize_object_id;
-
+use crate::{
+    infrastruct::context::dbcontext::{DBContext, IDbContext},
+    viewmodel::animal::animalviewmodel::{AnimalSearchRequest, AnimalSearchResponse},
+};
 use actix_web::{web, HttpRequest, HttpResponse};
-use chrono::{DateTime, Utc};
 use futures::stream::StreamExt;
 use mongodb::{
     bson::{doc, Bson},
     options::FindOptions,
 };
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct AnimalSearchRequest {
-    #[serde(default)]
-    pub name: String,
-    #[serde(default)]
-    #[serde(rename = "type")]
-    pub animal_type: Vec<String>,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct AnimalSearchResponse {
-    #[serde(alias = "_id", default, deserialize_with = "deserialize_object_id")]
-    pub id: String,
-    #[serde(default)]
-    pub name: String,
-    #[serde(default)]
-    #[serde(rename = "type")]
-    pub animal_type: String,
-    #[serde(default)]
-    pub sub_type: String,
-    #[serde(with = "date_format_option", default)]
-    pub birthday: Option<DateTime<Utc>>,
-    #[serde(default)]
-    pub idcard: String,
-}
 
 pub async fn animal_handler(
     item: Option<web::Json<AnimalSearchRequest>>,

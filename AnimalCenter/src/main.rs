@@ -3,6 +3,7 @@ mod infrastruct;
 mod route;
 mod route_fake;
 mod route_graphql;
+mod viewmodel;
 
 use actix_web::{App, HttpServer};
 use animal::{AnimalSchema, QueryRoot};
