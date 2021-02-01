@@ -1,6 +1,6 @@
 use crate::{
     infrastruct::context::dbcontext::{DBContext, IDbContext},
-    viewmodel::animal::animalviewmodel::{AnimalSearchRequest, AnimalSearchResponse},
+    model::animal::animalmodel::{AnimalSearchRequest, AnimalSearchResponse},
 };
 use actix_web::{web, HttpRequest, HttpResponse};
 use futures::stream::StreamExt;

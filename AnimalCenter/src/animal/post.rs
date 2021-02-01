@@ -1,6 +1,6 @@
 use crate::{
     infrastruct::context::dbcontext::{DBContext, IDbContext},
-    viewmodel::animal::animalviewmodel::AnimalUpdateRequest,
+    model::animal::animalmodel::AnimalUpdateRequest,
 };
 
 use actix_web::{web, HttpRequest, HttpResponse};

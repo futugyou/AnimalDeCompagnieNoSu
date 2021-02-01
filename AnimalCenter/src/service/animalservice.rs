@@ -1,7 +1,6 @@
-use crate::infrastruct::context::dbcontext::IDbContext;
 use async_trait::async_trait;
 
-use crate::viewmodel::animal::animalviewmodel::{
+use crate::model::animal::animalmodel::{
     AnimalSearchRequest, AnimalSearchResponse, AnimalUpdateRequest, AnimalUpdateResponse,
 };
 
