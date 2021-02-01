@@ -45,3 +45,6 @@ pub struct AnimalUpdateRequest {
     #[serde(with = "date_format")]
     pub birthday: DateTime<Utc>,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct AnimalUpdateResponse {}
