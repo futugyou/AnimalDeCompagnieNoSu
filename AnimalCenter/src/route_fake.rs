@@ -54,3 +54,42 @@ pub fn configtest(cfg: &mut web::ServiceConfig) {
             .route(web::head().to(|| HttpResponse::MethodNotAllowed())),
     );
 }
+
+pub fn makefakeroute<T, B>(app: actix_web::App<T, B>) -> actix_web::App<T, B>
+where
+    B: actix_web::dev::MessageBody,
+    T: actix_service::ServiceFactory<
+        Config = (),
+        Request = actix_web::dev::ServiceRequest,
+        Response = actix_web::dev::ServiceResponse<B>,
+        Error = actix_web::Error,
+        InitError = (),
+    >,
+{
+    let app_counter = web::Data::new(AppStatwWithCounter::new());
+    app // #region -> base usage
+        .service(echo)
+        // #endregion
+        // #region -> data and app_data
+        .data(AppState {
+            app_name: String::from("hello world"),
+        })
+        .app_data(app_counter.clone())
+        .service(index)
+        .service(hello)
+        // #endregion
+        // #region -> use config
+        .configure(configtest)
+        // #endregion
+        // #region -> web::scope
+        .service(
+            web::scope("/guard")
+                .guard(actix_web::guard::Header("Host", "www.rust-lang.org")) //that means Header must had Host, and value is www.rust-lang.org
+                .route("", web::get().to(manual_hello)),
+        )
+        .service(web::scope("/app").route("/hello", web::get().to(manual_hello)))
+        // #endregion
+        // #region -> direct route
+        .route("/hey", web::get().to(manual_hello))
+    // #endregion
+}

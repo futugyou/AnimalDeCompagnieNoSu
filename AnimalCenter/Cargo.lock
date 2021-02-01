@@ -357,6 +357,7 @@ dependencies = [
 name = "animal_center"
 version = "0.1.0"
 dependencies = [
+ "actix-service",
  "actix-web",
  "async-graphql",
  "async-graphql-actix-web",
