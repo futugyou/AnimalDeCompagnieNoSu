@@ -7,7 +7,7 @@ use crate::model::animal::animalmodel::{
 #[async_trait]
 pub trait IAnimalService {
     async fn search_animals(&self, request: AnimalSearchRequest) -> Vec<AnimalSearchResponse>;
-    async fn modfiy_animals(&self, request: AnimalUpdateRequest) -> AnimalUpdateResponse;
+    async fn modfiy_animal(&self, request: AnimalUpdateRequest) -> AnimalUpdateResponse;
 }
 
 pub struct AnimalService {}
@@ -18,7 +18,7 @@ impl IAnimalService for AnimalService {
         todo!()
     }
 
-    async fn modfiy_animals(&self, request: AnimalUpdateRequest) -> AnimalUpdateResponse {
+    async fn modfiy_animal(&self, request: AnimalUpdateRequest) -> AnimalUpdateResponse {
         todo!()
     }
 }
