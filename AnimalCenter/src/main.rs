@@ -1,6 +1,7 @@
 mod animal;
 mod infrastruct;
 mod model;
+mod repository;
 mod route;
 mod route_fake;
 mod route_graphql;
