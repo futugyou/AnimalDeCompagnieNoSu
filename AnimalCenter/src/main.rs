@@ -1,4 +1,5 @@
 mod animal;
+mod controller;
 mod entity;
 mod infrastruct;
 mod model;
