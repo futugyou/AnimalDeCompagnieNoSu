@@ -68,7 +68,18 @@ impl IAnimalRepository for AnimalRepository {
     }
 
     async fn delete(&self, entity: AnimalEntity) -> bool {
-        todo!()
+        let filter = doc! {"_id":entity.id};
+        let result = self.collection.delete_one(filter, None).await;
+        match result {
+            Ok(r) => {
+                println!("ok {:?}", r);
+                true
+            }
+            Err(e) => {
+                println!("err {:?}", e);
+                false
+            }
+        }
     }
 
     async fn findone<T>(&self, con: fn(t: T) -> bool) -> AnimalEntity {
