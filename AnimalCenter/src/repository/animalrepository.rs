@@ -2,17 +2,19 @@ use crate::{
     entity::animalentity::AnimalEntity,
     infrastruct::context::dbcontext::{DBContext, IDbContext},
 };
-use bson::Bson;
+use bson::{Bson, Document};
 
 use async_trait::async_trait;
 use bson::doc;
+use futures::StreamExt;
+use mongodb::options::FindOptions;
 
 #[async_trait]
 pub trait IAnimalRepository {
     async fn add(&self, entity: AnimalEntity) -> String;
     async fn delete(&self, entity: AnimalEntity) -> bool;
     async fn findone(&self, id: String) -> AnimalEntity;
-    async fn findmany(&self, con: AnimalEntity) -> Vec<AnimalEntity>;
+    async fn findmany(&self, filter: Document) -> Vec<AnimalEntity>;
     async fn update(&self, entity: AnimalEntity) -> Result<bool, String>;
 }
 
@@ -99,7 +101,17 @@ impl IAnimalRepository for AnimalRepository {
         }
     }
 
-    async fn findmany(&self, con: AnimalEntity) -> Vec<AnimalEntity> {
-        todo!()
+    async fn findmany(&self, filter: Document) -> Vec<AnimalEntity> {
+        let find_options = FindOptions::builder().sort(doc! { "name": 1 }).build();
+        let mut cursor = self.collection.find(filter, find_options).await.unwrap();
+
+        let mut animals = Vec::<AnimalEntity>::new();
+        while let Some(result) = cursor.next().await {
+            let basn = Bson::Document(result.unwrap());
+            let b = bson::from_bson(basn);
+            let animal = b.unwrap();
+            animals.push(animal)
+        }
+        animals
     }
 }
