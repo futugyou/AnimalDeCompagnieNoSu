@@ -2,6 +2,7 @@ use crate::{
     entity::animalentity::AnimalEntity,
     infrastruct::context::dbcontext::{DBContext, IDbContext},
 };
+use bson::Bson;
 
 use async_trait::async_trait;
 use bson::doc;
@@ -10,8 +11,8 @@ use bson::doc;
 pub trait IAnimalRepository {
     async fn add(&self, entity: AnimalEntity) -> String;
     async fn delete(&self, entity: AnimalEntity) -> bool;
-    async fn findone<T>(&self, con: fn(t: T) -> bool) -> AnimalEntity;
-    async fn findmany<T>(&self, con: fn(t: T) -> bool) -> Vec<AnimalEntity>;
+    async fn findone(&self, id: String) -> AnimalEntity;
+    async fn findmany(&self, con: AnimalEntity) -> Vec<AnimalEntity>;
     async fn update(&self, entity: AnimalEntity) -> Result<bool, String>;
 }
 
@@ -82,11 +83,23 @@ impl IAnimalRepository for AnimalRepository {
         }
     }
 
-    async fn findone<T>(&self, con: fn(t: T) -> bool) -> AnimalEntity {
-        todo!()
+    async fn findone(&self, id: String) -> AnimalEntity {
+        let filter = doc! {"_id":id};
+        let result = self.collection.find_one(filter, None).await;
+        match result {
+            Ok(r) => {
+                let basn = Bson::Document(r.unwrap());
+                let b = bson::from_bson(basn);
+                b.unwrap()
+            }
+            Err(e) => {
+                print!("{:?}", e);
+                AnimalEntity::new()
+            }
+        }
     }
 
-    async fn findmany<T>(&self, con: fn(t: T) -> bool) -> Vec<AnimalEntity> {
+    async fn findmany(&self, con: AnimalEntity) -> Vec<AnimalEntity> {
         todo!()
     }
 }

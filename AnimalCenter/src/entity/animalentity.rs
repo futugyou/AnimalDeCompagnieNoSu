@@ -1,7 +1,7 @@
 use crate::infrastruct::date_format;
 use crate::infrastruct::deserialize_object_id;
 
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, TimeZone, Utc};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -22,21 +22,16 @@ pub struct AnimalEntity {
 }
 
 impl AnimalEntity {
-    pub fn new(
-        id: String,
-        name: String,
-        animal_type: String,
-        sub_type: String,
-        birthday: DateTime<Utc>,
-        idcard: String,
-    ) -> Self {
+    pub fn new() -> Self {
         Self {
-            id,
-            name,
-            animal_type,
-            sub_type,
-            birthday,
-            idcard,
+            id: "".to_string(),
+            name: "".to_string(),
+            animal_type: "".to_string(),
+            sub_type: "".to_string(),
+            birthday: Utc
+                .datetime_from_str("1900-01-01T01:01:01Z", "%Y-%m-%dT%H:%M:%SZ")
+                .unwrap(),
+            idcard: "".to_string(),
         }
     }
 
