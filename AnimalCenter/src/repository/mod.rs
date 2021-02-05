@@ -1,2 +1,2 @@
-mod animalrepository;
-mod animaltyperepository;
+pub mod animalrepository;
+pub mod animaltyperepository;

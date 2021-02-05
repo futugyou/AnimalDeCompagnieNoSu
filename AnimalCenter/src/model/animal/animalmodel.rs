@@ -14,6 +14,12 @@ pub struct AnimalSearchRequest {
     pub animal_type: Vec<String>,
 }
 
+impl AnimalSearchRequest {
+    pub fn verify(&self) -> bool {
+        true
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AnimalSearchResponse {
     #[serde(alias = "_id", default, deserialize_with = "deserialize_object_id")]
