@@ -1,4 +1,7 @@
-use crate::repository::animalrepository::{AnimalRepository, IAnimalRepository};
+use crate::{
+    entity::animalentity::AnimalEntity,
+    repository::animalrepository::{AnimalRepository, IAnimalRepository},
+};
 use async_trait::async_trait;
 use bson::doc;
 
@@ -30,7 +33,7 @@ impl AnimalService {
 #[async_trait]
 impl IAnimalService for AnimalService {
     async fn search_animals(&self, request: AnimalSearchRequest) -> Vec<AnimalSearchResponse> {
-        if request.verify() {
+        if request.valid() {
             //TODO: add search condition
             let doc = doc! {};
             let serachresult = self.animal_repository.findmany(doc).await;
@@ -42,19 +45,46 @@ impl IAnimalService for AnimalService {
             }
             results
         } else {
+            //TODO: log
             Vec::<AnimalSearchResponse>::new()
         }
     }
 
     async fn modfiy_animal(&self, request: AnimalUpdateRequest) -> AnimalUpdateResponse {
-        todo!()
+        let results = AnimalUpdateResponse {};
+        if request.valid() {
+            //TODO: add search condition
+            let entity: AnimalEntity = AnimalEntity::new();
+            let updateresult = self.animal_repository.update(entity).await;
+            match updateresult {
+                Ok(_re) => {
+                    //DOTO: log ,Domain events
+                    println!("{:?}", "do something");
+                }
+                Err(e) => {
+                    //TODO: log
+                    println!("{:?}", e + "do something");
+                }
+            }
+        } else {
+            //TODO: log
+            println!("{:?}", "do something");
+        }
+        results
     }
 
     async fn delete_animal(&self, id: String) {
-        todo!()
+        let mut entity = AnimalEntity::new();
+        entity.id = id;
+        let deleteresult = self.animal_repository.delete(entity).await;
+        if deleteresult {
+            //DOTO: log ,Domain events
+        }
     }
 
     async fn find_animal_by_id(&self, id: String) -> AnimalSearchResponse {
+        let findresult = self.animal_repository.findone(id).await;
+        //TODO: convert Animalentity to AnimalSearchResponse
         todo!()
     }
 }

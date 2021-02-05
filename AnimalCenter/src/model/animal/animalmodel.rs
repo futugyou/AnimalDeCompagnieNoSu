@@ -15,7 +15,7 @@ pub struct AnimalSearchRequest {
 }
 
 impl AnimalSearchRequest {
-    pub fn verify(&self) -> bool {
+    pub fn valid(&self) -> bool {
         true
     }
 }
@@ -51,6 +51,11 @@ pub struct AnimalUpdateRequest {
     #[serde(with = "date_format")]
     pub birthday: DateTime<Utc>,
 }
-
+impl AnimalUpdateRequest {
+    pub fn valid(&self) -> bool {
+        //TODO: add verify
+        true
+    }
+}
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AnimalUpdateResponse {}
