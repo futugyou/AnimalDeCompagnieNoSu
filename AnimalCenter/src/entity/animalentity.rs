@@ -1,7 +1,6 @@
-use crate::infrastruct::date_format;
-use crate::infrastruct::deserialize_object_id;
+use crate::infrastruct::{serialize::*, *};
 
-use chrono::{DateTime, TimeZone, Utc};
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -15,8 +14,8 @@ pub struct AnimalEntity {
     pub animal_type: String,
     #[serde(default)]
     pub sub_type: String,
-    #[serde(with = "date_format")]
-    pub birthday: DateTime<Utc>,
+    #[serde(with = "date_format_bson", default)]
+    pub birthday: Option<DateTime<Utc>>,
     #[serde(default)]
     pub idcard: String,
 }
@@ -28,9 +27,7 @@ impl AnimalEntity {
             name: "".to_string(),
             animal_type: "".to_string(),
             sub_type: "".to_string(),
-            birthday: Utc
-                .datetime_from_str("1900-01-01T01:01:01Z", "%Y-%m-%dT%H:%M:%SZ")
-                .unwrap(),
+            birthday: Some(getdefaultdatetime()),
             idcard: "".to_string(),
         }
     }

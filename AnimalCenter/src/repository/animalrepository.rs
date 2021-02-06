@@ -39,7 +39,7 @@ impl IAnimalRepository for AnimalRepository {
         let docs = doc! {
                 "name": entity.name,
                 "type": entity.animal_type,
-                "birthday":entity.birthday,
+                "birthday":entity.birthday.unwrap(),
                 "sub_type":entity.sub_type,
                 "idcard":entity.idcard,
         };
@@ -54,23 +54,26 @@ impl IAnimalRepository for AnimalRepository {
     }
 
     async fn update(&self, entity: AnimalEntity) -> Result<bool, String> {
-        let filter = doc! {"_id":entity.id};
+        let filter = doc! {"_id":bson::oid::ObjectId::with_string(&entity.id).unwrap() };
         let update = doc! {"$set" : doc!{
                 "name": entity.name,
                 "type": entity.animal_type,
-                "birthday":entity.birthday,
+                "birthday":entity.birthday.unwrap(),
                 "sub_type":entity.sub_type,
         }};
 
         let result = self.collection.update_one(filter, update, None).await;
         match result {
-            Ok(r) => Ok(true),
+            Ok(r) => {
+                println!("1 {:?}", r);
+                Ok(true)
+            }
             Err(e) => Err(e.to_string()),
         }
     }
 
     async fn delete(&self, entity: AnimalEntity) -> bool {
-        let filter = doc! {"_id":entity.id};
+        let filter = doc! {"_id":bson::oid::ObjectId::with_string(&entity.id).unwrap() };
         let result = self.collection.delete_one(filter, None).await;
         match result {
             Ok(r) => {
@@ -85,7 +88,7 @@ impl IAnimalRepository for AnimalRepository {
     }
 
     async fn findone(&self, id: String) -> AnimalEntity {
-        let filter = doc! {"_id":id};
+        let filter = doc! {"_id":bson::oid::ObjectId::with_string(&id).unwrap()};
         let result = self.collection.find_one(filter, None).await;
         match result {
             Ok(r) => {

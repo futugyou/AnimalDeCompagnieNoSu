@@ -1,8 +1,6 @@
-use crate::infrastruct::date_format;
-use crate::infrastruct::date_format_option;
-use crate::infrastruct::deserialize_object_id;
+use crate::infrastruct::{serialize::*, *};
 
-use chrono::{DateTime, TimeZone, Utc};
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -31,7 +29,7 @@ pub struct AnimalSearchResponse {
     pub animal_type: String,
     #[serde(default)]
     pub sub_type: String,
-    #[serde(with = "date_format_option", default)]
+    #[serde(with = "date_format")]
     pub birthday: Option<DateTime<Utc>>,
     #[serde(default)]
     pub idcard: String,
@@ -48,8 +46,8 @@ pub struct AnimalUpdateRequest {
     pub animal_type: String,
     #[serde(default)]
     pub sub_type: String,
-    #[serde(with = "date_format")]
-    pub birthday: DateTime<Utc>,
+    #[serde(with = "date_format", default)]
+    pub birthday: Option<DateTime<Utc>>,
 }
 impl AnimalUpdateRequest {
     pub fn new() -> Self {
@@ -58,9 +56,7 @@ impl AnimalUpdateRequest {
             name: "".to_string(),
             animal_type: "".to_string(),
             sub_type: "".to_string(),
-            birthday: Utc
-                .datetime_from_str("1900-01-01T01:01:01Z", "%Y-%m-%dT%H:%M:%SZ")
-                .unwrap(),
+            birthday: Some(getdefaultdatetime()),
         }
     }
 
