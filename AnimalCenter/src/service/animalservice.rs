@@ -7,6 +7,8 @@ use crate::{
 };
 
 use async_trait::async_trait;
+use chrono::Utc;
+use rand::Rng;
 
 #[async_trait]
 pub trait IAnimalService {
@@ -50,21 +52,33 @@ impl IAnimalService for AnimalService {
     async fn modfiy_animal(&self, request: AnimalUpdateRequest) -> AnimalUpdateResponse {
         let results = AnimalUpdateResponse {};
         if request.valid() {
-            let entity: AnimalEntity = request.into();
-            let updateresult = self.animal_repository.update(entity).await;
-            match updateresult {
-                Ok(_re) => {
-                    //DOTO: log ,Domain events
-                    println!("{:?}", "do something");
+            let mut entity: AnimalEntity = request.into();
+            if entity.id != "" {
+                let updateresult = self.animal_repository.update(entity).await;
+                match updateresult {
+                    Ok(_re) => {
+                        //DOTO: log ,Domain events
+                        println!("{:?}", "update ok");
+                    }
+                    Err(e) => {
+                        //TODO: log
+                        println!("{:?}", e + ", update err");
+                    }
                 }
-                Err(e) => {
-                    //TODO: log
-                    println!("{:?}", e + "do something");
-                }
+            } else {
+                entity.idcard = format!(
+                    "{}-{}-{:>04}",
+                    &entity.animal_type,
+                    Utc::now().format("%Y%m%d-%H%M%S"),
+                    rand::thread_rng().gen_range(0001..9999)
+                );
+                let insertresult = self.animal_repository.add(entity).await;
+                //TODO: log
+                println!("{:?}", insertresult + ", insert result");
             }
         } else {
             //TODO: log
-            println!("{:?}", "do something");
+            println!("{:?}", "valid error");
         }
         results
     }
