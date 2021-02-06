@@ -4,6 +4,7 @@ use std::str::FromStr;
 
 pub mod config;
 pub mod context;
+pub mod structmapper;
 
 pub mod date_format {
     use chrono::{DateTime, TimeZone, Utc};
