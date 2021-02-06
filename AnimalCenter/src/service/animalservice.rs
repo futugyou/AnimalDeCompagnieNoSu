@@ -50,8 +50,7 @@ impl IAnimalService for AnimalService {
     async fn modfiy_animal(&self, request: AnimalUpdateRequest) -> AnimalUpdateResponse {
         let results = AnimalUpdateResponse {};
         if request.valid() {
-            //TODO: add search condition
-            let entity: AnimalEntity = AnimalEntity::new();
+            let entity: AnimalEntity = request.into();
             let updateresult = self.animal_repository.update(entity).await;
             match updateresult {
                 Ok(_re) => {

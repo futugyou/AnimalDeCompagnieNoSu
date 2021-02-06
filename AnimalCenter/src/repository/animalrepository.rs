@@ -60,7 +60,6 @@ impl IAnimalRepository for AnimalRepository {
                 "type": entity.animal_type,
                 "birthday":entity.birthday,
                 "sub_type":entity.sub_type,
-                "idcard":entity.idcard,
         }};
 
         let result = self.collection.update_one(filter, update, None).await;
