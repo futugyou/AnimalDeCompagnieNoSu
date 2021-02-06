@@ -1,5 +1,5 @@
-use crate::animal;
 use crate::infrastruct::config::{Config, IConfig};
+use crate::{animal, controller};
 use actix_web::{guard, web, Scope};
 
 pub fn bussisscope() -> Scope {
@@ -20,12 +20,14 @@ pub fn bussisscope() -> Scope {
 fn animalroute(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::resource("/animal")
-            .route(web::get().to(animal::get::animal_handler))
+            //.route(web::get().to(animal::get::animal_handler))
+            .route(web::get().to(controller::animal_controller::get))
             .route(
                 web::route()
                     .guard(guard::Header("Content-Type", "application/json"))
                     .guard(guard::Post())
-                    .to(animal::post::animal_handler),
+                    //.to(animal::post::animal_handler),
+                    .to(controller::animal_controller::post),
             ),
     );
 }

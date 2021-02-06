@@ -1,1 +1,1 @@
-mod animal_controller;
+pub mod animal_controller;

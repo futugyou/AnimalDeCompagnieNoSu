@@ -1,2 +1,2 @@
-mod animalservice;
-mod animaltypeservice;
+pub mod animalservice;
+pub mod animaltypeservice;

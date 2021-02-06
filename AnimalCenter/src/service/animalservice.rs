@@ -80,7 +80,6 @@ impl IAnimalService for AnimalService {
 
     async fn find_animal_by_id(&self, id: String) -> AnimalSearchResponse {
         let findresult = self.animal_repository.findone(id).await;
-        //TODO: convert Animalentity to AnimalSearchResponse
-        todo!()
+        findresult.into()
     }
 }
