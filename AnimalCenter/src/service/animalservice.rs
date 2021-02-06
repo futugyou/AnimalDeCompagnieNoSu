@@ -1,13 +1,12 @@
+use crate::model::animal::animalmodel::{
+    AnimalSearchRequest, AnimalSearchResponse, AnimalUpdateRequest, AnimalUpdateResponse,
+};
 use crate::{
     entity::animalentity::AnimalEntity,
     repository::animalrepository::{AnimalRepository, IAnimalRepository},
 };
-use async_trait::async_trait;
-use bson::doc;
 
-use crate::model::animal::animalmodel::{
-    AnimalSearchRequest, AnimalSearchResponse, AnimalUpdateRequest, AnimalUpdateResponse,
-};
+use async_trait::async_trait;
 
 #[async_trait]
 pub trait IAnimalService {
@@ -34,14 +33,12 @@ impl AnimalService {
 impl IAnimalService for AnimalService {
     async fn search_animals(&self, request: AnimalSearchRequest) -> Vec<AnimalSearchResponse> {
         if request.valid() {
-            //TODO: add search condition
-            let doc = doc! {};
+            let doc = request.into();
             let serachresult = self.animal_repository.findmany(doc).await;
             let mut results = Vec::<AnimalSearchResponse>::new();
             for elem in serachresult {
-                //TODO: convert animalentity to AnimalSearchResponse
-                //let response = AnimalSearchResponse {};
-                //results.push(response);
+                let response = elem.into();
+                results.push(response);
             }
             results
         } else {
