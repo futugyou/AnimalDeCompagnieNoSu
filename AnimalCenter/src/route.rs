@@ -1,5 +1,5 @@
+use crate::controller;
 use crate::infrastruct::config::{Config, IConfig};
-use crate::{animal, controller};
 use actix_web::{guard, web, Scope};
 
 pub fn bussisscope() -> Scope {

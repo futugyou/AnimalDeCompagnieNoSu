@@ -21,7 +21,7 @@ pub async fn get(item: Option<web::Json<AnimalSearchRequest>>, _req: HttpRequest
     HttpResponse::Ok().json(response)
 }
 
-pub async fn post(item: Option<web::Json<AnimalUpdateRequest>>, req: HttpRequest) -> HttpResponse {
+pub async fn post(item: Option<web::Json<AnimalUpdateRequest>>, _req: HttpRequest) -> HttpResponse {
     let service = AnimalService::new().await;
     let mut rep = AnimalUpdateRequest::new();
     match item {

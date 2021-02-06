@@ -23,14 +23,14 @@ pub struct AnimalTypeService {}
 impl IAnimalTypeService for AnimalTypeService {
     async fn search_animal_types(
         &self,
-        request: AnimalTypeSearchRequest,
+        _request: AnimalTypeSearchRequest,
     ) -> Vec<AnimalTypeSearchResponse> {
         todo!()
     }
 
     async fn modfiy_animal_type(
         &self,
-        request: AnimalTypeUpdateRequest,
+        _request: AnimalTypeUpdateRequest,
     ) -> AnimalTypeUpdateResponse {
         todo!()
     }
