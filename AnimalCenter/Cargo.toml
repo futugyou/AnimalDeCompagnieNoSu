@@ -10,9 +10,9 @@ edition = "2018"
 actix-web = "3"
 actix-service = "1.0.6"
 serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0.61"
-async-graphql="2.5.1"
-async-graphql-actix-web = "2.5.1"
+serde_json = "1.0.62"
+async-graphql="2.5.2"
+async-graphql-actix-web = "2.5.2"
 slab = "0.4.2"
 envfile="0.2.1"
 async-trait = "0.1.42"
@@ -20,6 +20,10 @@ futures="0.3.12"
 bson = "1.1.0"
 chrono="0.4.19"
 rand="0.8.3"
+opentelemetry = { version = "0.12", default-features = false, features = ["trace", "metrics"] }
+actix-web-opentelemetry = "0.10.0"
+opentelemetry-jaeger = { version = "0.11" }
+tokio = { version = "0.2", default-features = false, features = ["rt-core", "blocking", "time", "stream"] }
 
 [dependencies.mongodb]
 version = "1.1.1"
