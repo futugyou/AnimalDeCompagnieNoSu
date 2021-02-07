@@ -8,7 +8,6 @@ use async_trait::async_trait;
 use bson::doc;
 use futures::StreamExt;
 use mongodb::options::FindOptions;
-
 #[async_trait]
 pub trait IAnimalRepository {
     async fn add(&self, entity: AnimalEntity) -> String;
@@ -18,6 +17,7 @@ pub trait IAnimalRepository {
     async fn update(&self, entity: AnimalEntity) -> Result<bool, String>;
 }
 
+#[derive(Debug)]
 pub struct AnimalRepository {
     collection: mongodb::Collection,
 }
@@ -103,6 +103,7 @@ impl IAnimalRepository for AnimalRepository {
         }
     }
 
+    #[tracing::instrument(skip(self))]
     async fn findmany(&self, filter: Document) -> Vec<AnimalEntity> {
         let find_options = FindOptions::builder().sort(doc! { "name": 1 }).build();
         let mut cursor = self.collection.find(filter, find_options).await.unwrap();
