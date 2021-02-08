@@ -1,3 +1,5 @@
+use actix_web::dev;
+use actix_web_opentelemetry::RequestMetrics;
 use opentelemetry::{
     global::{self, TracerProviderGuard},
     sdk::{
@@ -10,7 +12,16 @@ use opentelemetry::{
 use tracing_subscriber::prelude::*;
 use tracing_subscriber::Registry;
 
-pub fn init() -> TracerProviderGuard {
+pub fn initmetrics() -> RequestMetrics<impl Fn(&dev::ServiceRequest) -> bool + Send + Clone> {
+    let exporter = opentelemetry_prometheus::exporter().init();
+    let meter = global::meter("animal_center");
+    let metrics_route = |req: &dev::ServiceRequest| {
+        req.path() == "/metrics" && req.method() == actix_web::http::Method::GET
+    };
+    RequestMetrics::new(meter, Some(metrics_route), Some(exporter))
+}
+
+pub fn inittracer() -> TracerProviderGuard {
     // Start an otel jaeger trace pipeline
     global::set_text_map_propagator(TraceContextPropagator::new());
     let exporter = opentelemetry_jaeger::new_pipeline()

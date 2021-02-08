@@ -322,7 +322,9 @@ dependencies = [
  "actix-web",
  "futures",
  "opentelemetry",
+ "opentelemetry-prometheus",
  "opentelemetry-semantic-conventions",
+ "prometheus",
  "serde",
 ]
 
@@ -384,6 +386,7 @@ dependencies = [
  "mongodb",
  "opentelemetry",
  "opentelemetry-jaeger",
+ "opentelemetry-prometheus",
  "rand 0.8.3",
  "serde",
  "serde_json",
@@ -1938,6 +1941,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "opentelemetry-prometheus"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c5407eac459699e03e83f55a557920c612d09f202b58f44212b5cdc4e8a7666e"
+dependencies = [
+ "opentelemetry",
+ "prometheus",
+ "protobuf",
+]
+
+[[package]]
 name = "opentelemetry-semantic-conventions"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2227,6 +2241,27 @@ checksum = "1e0704ee1a7e00d7bb417d0770ea303c1bccbabf0ef1667dae92b5967f5f8a71"
 dependencies = [
  "unicode-xid 0.2.1",
 ]
+
+[[package]]
+name = "prometheus"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c8425533e7122f0c3cc7a37e6244b16ad3a2cc32ae7ac6276e2a75da0d9c200d"
+dependencies = [
+ "cfg-if 1.0.0",
+ "fnv",
+ "lazy_static",
+ "parking_lot 0.11.1",
+ "protobuf",
+ "regex",
+ "thiserror",
+]
+
+[[package]]
+name = "protobuf"
+version = "2.22.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73f72884896d22e0da0e5b266cb9a780b791f6c3b2f5beab6368d6cd4f0dbb86"
 
 [[package]]
 name = "quick-error"

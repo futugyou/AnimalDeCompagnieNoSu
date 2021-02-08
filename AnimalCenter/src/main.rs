@@ -17,13 +17,15 @@ use route::{route as orgroute, route_fake, route_graphql};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let _uninstall = telemetry::init();
+    let metrics = telemetry::initmetrics();
+    let _uninstall = telemetry::inittracer();
     let schema = Schema::new(QueryRoot, EmptyMutation, EmptySubscription);
     HttpServer::new(move || {
         let mut app = App::new();
         app = route_fake::makefakeroute(app);
         app.wrap(Logger::default())
             .wrap(RequestTracing::new())
+            .wrap(metrics.clone())
             // #region -> base curd service
             .service(orgroute::bussisscope())
             // #endregion
