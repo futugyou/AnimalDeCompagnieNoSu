@@ -5,8 +5,6 @@ mod infrastruct;
 mod model;
 mod repository;
 mod route;
-mod route_fake;
-mod route_graphql;
 mod service;
 mod telemetry;
 
@@ -15,6 +13,7 @@ use actix_web::{App, HttpServer};
 use actix_web_opentelemetry::RequestTracing;
 use animal::{AnimalSchema, QueryRoot};
 use async_graphql::{EmptyMutation, EmptySubscription, Schema};
+use route::{route as orgroute, route_fake, route_graphql};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -26,7 +25,7 @@ async fn main() -> std::io::Result<()> {
         app.wrap(Logger::default())
             .wrap(RequestTracing::new())
             // #region -> base curd service
-            .service(route::bussisscope())
+            .service(orgroute::bussisscope())
             // #endregion
             // #region -> graphql
             .data(schema.clone())
