@@ -33,6 +33,7 @@ impl AnimalService {
 
 #[async_trait]
 impl IAnimalService for AnimalService {
+    #[tracing::instrument(skip(self))]
     async fn search_animals(&self, request: AnimalSearchRequest) -> Vec<AnimalSearchResponse> {
         if request.valid() {
             let doc = request.into();
@@ -42,13 +43,16 @@ impl IAnimalService for AnimalService {
                 let response = elem.into();
                 results.push(response);
             }
+            tracing::info!("search_animals result: {:#?}", results);
             results
         } else {
             //TODO: log
+            tracing::error!(" request.valid() error: {:#?}", "TODO:");
             Vec::<AnimalSearchResponse>::new()
         }
     }
 
+    #[tracing::instrument(skip(self))]
     async fn modfiy_animal(&self, request: AnimalUpdateRequest) -> AnimalUpdateResponse {
         let results = AnimalUpdateResponse {};
         if request.valid() {
@@ -56,13 +60,12 @@ impl IAnimalService for AnimalService {
             if entity.id != "" {
                 let updateresult = self.animal_repository.update(entity).await;
                 match updateresult {
-                    Ok(_re) => {
-                        //DOTO: log ,Domain events
-                        println!("{:?}", "update ok");
+                    Ok(r) => {
+                        //DOTO: Domain events
+                        tracing::info!("call animal_repository update result: {:#?}", r);
                     }
                     Err(e) => {
-                        //TODO: log
-                        println!("{:?}", e + ", update err");
+                        tracing::error!("call animal_repository update error: {:#?}", e);
                     }
                 }
             } else {
@@ -73,25 +76,26 @@ impl IAnimalService for AnimalService {
                     rand::thread_rng().gen_range(0001..9999)
                 );
                 let insertresult = self.animal_repository.add(entity).await;
-                //TODO: log
-                println!("{:?}", insertresult + ", insert result");
+                tracing::info!("call animal_repository add result: {:#?}", insertresult);
             }
         } else {
             //TODO: log
-            println!("{:?}", "valid error");
+            tracing::error!(" request.valid() error: {:#?}", "TODO:");
         }
         results
     }
 
+    #[tracing::instrument(skip(self))]
     async fn delete_animal(&self, id: String) {
         let mut entity = AnimalEntity::new();
         entity.id = id;
         let deleteresult = self.animal_repository.delete(entity).await;
         if deleteresult {
-            //DOTO: log ,Domain events
+            //DOTO: Domain events
         }
     }
 
+    #[tracing::instrument(skip(self))]
     async fn find_animal_by_id(&self, id: String) -> AnimalSearchResponse {
         let findresult = self.animal_repository.findone(id).await;
         findresult.into()

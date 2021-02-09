@@ -35,6 +35,7 @@ impl AnimalRepository {
 
 #[async_trait]
 impl IAnimalRepository for AnimalRepository {
+    #[tracing::instrument(skip(self))]
     async fn add(&self, entity: AnimalEntity) -> String {
         let docs = doc! {
                 "name": entity.name,
@@ -45,14 +46,18 @@ impl IAnimalRepository for AnimalRepository {
         };
         let result = self.collection.insert_one(docs, None).await;
         match result {
-            Ok(r) => r.inserted_id.to_string(),
+            Ok(r) => {
+                tracing::info!("db insert_one result: {:#?}", r);
+                r.inserted_id.to_string()
+            }
             Err(e) => {
-                println!("{:?}", e);
+                tracing::error!("db insert_one error: {:#?}", e);
                 "".to_string()
             }
         }
     }
 
+    #[tracing::instrument(skip(self))]
     async fn update(&self, entity: AnimalEntity) -> Result<bool, String> {
         let filter = doc! {"_id":bson::oid::ObjectId::with_string(&entity.id).unwrap() };
         let update = doc! {"$set" : doc!{
@@ -65,56 +70,79 @@ impl IAnimalRepository for AnimalRepository {
         let result = self.collection.update_one(filter, update, None).await;
         match result {
             Ok(r) => {
-                println!("1 {:?}", r);
+                tracing::info!("db update_one result: {:#?}", r);
                 Ok(true)
             }
-            Err(e) => Err(e.to_string()),
-        }
-    }
-
-    async fn delete(&self, entity: AnimalEntity) -> bool {
-        let filter = doc! {"_id":bson::oid::ObjectId::with_string(&entity.id).unwrap() };
-        let result = self.collection.delete_one(filter, None).await;
-        match result {
-            Ok(r) => {
-                println!("ok {:?}", r);
-                true
-            }
             Err(e) => {
-                println!("err {:?}", e);
-                false
-            }
-        }
-    }
-
-    async fn findone(&self, id: String) -> AnimalEntity {
-        let filter = doc! {"_id":bson::oid::ObjectId::with_string(&id).unwrap()};
-        let result = self.collection.find_one(filter, None).await;
-        match result {
-            Ok(r) => {
-                let basn = Bson::Document(r.unwrap());
-                let b = bson::from_bson(basn);
-                b.unwrap()
-            }
-            Err(e) => {
-                print!("{:?}", e);
-                AnimalEntity::new()
+                tracing::error!("db update_one error: {:#?}", e);
+                Err(e.to_string())
             }
         }
     }
 
     #[tracing::instrument(skip(self))]
+    async fn delete(&self, entity: AnimalEntity) -> bool {
+        let filter = doc! {"_id":bson::oid::ObjectId::with_string(&entity.id).unwrap() };
+        let result = self.collection.delete_one(filter, None).await;
+        match result {
+            Ok(r) => {
+                tracing::info!("db delete_one result: {:#?}", r);
+                true
+            }
+            Err(e) => {
+                tracing::error!("db delete_one error: {:#?}", e);
+                false
+            }
+        }
+    }
+
+    #[tracing::instrument(skip(self))]
+    async fn findone(&self, id: String) -> AnimalEntity {
+        let filter = doc! {"_id":bson::oid::ObjectId::with_string(&id).unwrap()};
+        let result = self.collection.find_one(filter, None).await;
+        let mut animal = AnimalEntity::new();
+        match result {
+            Ok(r) => {
+                let basn = Bson::Document(r.unwrap());
+                let b = bson::from_bson(basn);
+                match b {
+                    Ok(a) => animal = a,
+                    Err(e) => {
+                        tracing::error!("bson to animal_entity error when findone: {:#?}", e);
+                    }
+                }
+            }
+            Err(e) => {
+                tracing::error!("db search error when findone: {:#?}", e);
+            }
+        }
+        tracing::info!("findone result: {:#?}", animal);
+        animal
+    }
+
+    #[tracing::instrument(skip(self))]
     async fn findmany(&self, filter: Document) -> Vec<AnimalEntity> {
         let find_options = FindOptions::builder().sort(doc! { "name": 1 }).build();
-        let mut cursor = self.collection.find(filter, find_options).await.unwrap();
-
+        let cursor_result = self.collection.find(filter, find_options).await;
         let mut animals = Vec::<AnimalEntity>::new();
-        while let Some(result) = cursor.next().await {
-            let basn = Bson::Document(result.unwrap());
-            let b = bson::from_bson(basn);
-            let animal = b.unwrap();
-            animals.push(animal)
+        match cursor_result {
+            Ok(mut cursor) => {
+                while let Some(result) = cursor.next().await {
+                    let basn = Bson::Document(result.unwrap());
+                    let b = bson::from_bson(basn);
+                    match b {
+                        Ok(animal) => animals.push(animal),
+                        Err(e) => {
+                            tracing::error!("bson to animal_entity error when findmany: {:#?}", e);
+                        }
+                    }
+                }
+            }
+            Err(e) => {
+                tracing::error!("DB error when findmany: {:#?}", e);
+            }
         }
+        tracing::info!("findmany result: {:#?}", animals);
         animals
     }
 }
