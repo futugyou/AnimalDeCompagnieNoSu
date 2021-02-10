@@ -2,10 +2,12 @@ use crate::infrastruct::{serialize::*, *};
 
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+use validator::Validate; //ValidationErrornvw
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Validate, Serialize, Deserialize)]
 pub struct AnimalSearchRequest {
     #[serde(default)]
+    #[validate(length(max = 20))]
     pub name: String,
     #[serde(default)]
     #[serde(rename = "type")]
@@ -13,8 +15,11 @@ pub struct AnimalSearchRequest {
 }
 
 impl AnimalSearchRequest {
-    pub fn valid(&self) -> bool {
-        true
+    pub fn valid(&self) -> Result<bool, String> {
+        match self.validate() {
+            Ok(_) => Ok(true),
+            Err(e) => Err(format!("{:#?}", e)),
+        }
     }
 }
 
@@ -35,16 +40,19 @@ pub struct AnimalSearchResponse {
     pub idcard: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Validate, Serialize, Deserialize)]
 pub struct AnimalUpdateRequest {
     #[serde(default)]
     pub id: String,
     #[serde(default)]
+    #[validate(length(min = 2, max = 20))]
     pub name: String,
     #[serde(default)]
     #[serde(rename = "type")]
+    #[validate(length(min = 2, max = 20))]
     pub animal_type: String,
     #[serde(default)]
+    #[validate(length(min = 2, max = 20))]
     pub sub_type: String,
     #[serde(with = "date_format", default)]
     pub birthday: Option<DateTime<Utc>>,
@@ -60,9 +68,11 @@ impl AnimalUpdateRequest {
         }
     }
 
-    pub fn valid(&self) -> bool {
-        //TODO: add verify
-        true
+    pub fn valid(&self) -> Result<bool, String> {
+        match self.validate() {
+            Ok(_) => Ok(true),
+            Err(e) => Err(format!("{:#?}", e)),
+        }
     }
 }
 #[derive(Debug, Serialize, Deserialize)]

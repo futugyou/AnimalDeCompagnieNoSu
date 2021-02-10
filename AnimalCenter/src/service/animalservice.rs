@@ -35,52 +35,56 @@ impl AnimalService {
 impl IAnimalService for AnimalService {
     #[tracing::instrument(skip(self))]
     async fn search_animals(&self, request: AnimalSearchRequest) -> Vec<AnimalSearchResponse> {
-        if request.valid() {
-            let doc = request.into();
-            let serachresult = self.animal_repository.findmany(doc).await;
-            let mut results = Vec::<AnimalSearchResponse>::new();
-            for elem in serachresult {
-                let response = elem.into();
-                results.push(response);
+        match request.valid() {
+            Ok(_) => {
+                let doc = request.into();
+                let serachresult = self.animal_repository.findmany(doc).await;
+                let mut results = Vec::<AnimalSearchResponse>::new();
+                for elem in serachresult {
+                    let response = elem.into();
+                    results.push(response);
+                }
+                tracing::info!("search_animals result: {:#?}", results);
+                results
             }
-            tracing::info!("search_animals result: {:#?}", results);
-            results
-        } else {
-            //TODO: log
-            tracing::error!(" request.valid() error: {:#?}", "TODO:");
-            Vec::<AnimalSearchResponse>::new()
+            Err(message) => {
+                tracing::error!(" request.valid() error: {:#?}", message);
+                Vec::<AnimalSearchResponse>::new()
+            }
         }
     }
 
     #[tracing::instrument(skip(self))]
     async fn modfiy_animal(&self, request: AnimalUpdateRequest) -> AnimalUpdateResponse {
         let results = AnimalUpdateResponse {};
-        if request.valid() {
-            let mut entity: AnimalEntity = request.into();
-            if entity.id != "" {
-                let updateresult = self.animal_repository.update(entity).await;
-                match updateresult {
-                    Ok(r) => {
-                        //DOTO: Domain events
-                        tracing::info!("call animal_repository update result: {:#?}", r);
+        match request.valid() {
+            Ok(_) => {
+                let mut entity: AnimalEntity = request.into();
+                if entity.id != "" {
+                    let updateresult = self.animal_repository.update(entity).await;
+                    match updateresult {
+                        Ok(r) => {
+                            //DOTO: Domain events
+                            tracing::info!("call animal_repository update result: {:#?}", r);
+                        }
+                        Err(e) => {
+                            tracing::error!("call animal_repository update error: {:#?}", e);
+                        }
                     }
-                    Err(e) => {
-                        tracing::error!("call animal_repository update error: {:#?}", e);
-                    }
+                } else {
+                    entity.idcard = format!(
+                        "{}-{}-{:>04}",
+                        &entity.animal_type,
+                        Utc::now().format("%Y%m%d-%H%M%S"),
+                        rand::thread_rng().gen_range(0001..9999)
+                    );
+                    let insertresult = self.animal_repository.add(entity).await;
+                    tracing::info!("call animal_repository add result: {:#?}", insertresult);
                 }
-            } else {
-                entity.idcard = format!(
-                    "{}-{}-{:>04}",
-                    &entity.animal_type,
-                    Utc::now().format("%Y%m%d-%H%M%S"),
-                    rand::thread_rng().gen_range(0001..9999)
-                );
-                let insertresult = self.animal_repository.add(entity).await;
-                tracing::info!("call animal_repository add result: {:#?}", insertresult);
             }
-        } else {
-            //TODO: log
-            tracing::error!(" request.valid() error: {:#?}", "TODO:");
+            Err(message) => {
+                tracing::error!(" request.valid() error: {:#?}", message);
+            }
         }
         results
     }
