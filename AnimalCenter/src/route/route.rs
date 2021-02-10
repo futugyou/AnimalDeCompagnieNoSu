@@ -1,11 +1,11 @@
 use crate::controller;
-use crate::infrastruct::config::{Config, IConfig};
+use crate::infrastruct::config::Config;
 use actix_web::{guard, web, Scope};
 
 pub fn bussisscope() -> Scope {
-    let _config = Config {};
-    let apikey = _config.get_config_with_key("API_KEY");
-    let apivalue = _config.get_config_with_key("API_VALUE");
+    let _config = Config::new();
+    let apikey = _config.api_key;
+    let apivalue = _config.api_value;
     web::scope("/api")
         .guard(guard::fn_guard(move |req| {
             match req.headers().get(apikey.clone()) {

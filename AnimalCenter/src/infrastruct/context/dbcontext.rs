@@ -1,4 +1,4 @@
-use crate::infrastruct::config::{Config, IConfig};
+use crate::infrastruct::config::Config;
 use async_trait::async_trait;
 use mongodb::{options::ClientOptions, Client};
 #[async_trait]
@@ -11,8 +11,8 @@ pub struct DBContext {}
 #[async_trait]
 impl IDbContext for DBContext {
     async fn get_db_context(&self) -> Client {
-        let _config = Config {};
-        let conn_str = _config.get_config_with_key("MONGODB_URI");
+        let _config = Config::new();
+        let conn_str = _config.mongodb_uri;
         let client_options = ClientOptions::parse(&conn_str[..]).await.unwrap();
         Client::with_options(client_options).unwrap()
     }

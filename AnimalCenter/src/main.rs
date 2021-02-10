@@ -13,10 +13,12 @@ use actix_web::{App, HttpServer};
 use actix_web_opentelemetry::RequestTracing;
 use animal::{AnimalSchema, QueryRoot};
 use async_graphql::{EmptyMutation, EmptySubscription, Schema};
+use dotenv::dotenv;
 use route::{route as orgroute, route_fake, route_graphql};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    dotenv().ok();
     let metrics = telemetry::initmetrics();
     let _uninstall = telemetry::inittracer();
     let schema = Schema::new(QueryRoot, EmptyMutation, EmptySubscription);

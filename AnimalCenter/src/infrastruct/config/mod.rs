@@ -1,3 +1,3 @@
 mod config;
 
-pub use config::{Config, IConfig};
+pub use self::config::{Config, IConfig};
