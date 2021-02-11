@@ -1,8 +1,9 @@
-use crate::model::animal::animalmodel::{
-    AnimalSearchRequest, AnimalSearchResponse, AnimalUpdateRequest, AnimalUpdateResponse,
-};
 use crate::{
     entity::animalentity::AnimalEntity,
+    infrastruct::custom_error::{CustomError, CustomErrorKind},
+    model::animal::animalmodel::{
+        AnimalSearchRequest, AnimalSearchResponse, AnimalUpdateRequest, AnimalUpdateResponse,
+    },
     repository::animalrepository::{AnimalRepository, IAnimalRepository},
 };
 
@@ -13,7 +14,10 @@ use rand::Rng;
 #[async_trait]
 pub trait IAnimalService {
     async fn search_animals(&self, request: AnimalSearchRequest) -> Vec<AnimalSearchResponse>;
-    async fn modfiy_animal(&self, request: AnimalUpdateRequest) -> AnimalUpdateResponse;
+    async fn modfiy_animal(
+        &self,
+        request: AnimalUpdateRequest,
+    ) -> Result<AnimalUpdateResponse, CustomError>;
     async fn delete_animal(&self, id: String);
     async fn find_animal_by_id(&self, id: String) -> AnimalSearchResponse;
 }
@@ -55,7 +59,10 @@ impl IAnimalService for AnimalService {
     }
 
     #[tracing::instrument(skip(self))]
-    async fn modfiy_animal(&self, request: AnimalUpdateRequest) -> AnimalUpdateResponse {
+    async fn modfiy_animal(
+        &self,
+        request: AnimalUpdateRequest,
+    ) -> Result<AnimalUpdateResponse, CustomError> {
         let results = AnimalUpdateResponse {};
         match request.valid() {
             Ok(_) => {
@@ -69,6 +76,11 @@ impl IAnimalService for AnimalService {
                         }
                         Err(e) => {
                             tracing::error!("call animal_repository update error: {:#?}", e);
+                            return Err(CustomError::new(
+                                "10000".to_owned(),
+                                e,
+                                CustomErrorKind::BusinessError,
+                            ));
                         }
                     }
                 } else {
@@ -84,9 +96,14 @@ impl IAnimalService for AnimalService {
             }
             Err(message) => {
                 tracing::error!(" request.valid() error: {:#?}", message);
+                return Err(CustomError::new(
+                    "20000".to_owned(),
+                    message,
+                    CustomErrorKind::ValidateError,
+                ));
             }
         }
-        results
+        Ok(results)
     }
 
     #[tracing::instrument(skip(self))]
