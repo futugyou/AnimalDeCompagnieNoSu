@@ -9,14 +9,11 @@ pub trait BaseRequest: Validate {
     fn valid(&self) -> Result<bool, CustomError> {
         match self.validate() {
             Ok(_) => Ok(true),
-            Err(_e) => {
-                //Err(format!("{:#?}", e));
-                Err(CustomError::new(
-                    "".to_owned(),
-                    "".to_owned(),
-                    custom_error::CustomErrorKind::ValidateError,
-                ))
-            }
+            Err(errors) => Err(CustomError::new(
+                "10000".to_owned(),
+                format!("{:?}", errors),
+                custom_error::CustomErrorKind::ValidateError,
+            )),
         }
     }
 }
@@ -54,14 +51,26 @@ pub struct AnimalUpdateRequest {
     #[serde(default)]
     pub id: String,
     #[serde(default)]
-    #[validate(length(min = 2, max = 20))]
+    #[validate(length(
+        min = 2,
+        max = 20,
+        message = "`name` length must big than {min} and less than {max}"
+    ))]
     pub name: String,
     #[serde(default)]
     #[serde(rename = "type")]
-    #[validate(length(min = 2, max = 20))]
+    #[validate(length(
+        min = 2,
+        max = 20,
+        message = "`type` length must big than {min} and less than {max}"
+    ))]
     pub animal_type: String,
     #[serde(default)]
-    #[validate(length(min = 2, max = 20))]
+    #[validate(length(
+        min = 2,
+        max = 20,
+        message = "`sub_type` length must big than {min} and less than {max}"
+    ))]
     pub sub_type: String,
     #[serde(with = "date_format", default)]
     pub birthday: Option<DateTime<Utc>>,
