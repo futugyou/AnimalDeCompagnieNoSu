@@ -2,6 +2,7 @@ use chrono::{DateTime, TimeZone, Utc};
 
 pub mod config;
 pub mod context;
+pub mod custom_error;
 pub mod serialize;
 pub mod structmapper;
 
