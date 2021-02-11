@@ -5,18 +5,8 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate; //ValidationErrornvw
 
-#[derive(Debug, Validate, Serialize, Deserialize)]
-pub struct AnimalSearchRequest {
-    #[serde(default)]
-    #[validate(length(max = 20))]
-    pub name: String,
-    #[serde(default)]
-    #[serde(rename = "type")]
-    pub animal_type: Vec<String>,
-}
-
-impl AnimalSearchRequest {
-    pub fn valid(&self) -> Result<bool, CustomError> {
+pub trait BaseRequest: Validate {
+    fn valid(&self) -> Result<bool, CustomError> {
         match self.validate() {
             Ok(_) => Ok(true),
             Err(_e) => {
@@ -31,6 +21,17 @@ impl AnimalSearchRequest {
     }
 }
 
+#[derive(Debug, Validate, Serialize, Deserialize)]
+pub struct AnimalSearchRequest {
+    #[serde(default)]
+    #[validate(length(max = 20))]
+    pub name: String,
+    #[serde(default)]
+    #[serde(rename = "type")]
+    pub animal_type: Vec<String>,
+}
+
+impl BaseRequest for AnimalSearchRequest {}
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AnimalSearchResponse {
     #[serde(alias = "_id", default, deserialize_with = "deserialize_object_id")]
@@ -65,6 +66,8 @@ pub struct AnimalUpdateRequest {
     #[serde(with = "date_format", default)]
     pub birthday: Option<DateTime<Utc>>,
 }
+
+impl BaseRequest for AnimalUpdateRequest {}
 impl AnimalUpdateRequest {
     pub fn new() -> Self {
         Self {
@@ -73,20 +76,6 @@ impl AnimalUpdateRequest {
             animal_type: "".to_string(),
             sub_type: "".to_string(),
             birthday: Some(getdefaultdatetime()),
-        }
-    }
-
-    pub fn valid(&self) -> Result<bool, CustomError> {
-        match self.validate() {
-            Ok(_) => Ok(true),
-            Err(_e) => {
-                //Err(format!("{:#?}", e));
-                Err(CustomError::new(
-                    "".to_owned(),
-                    "".to_owned(),
-                    custom_error::CustomErrorKind::ValidateError,
-                ))
-            }
         }
     }
 }

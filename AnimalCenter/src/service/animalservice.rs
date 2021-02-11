@@ -3,6 +3,7 @@ use crate::{
     infrastruct::custom_error::{CustomError, CustomErrorKind},
     model::animal::animalmodel::{
         AnimalSearchRequest, AnimalSearchResponse, AnimalUpdateRequest, AnimalUpdateResponse,
+        BaseRequest,
     },
     repository::animalrepository::{AnimalRepository, IAnimalRepository},
 };
