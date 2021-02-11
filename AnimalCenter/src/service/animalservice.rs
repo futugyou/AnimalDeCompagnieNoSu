@@ -94,13 +94,9 @@ impl IAnimalService for AnimalService {
                     tracing::info!("call animal_repository add result: {:#?}", insertresult);
                 }
             }
-            Err(message) => {
-                tracing::error!(" request.valid() error: {:#?}", message);
-                return Err(CustomError::new(
-                    "20000".to_owned(),
-                    message,
-                    CustomErrorKind::ValidateError,
-                ));
+            Err(err) => {
+                tracing::error!(" request.valid() error: {:#?}", err);
+                return Err(err);
             }
         }
         Ok(results)

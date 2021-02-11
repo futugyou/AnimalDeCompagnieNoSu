@@ -1,4 +1,5 @@
 use crate::infrastruct::{serialize::*, *};
+use crate::model::animal::animalmodel::custom_error::CustomError;
 
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -15,10 +16,17 @@ pub struct AnimalSearchRequest {
 }
 
 impl AnimalSearchRequest {
-    pub fn valid(&self) -> Result<bool, String> {
+    pub fn valid(&self) -> Result<bool, CustomError> {
         match self.validate() {
             Ok(_) => Ok(true),
-            Err(e) => Err(format!("{:#?}", e)),
+            Err(_e) => {
+                //Err(format!("{:#?}", e));
+                Err(CustomError::new(
+                    "".to_owned(),
+                    "".to_owned(),
+                    custom_error::CustomErrorKind::ValidateError,
+                ))
+            }
         }
     }
 }
@@ -68,10 +76,17 @@ impl AnimalUpdateRequest {
         }
     }
 
-    pub fn valid(&self) -> Result<bool, String> {
+    pub fn valid(&self) -> Result<bool, CustomError> {
         match self.validate() {
             Ok(_) => Ok(true),
-            Err(e) => Err(format!("{:#?}", e)),
+            Err(_e) => {
+                //Err(format!("{:#?}", e));
+                Err(CustomError::new(
+                    "".to_owned(),
+                    "".to_owned(),
+                    custom_error::CustomErrorKind::ValidateError,
+                ))
+            }
         }
     }
 }
