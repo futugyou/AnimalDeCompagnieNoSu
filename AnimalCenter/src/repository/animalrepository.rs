@@ -25,7 +25,7 @@ pub struct AnimalRepository {
 impl AnimalRepository {
     pub async fn new() -> Self {
         let dbcontext = DBContext {};
-        let dbclient = dbcontext.get_db_context().await;
+        let dbclient = dbcontext.get_db_context().await.unwrap();
         let collection = dbclient
             .database("react-app")
             .collection(AnimalEntity::get_collection_name());

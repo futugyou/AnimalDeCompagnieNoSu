@@ -3,6 +3,11 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CustomError {
+    /// ValidateError 10000 ~ 19999
+    /// BusinessError 20000 ~ 29999
+    /// NetworkError 30000 ~ 39999
+    /// MiddlewareError 40000 ~ 49999
+    /// SerializeError 50000 ~ 59999
     code: String,
     message: String,
     error_kind: CustomErrorKind,

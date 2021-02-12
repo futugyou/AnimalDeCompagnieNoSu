@@ -73,7 +73,7 @@ impl IAnimalService for AnimalService {
                         Err(e) => {
                             tracing::error!("call animal_repository update error: {:#?}", e);
                             return Err(CustomError::new(
-                                "10000".to_owned(),
+                                "20000".to_owned(),
                                 e,
                                 CustomErrorKind::BusinessError,
                             ));
