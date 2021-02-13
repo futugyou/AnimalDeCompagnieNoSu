@@ -90,3 +90,5 @@ impl AnimalUpdateRequest {
 }
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AnimalUpdateResponse {}
+
+pub struct AnimalClearFakeData {}
