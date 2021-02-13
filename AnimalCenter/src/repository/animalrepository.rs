@@ -1,17 +1,22 @@
 use crate::{
     entity::animalentity::AnimalEntity,
-    infrastruct::context::dbcontext::{DBContext, IDbContext},
+    infrastruct::{
+        context::dbcontext::{DBContext, IDbContext},
+        custom_error::CustomError,
+        stringtoObjectId,
+    },
 };
-use bson::{Bson, Document};
 
 use async_trait::async_trait;
 use bson::doc;
+use bson::{Bson, Document};
 use futures::StreamExt;
 use mongodb::options::FindOptions;
+
 #[async_trait]
 pub trait IAnimalRepository {
     async fn add(&self, entity: AnimalEntity) -> String;
-    async fn delete(&self, entity: AnimalEntity) -> bool;
+    async fn delete(&self, entity: AnimalEntity) -> Result<bool, CustomError>;
     async fn findone(&self, id: String) -> AnimalEntity;
     async fn findmany(&self, filter: Document) -> Vec<AnimalEntity>;
     async fn update(&self, entity: AnimalEntity) -> Result<bool, String>;
@@ -81,19 +86,17 @@ impl IAnimalRepository for AnimalRepository {
     }
 
     #[tracing::instrument(skip(self))]
-    async fn delete(&self, entity: AnimalEntity) -> bool {
-        let filter = doc! {"_id":bson::oid::ObjectId::with_string(&entity.id).unwrap() };
-        let result = self.collection.delete_one(filter, None).await;
-        match result {
-            Ok(r) => {
-                tracing::info!("db delete_one result: {:#?}", r);
-                true
-            }
-            Err(e) => {
-                tracing::error!("db delete_one error: {:#?}", e);
-                false
-            }
+    async fn delete(&self, entity: AnimalEntity) -> Result<bool, CustomError> {
+        let oid = stringtoObjectId(&entity.id)?;
+        let filter = doc! {"_id":oid};
+        let result = self.collection.delete_one(filter, None).await?;
+        if result.deleted_count == 0 {
+            tracing::warn!(
+                "db delete_one result: id {:#?} can not found in db",
+                &entity.id
+            );
         }
+        Ok(true)
     }
 
     #[tracing::instrument(skip(self))]

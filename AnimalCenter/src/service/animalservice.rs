@@ -14,7 +14,7 @@ pub trait IAnimalService {
         &self,
         request: AnimalUpdateRequest,
     ) -> Result<AnimalUpdateResponse, CustomError>;
-    async fn delete_animal(&self, id: String);
+    async fn delete_animal(&self, id: String) -> Result<(), CustomError>;
     async fn find_animal_by_id(&self, id: String) -> AnimalSearchResponse;
 }
 
@@ -99,13 +99,14 @@ impl IAnimalService for AnimalService {
     }
 
     #[tracing::instrument(skip(self))]
-    async fn delete_animal(&self, id: String) {
+    async fn delete_animal(&self, id: String) -> Result<(), CustomError> {
         let mut entity = AnimalEntity::new();
         entity.id = id;
-        let deleteresult = self.animal_repository.delete(entity).await;
+        let deleteresult = self.animal_repository.delete(entity).await?;
         if deleteresult {
             //DOTO: Domain events
         }
+        Ok(())
     }
 
     #[tracing::instrument(skip(self))]

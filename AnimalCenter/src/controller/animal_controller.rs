@@ -44,6 +44,6 @@ pub async fn delete(
 ) -> Result<HttpResponse, Error> {
     let id = parameters.get("id").unwrap().to_owned();
     let service = AnimalService::new().await;
-    service.delete_animal(id).await;
+    service.delete_animal(id).await?;
     Ok(HttpResponse::Ok().json("ok"))
 }

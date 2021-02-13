@@ -26,7 +26,6 @@ fn animalroute(cfg: &mut web::ServiceConfig) {
                 web::route()
                     .guard(guard::Header("Content-Type", "application/json"))
                     .guard(guard::Post())
-                    //.to(animal::post::animal_handler),
                     .to(controller::animal_controller::post),
             ),
     );
