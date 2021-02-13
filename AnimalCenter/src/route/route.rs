@@ -29,6 +29,10 @@ fn animalroute(cfg: &mut web::ServiceConfig) {
                     .to(controller::animal_controller::post),
             ),
     );
+    cfg.service(
+        web::resource("/animal/clearfakedata")
+            .route(web::post().to(controller::animal_controller::clearfake)),
+    );
 }
 
 fn animaltyperoute(cfg: &mut web::ServiceConfig) {

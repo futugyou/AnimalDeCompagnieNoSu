@@ -47,3 +47,9 @@ pub async fn delete(
     service.delete_animal(id).await?;
     Ok(HttpResponse::Ok().json("ok"))
 }
+
+pub async fn clearfake(_req: HttpRequest) -> Result<HttpResponse, Error> {
+    let service = AnimalService::new().await;
+    service.clear_fake_data().await?;
+    Ok(HttpResponse::Ok().json("ok"))
+}

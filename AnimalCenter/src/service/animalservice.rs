@@ -15,6 +15,7 @@ pub trait IAnimalService {
         request: AnimalUpdateRequest,
     ) -> Result<AnimalUpdateResponse, CustomError>;
     async fn delete_animal(&self, id: String) -> Result<(), CustomError>;
+    async fn clear_fake_data(&self) -> Result<(), CustomError>;
     async fn find_animal_by_id(&self, id: String) -> AnimalSearchResponse;
 }
 
@@ -113,5 +114,15 @@ impl IAnimalService for AnimalService {
     async fn find_animal_by_id(&self, id: String) -> AnimalSearchResponse {
         let findresult = self.animal_repository.findone(id).await;
         findresult.into()
+    }
+
+    #[tracing::instrument(skip(self))]
+    async fn clear_fake_data(&self) -> Result<(), CustomError> {
+        let doc = AnimalClearFakeData {}.into();
+        let serachresult = self.animal_repository.findmany(doc).await;
+        for entity in serachresult {
+            self.animal_repository.delete(entity).await?;
+        }
+        Ok(())
     }
 }
