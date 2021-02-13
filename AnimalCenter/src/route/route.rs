@@ -20,7 +20,7 @@ pub fn bussisscope() -> Scope {
 fn animalroute(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::resource("/animal")
-            //.route(web::get().to(animal::get::animal_handler))
+            .route(web::delete().to(controller::animal_controller::delete))
             .route(web::get().to(controller::animal_controller::get))
             .route(
                 web::route()

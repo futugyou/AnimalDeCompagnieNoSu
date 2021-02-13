@@ -2,6 +2,7 @@ use crate::model::animal::animalmodel::{AnimalSearchRequest, AnimalUpdateRequest
 use crate::service::animalservice::{AnimalService, IAnimalService};
 
 use actix_web::{web, Error, HttpRequest, HttpResponse};
+use std::collections::HashMap;
 
 pub async fn get(item: Option<web::Json<AnimalSearchRequest>>, _req: HttpRequest) -> HttpResponse {
     let service = AnimalService::new().await;
@@ -35,4 +36,14 @@ pub async fn post(
     };
     let response = service.modfiy_animal(rep).await?;
     Ok(HttpResponse::Ok().json(response))
+}
+
+pub async fn delete(
+    parameters: web::Query<HashMap<String, String>>,
+    _req: HttpRequest,
+) -> Result<HttpResponse, Error> {
+    let id = parameters.get("id").unwrap().to_owned();
+    let service = AnimalService::new().await;
+    service.delete_animal(id).await;
+    Ok(HttpResponse::Ok().json("ok"))
 }
