@@ -43,3 +43,32 @@ impl ResponseError for CustomError {
         actix_web::HttpResponse::Ok().json(self)
     }
 }
+
+impl std::convert::From<mongodb::error::Error> for CustomError {
+    fn from(error: mongodb::error::Error) -> Self {
+        Self {
+            code: "40001".to_owned(),
+            message: error.to_string(),
+            error_kind: CustomErrorKind::MiddlewareError,
+        }
+    }
+}
+impl std::convert::From<config::ConfigError> for CustomError {
+    fn from(error: config::ConfigError) -> Self {
+        Self {
+            code: "40000".to_owned(),
+            message: error.to_string(),
+            error_kind: CustomErrorKind::MiddlewareError,
+        }
+    }
+}
+
+impl std::convert::From<bson::oid::Error> for CustomError {
+    fn from(error: bson::oid::Error) -> Self {
+        Self {
+            code: "10001".to_owned(),
+            message: error.to_string(),
+            error_kind: CustomErrorKind::ValidateError,
+        }
+    }
+}
