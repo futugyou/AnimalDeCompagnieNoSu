@@ -14,6 +14,7 @@ pub fn getdefaultdatetime() -> DateTime<Utc> {
     Utc.datetime_from_str(DATETIMEDEFAULT, FORMAT).unwrap()
 }
 
+#[allow(non_snake_case)]
 pub fn stringtoObjectId(str: &str) -> Result<bson::oid::ObjectId, CustomError> {
     Ok(bson::oid::ObjectId::with_string(str)?)
 }

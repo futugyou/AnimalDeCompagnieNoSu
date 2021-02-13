@@ -95,6 +95,7 @@ impl IAnimalRepository for AnimalRepository {
                 "db delete_one result: id {:#?} can not found in db",
                 &entity.id
             );
+            return Ok(false);
         }
         Ok(true)
     }
