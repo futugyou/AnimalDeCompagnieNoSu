@@ -1,5 +1,6 @@
-use config::ConfigError;
 use serde::Deserialize;
+
+use crate::infrastruct::custom_error::CustomError;
 
 pub trait IConfig {}
 
@@ -15,10 +16,10 @@ impl Config {
         Self::from_env().unwrap()
     }
 
-    fn from_env() -> Result<Self, ConfigError> {
+    fn from_env() -> Result<Self, CustomError> {
         let mut cfg = ::config::Config::new();
         cfg.merge(::config::Environment::new())?;
-        cfg.try_into()
+        Ok(cfg.try_into()?)
     }
 }
 impl IConfig for Config {}
