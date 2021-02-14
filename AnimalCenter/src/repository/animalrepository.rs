@@ -17,7 +17,7 @@ use mongodb::options::FindOptions;
 pub trait IAnimalRepository {
     async fn add(&self, entity: AnimalEntity) -> Result<String, CustomError>;
     async fn delete(&self, entity: AnimalEntity) -> Result<bool, CustomError>;
-    async fn findone(&self, id: String) -> AnimalEntity;
+    async fn findone(&self, id: String) -> Result<AnimalEntity, CustomError>;
     async fn findmany(&self, filter: Document) -> Vec<AnimalEntity>;
     async fn update(&self, entity: AnimalEntity) -> Result<bool, String>;
 }
@@ -100,27 +100,17 @@ impl IAnimalRepository for AnimalRepository {
     }
 
     #[tracing::instrument(skip(self))]
-    async fn findone(&self, id: String) -> AnimalEntity {
-        let filter = doc! {"_id":bson::oid::ObjectId::with_string(&id).unwrap()};
-        let result = self.collection.find_one(filter, None).await;
+    async fn findone(&self, id: String) -> Result<AnimalEntity, CustomError> {
+        let oid = stringtoObjectId(&id)?;
+        let filter = doc! {"_id":oid};
+        let result = self.collection.find_one(filter, None).await?;
         let mut animal = AnimalEntity::new();
-        match result {
-            Ok(r) => {
-                let basn = Bson::Document(r.unwrap());
-                let b = bson::from_bson(basn);
-                match b {
-                    Ok(a) => animal = a,
-                    Err(e) => {
-                        tracing::error!("bson to animal_entity error when findone: {:#?}", e);
-                    }
-                }
-            }
-            Err(e) => {
-                tracing::error!("db search error when findone: {:#?}", e);
-            }
+
+        if let Some(doc) = result {
+            animal = bson::from_bson(Bson::Document(doc))?;
         }
         tracing::info!("findone result: {:#?}", animal);
-        animal
+        Ok(animal)
     }
 
     #[tracing::instrument(skip(self))]

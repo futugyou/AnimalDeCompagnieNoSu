@@ -72,3 +72,13 @@ impl std::convert::From<bson::oid::Error> for CustomError {
         }
     }
 }
+
+impl std::convert::From<bson::de::Error> for CustomError {
+    fn from(error: bson::de::Error) -> Self {
+        Self {
+            code: "40002".to_owned(),
+            message: error.to_string(),
+            error_kind: CustomErrorKind::MiddlewareError,
+        }
+    }
+}

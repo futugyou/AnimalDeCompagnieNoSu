@@ -87,7 +87,7 @@ impl IAnimalService for AnimalService {
                         Utc::now().format("%Y%m%d-%H%M%S"),
                         rand::thread_rng().gen_range(0001..9999)
                     );
-                    let insertresult = self.animal_repository.add(entity).await;
+                    let insertresult = self.animal_repository.add(entity).await?;
                     tracing::info!("call animal_repository add result: {:#?}", insertresult);
                 }
             }
@@ -113,7 +113,13 @@ impl IAnimalService for AnimalService {
     #[tracing::instrument(skip(self))]
     async fn find_animal_by_id(&self, id: String) -> AnimalSearchResponse {
         let findresult = self.animal_repository.findone(id).await;
-        findresult.into()
+        match findresult {
+            Ok(animal) => animal.into(),
+            Err(err) => {
+                tracing::warn!("can not found the data , {:#?}", err);
+                AnimalEntity::new().into()
+            }
+        }
     }
 
     #[tracing::instrument(skip(self))]
