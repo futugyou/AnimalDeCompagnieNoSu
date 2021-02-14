@@ -2,7 +2,7 @@ use crate::{
     entity::animalentity::AnimalEntity,
     infrastruct::{
         context::dbcontext::{DBContext, IDbContext},
-        custom_error::CustomError,
+        custom_error::{CustomError, CustomErrorKind},
         stringtoObjectId,
     },
 };
@@ -15,7 +15,7 @@ use mongodb::options::FindOptions;
 
 #[async_trait]
 pub trait IAnimalRepository {
-    async fn add(&self, entity: AnimalEntity) -> String;
+    async fn add(&self, entity: AnimalEntity) -> Result<String, CustomError>;
     async fn delete(&self, entity: AnimalEntity) -> Result<bool, CustomError>;
     async fn findone(&self, id: String) -> AnimalEntity;
     async fn findmany(&self, filter: Document) -> Vec<AnimalEntity>;
@@ -41,7 +41,7 @@ impl AnimalRepository {
 #[async_trait]
 impl IAnimalRepository for AnimalRepository {
     #[tracing::instrument(skip(self))]
-    async fn add(&self, entity: AnimalEntity) -> String {
+    async fn add(&self, entity: AnimalEntity) -> Result<String, CustomError> {
         let docs = doc! {
                 "name": entity.name,
                 "type": entity.animal_type,
@@ -49,17 +49,16 @@ impl IAnimalRepository for AnimalRepository {
                 "sub_type":entity.sub_type,
                 "idcard":entity.idcard,
         };
-        let result = self.collection.insert_one(docs, None).await;
-        match result {
-            Ok(r) => {
-                tracing::info!("db insert_one result: {:#?}", r);
-                r.inserted_id.to_string()
-            }
-            Err(e) => {
-                tracing::error!("db insert_one error: {:#?}", e);
-                "".to_string()
-            }
+        let result = self.collection.insert_one(docs, None).await?;
+        tracing::info!("db insert_one result: {:#?}", result);
+        if let Bson::ObjectId(oid) = result.inserted_id {
+            return Ok(oid.to_hex());
         }
+        Err(CustomError::new(
+            "40000".to_owned(),
+            "insert_one return an unknown data type".to_owned(),
+            CustomErrorKind::MiddlewareError,
+        ))
     }
 
     #[tracing::instrument(skip(self))]
