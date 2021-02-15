@@ -3,11 +3,13 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CustomError {
-    /// ValidateError 10000 ~ 19999
-    /// BusinessError 20000 ~ 29999
-    /// NetworkError 30000 ~ 39999
-    /// MiddlewareError 40000 ~ 49999
-    /// SerializeError 50000 ~ 59999
+    /// SerializeError, 10000 ~ 19999
+    /// ValidateError, 20000 ~ 29999
+    /// ConfigurationError, 30000 ~ 39999
+    /// MongodbError, 40000 ~ 49999
+    /// RabbitmqError, 50000 ~ 59999
+    /// HttpError, 60000 ~ 69999
+    /// BusinessError, 70000 ~ 79999
     code: String,
     message: String,
     error_kind: CustomErrorKind,
@@ -25,11 +27,13 @@ impl CustomError {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum CustomErrorKind {
-    MiddlewareError,
-    NetworkError,
     SerializeError,
-    BusinessError,
     ValidateError,
+    ConfigurationError,
+    MongodbError,
+    RabbitmqError,
+    HttpError,
+    BusinessError,
 }
 impl std::error::Error for CustomError {}
 impl std::fmt::Display for CustomError {
@@ -44,31 +48,12 @@ impl ResponseError for CustomError {
     }
 }
 
-impl std::convert::From<mongodb::error::Error> for CustomError {
-    fn from(error: mongodb::error::Error) -> Self {
-        Self {
-            code: "40001".to_owned(),
-            message: error.to_string(),
-            error_kind: CustomErrorKind::MiddlewareError,
-        }
-    }
-}
-impl std::convert::From<config::ConfigError> for CustomError {
-    fn from(error: config::ConfigError) -> Self {
-        Self {
-            code: "40000".to_owned(),
-            message: error.to_string(),
-            error_kind: CustomErrorKind::MiddlewareError,
-        }
-    }
-}
-
 impl std::convert::From<bson::oid::Error> for CustomError {
     fn from(error: bson::oid::Error) -> Self {
         Self {
             code: "10001".to_owned(),
             message: error.to_string(),
-            error_kind: CustomErrorKind::ValidateError,
+            error_kind: CustomErrorKind::SerializeError,
         }
     }
 }
@@ -76,9 +61,75 @@ impl std::convert::From<bson::oid::Error> for CustomError {
 impl std::convert::From<bson::de::Error> for CustomError {
     fn from(error: bson::de::Error) -> Self {
         Self {
-            code: "40002".to_owned(),
+            code: "10002".to_owned(),
             message: error.to_string(),
-            error_kind: CustomErrorKind::MiddlewareError,
+            error_kind: CustomErrorKind::SerializeError,
+        }
+    }
+}
+
+impl serde::de::Error for CustomError {
+    fn custom<T>(msg: T) -> Self
+    where
+        T: std::fmt::Display,
+    {
+        Self {
+            code: "10003".to_owned(),
+            message: msg.to_string(),
+            error_kind: CustomErrorKind::SerializeError,
+        }
+    }
+}
+
+impl serde::ser::Error for CustomError {
+    fn custom<T>(msg: T) -> Self
+    where
+        T: std::fmt::Display,
+    {
+        Self {
+            code: "10004".to_owned(),
+            message: msg.to_string(),
+            error_kind: CustomErrorKind::SerializeError,
+        }
+    }
+}
+
+impl std::convert::From<validator::ValidationErrors> for CustomError {
+    fn from(error: validator::ValidationErrors) -> Self {
+        Self {
+            code: "20001".to_owned(),
+            message: error.to_string(),
+            error_kind: CustomErrorKind::ValidateError,
+        }
+    }
+}
+
+impl std::convert::From<config::ConfigError> for CustomError {
+    fn from(error: config::ConfigError) -> Self {
+        Self {
+            code: "30001".to_owned(),
+            message: error.to_string(),
+            error_kind: CustomErrorKind::ConfigurationError,
+        }
+    }
+}
+
+impl std::convert::From<mongodb::error::Error> for CustomError {
+    fn from(error: mongodb::error::Error) -> Self {
+        Self {
+            code: "40001".to_owned(),
+            message: error.to_string(),
+            error_kind: CustomErrorKind::MongodbError,
+        }
+    }
+}
+
+impl std::convert::From<lapin::Error> for CustomError {
+    fn from(error: lapin::Error) -> Self {
+        Self {
+            code: "50001".to_owned(),
+            message: error.to_string(),
+            error_kind: CustomErrorKind::RabbitmqError,
         }
     }
 }

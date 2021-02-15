@@ -57,7 +57,7 @@ impl IAnimalRepository for AnimalRepository {
         Err(CustomError::new(
             "40000".to_owned(),
             "insert_one return an unknown data type".to_owned(),
-            CustomErrorKind::MiddlewareError,
+            CustomErrorKind::MongodbError,
         ))
     }
 

@@ -7,14 +7,8 @@ use validator::Validate; //ValidationErrornvw
 
 pub trait BaseRequest: Validate {
     fn valid(&self) -> Result<bool, CustomError> {
-        match self.validate() {
-            Ok(_) => Ok(true),
-            Err(errors) => Err(CustomError::new(
-                "10000".to_owned(),
-                format!("{:?}", errors),
-                custom_error::CustomErrorKind::ValidateError,
-            )),
-        }
+        self.validate()?;
+        Ok(true)
     }
 }
 
