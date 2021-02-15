@@ -18,7 +18,7 @@ pub trait IAnimalRepository {
     async fn add(&self, entity: AnimalEntity) -> Result<String, CustomError>;
     async fn delete(&self, entity: AnimalEntity) -> Result<bool, CustomError>;
     async fn findone(&self, id: String) -> Result<AnimalEntity, CustomError>;
-    async fn findmany(&self, filter: Document) -> Vec<AnimalEntity>;
+    async fn findmany(&self, filter: Document) -> Result<Vec<AnimalEntity>, CustomError>;
     async fn update(&self, entity: AnimalEntity) -> Result<bool, CustomError>;
 }
 
@@ -113,28 +113,14 @@ impl IAnimalRepository for AnimalRepository {
     }
 
     #[tracing::instrument(skip(self))]
-    async fn findmany(&self, filter: Document) -> Vec<AnimalEntity> {
+    async fn findmany(&self, filter: Document) -> Result<Vec<AnimalEntity>, CustomError> {
         let find_options = FindOptions::builder().sort(doc! { "name": 1 }).build();
-        let cursor_result = self.collection.find(filter, find_options).await;
+        let mut cursor = self.collection.find(filter, find_options).await?;
         let mut animals = Vec::<AnimalEntity>::new();
-        match cursor_result {
-            Ok(mut cursor) => {
-                while let Some(result) = cursor.next().await {
-                    let basn = Bson::Document(result.unwrap());
-                    let b = bson::from_bson(basn);
-                    match b {
-                        Ok(animal) => animals.push(animal),
-                        Err(e) => {
-                            tracing::error!("bson to animal_entity error when findmany: {:#?}", e);
-                        }
-                    }
-                }
-            }
-            Err(e) => {
-                tracing::error!("DB error when findmany: {:#?}", e);
-            }
+        while let Some(result) = cursor.next().await {
+            animals.push(bson::from_bson(Bson::Document(result?))?);
         }
         tracing::info!("findmany result: {:#?}", animals);
-        animals
+        Ok(animals)
     }
 }

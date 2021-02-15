@@ -39,17 +39,28 @@ impl IAnimalService for AnimalService {
         match request.valid() {
             Ok(_) => {
                 let doc = request.into();
-                let serachresult = self.animal_repository.findmany(doc).await;
-                let mut results = Vec::<AnimalSearchResponse>::new();
-                for elem in serachresult {
-                    let response = elem.into();
-                    results.push(response);
+                let serach_result = self.animal_repository.findmany(doc).await;
+                match serach_result {
+                    Ok(search) => {
+                        let mut results = Vec::<AnimalSearchResponse>::new();
+                        for elem in search {
+                            let response = elem.into();
+                            results.push(response);
+                        }
+                        tracing::info!("search_animals result: {:#?}", results);
+                        results
+                    }
+                    Err(error) => {
+                        tracing::error!(
+                            "search_animals call animal_repository.findmany() error: {:#?}",
+                            error
+                        );
+                        Vec::<AnimalSearchResponse>::new()
+                    }
                 }
-                tracing::info!("search_animals result: {:#?}", results);
-                results
             }
             Err(message) => {
-                tracing::error!(" request.valid() error: {:#?}", message);
+                tracing::error!("search_animals request.valid() error: {:#?}", message);
                 Vec::<AnimalSearchResponse>::new()
             }
         }
@@ -121,7 +132,7 @@ impl IAnimalService for AnimalService {
     #[tracing::instrument(skip(self))]
     async fn clear_fake_data(&self) -> Result<(), CustomError> {
         let doc = AnimalClearFakeData {}.into();
-        let serachresult = self.animal_repository.findmany(doc).await;
+        let serachresult = self.animal_repository.findmany(doc).await?;
         for entity in serachresult {
             self.animal_repository.delete(entity).await?;
         }
