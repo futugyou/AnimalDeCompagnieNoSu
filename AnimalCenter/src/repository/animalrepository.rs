@@ -19,7 +19,7 @@ pub trait IAnimalRepository {
     async fn delete(&self, entity: AnimalEntity) -> Result<bool, CustomError>;
     async fn findone(&self, id: String) -> Result<AnimalEntity, CustomError>;
     async fn findmany(&self, filter: Document) -> Vec<AnimalEntity>;
-    async fn update(&self, entity: AnimalEntity) -> Result<bool, String>;
+    async fn update(&self, entity: AnimalEntity) -> Result<bool, CustomError>;
 }
 
 #[derive(Debug)]
@@ -62,8 +62,9 @@ impl IAnimalRepository for AnimalRepository {
     }
 
     #[tracing::instrument(skip(self))]
-    async fn update(&self, entity: AnimalEntity) -> Result<bool, String> {
-        let filter = doc! {"_id":bson::oid::ObjectId::with_string(&entity.id).unwrap() };
+    async fn update(&self, entity: AnimalEntity) -> Result<bool, CustomError> {
+        let oid = stringtoObjectId(&entity.id)?;
+        let filter = doc! {"_id":oid};
         let update = doc! {"$set" : doc!{
                 "name": entity.name,
                 "type": entity.animal_type,
@@ -71,17 +72,15 @@ impl IAnimalRepository for AnimalRepository {
                 "sub_type":entity.sub_type,
         }};
 
-        let result = self.collection.update_one(filter, update, None).await;
-        match result {
-            Ok(r) => {
-                tracing::info!("db update_one result: {:#?}", r);
-                Ok(true)
-            }
-            Err(e) => {
-                tracing::error!("db update_one error: {:#?}", e);
-                Err(e.to_string())
-            }
+        let result = self.collection.update_one(filter, update, None).await?;
+        if result.modified_count == 0 {
+            tracing::warn!(
+                "db update_one result: id {:#?} can not found in db",
+                &entity.id
+            );
+            return Ok(false);
         }
+        Ok(true)
     }
 
     #[tracing::instrument(skip(self))]
