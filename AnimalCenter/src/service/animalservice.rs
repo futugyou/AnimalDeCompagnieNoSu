@@ -1,6 +1,8 @@
 use crate::{
-    entity::animalentity::AnimalEntity, infrastruct::custom_error::*,
-    model::animal::animalmodel::*, repository::animalrepository::*,
+    entity::animalentity::AnimalEntity,
+    infrastruct::{context::mqcontext::IMQContext, custom_error::*},
+    model::animal::animalmodel::*,
+    repository::animalrepository::*,
 };
 
 use async_trait::async_trait;
@@ -79,6 +81,9 @@ impl IAnimalService for AnimalService {
                     let updateresult = self.animal_repository.update(entity).await;
                     match updateresult {
                         Ok(r) => {
+                            let mq = crate::infrastruct::context::mqcontext::MQContext::new();
+                            mq.send_message("this is test message", "modfiy_animal")
+                                .await?;
                             //DOTO: Domain events
                             tracing::info!("call animal_repository update result: {:#?}", r);
                         }

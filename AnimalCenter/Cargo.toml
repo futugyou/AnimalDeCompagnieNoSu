@@ -31,7 +31,7 @@ tracing-subscriber = "0.2"
 tracing-futures = { version = "0.2.4", default-features = false }
 opentelemetry-prometheus ="0.5.0" 
 validator = { version = "0.12", features = ["derive"] }
-
+lapin="1.6.6"
 
 [dependencies.mongodb]
 version = "1.1.1"
