@@ -42,35 +42,41 @@ impl IMQContext for MQContext {
     ) -> Result<(), CustomError> {
         let connection = self.get_mq_connection().await?;
         let channel = connection.create_channel().await?;
-        let queue = channel
-            .queue_declare(
-                queue_name,
-                QueueDeclareOptions::default(),
-                FieldTable::default(),
-            )
-            .await?;
+        // let queue = channel
+        //     .queue_declare(
+        //         queue_name,
+        //         QueueDeclareOptions {
+        //             durable: true,
+        //             ..QueueDeclareOptions::default()
+        //         },
+        //         FieldTable::default(),
+        //     )
+        //     .await?;
         channel
             .exchange_declare(
                 "animal-exchange",
-                ExchangeKind::Topic,
-                ExchangeDeclareOptions::default(),
+                ExchangeKind::Direct,
+                ExchangeDeclareOptions {
+                    durable: true,
+                    ..ExchangeDeclareOptions::default()
+                },
                 FieldTable::default(),
             )
             .await?;
-        channel
-            .queue_bind(
-                queue.name().as_str(),
-                "animal-exchange",
-                routing_key,
-                QueueBindOptions::default(),
-                FieldTable::default(),
-            )
-            .await?;
+        // channel
+        //     .queue_bind(
+        //         queue.name().as_str(),
+        //         "animal-exchange",
+        //         routing_key,
+        //         QueueBindOptions::default(),
+        //         FieldTable::default(),
+        //     )
+        //     .await?;
 
         let publish_confirm = channel
             .basic_publish(
                 "animal-exchange",
-                queue_name,
+                routing_key,
                 BasicPublishOptions::default(),
                 message.as_bytes().to_vec(),
                 BasicProperties::default(),
