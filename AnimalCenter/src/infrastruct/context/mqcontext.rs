@@ -2,17 +2,18 @@ use crate::infrastruct::{config::Config, custom_error::*};
 
 use async_trait::async_trait;
 use lapin::{
-    options::*, //publisher_confirm::Confirmation,
-    types::FieldTable,
-    BasicProperties,
-    Connection,
-    ConnectionProperties,
+    options::*, types::FieldTable, BasicProperties, Connection, ConnectionProperties, ExchangeKind,
 };
 
 #[async_trait]
 pub trait IMQContext {
     async fn get_mq_connection(&self) -> Result<Connection, CustomError>;
-    async fn send_message(&self, t: &str, queue: &str) -> Result<(), CustomError>;
+    async fn send_message(
+        &self,
+        message: &str,
+        queue: &str,
+        routing_key: &str,
+    ) -> Result<(), CustomError>;
 }
 
 pub struct MQContext {}
@@ -31,19 +32,47 @@ impl IMQContext for MQContext {
         let connect = Connection::connect(&conn_str, ConnectionProperties::default()).await?;
         Ok(connect)
     }
+
     #[tracing::instrument(skip(self))]
-    async fn send_message(&self, t: &str, queue: &str) -> Result<(), CustomError> {
+    async fn send_message(
+        &self,
+        message: &str,
+        queue_name: &str,
+        routing_key: &str,
+    ) -> Result<(), CustomError> {
         let connection = self.get_mq_connection().await?;
         let channel = connection.create_channel().await?;
-        let _queue = channel
-            .queue_declare(queue, QueueDeclareOptions::default(), FieldTable::default())
+        let queue = channel
+            .queue_declare(
+                queue_name,
+                QueueDeclareOptions::default(),
+                FieldTable::default(),
+            )
             .await?;
+        channel
+            .exchange_declare(
+                "animal-exchange",
+                ExchangeKind::Topic,
+                ExchangeDeclareOptions::default(),
+                FieldTable::default(),
+            )
+            .await?;
+        channel
+            .queue_bind(
+                queue.name().as_str(),
+                "animal-exchange",
+                routing_key,
+                QueueBindOptions::default(),
+                FieldTable::default(),
+            )
+            .await?;
+
         let publish_confirm = channel
             .basic_publish(
-                "",
-                queue,
+                "animal-exchange",
+                queue_name,
                 BasicPublishOptions::default(),
-                t.as_bytes().to_vec(),
+                message.as_bytes().to_vec(),
                 BasicProperties::default(),
             )
             .await?;

@@ -77,12 +77,13 @@ impl IAnimalService for AnimalService {
         match request.valid() {
             Ok(_) => {
                 let mut entity: AnimalEntity = request.into();
+                let json_message = serde_json::to_string(&entity)?;
                 if entity.id != "" {
                     let updateresult = self.animal_repository.update(entity).await;
                     match updateresult {
                         Ok(r) => {
                             let mq = crate::infrastruct::context::mqcontext::MQContext::new();
-                            mq.send_message("this is test message", "modfiy_animal")
+                            mq.send_message(&json_message, "modfiy_animal", "update")
                                 .await?;
                             //DOTO: Domain events
                             tracing::info!("call animal_repository update result: {:#?}", r);
