@@ -94,6 +94,16 @@ impl serde::ser::Error for CustomError {
     }
 }
 
+impl std::convert::From<serde_json::Error> for CustomError {
+    fn from(error: serde_json::Error) -> Self {
+        Self {
+            code: "10006".to_owned(),
+            message: error.to_string(),
+            error_kind: CustomErrorKind::SerializeError,
+        }
+    }
+}
+
 impl std::convert::From<validator::ValidationErrors> for CustomError {
     fn from(error: validator::ValidationErrors) -> Self {
         Self {
