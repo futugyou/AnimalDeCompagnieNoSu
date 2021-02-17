@@ -77,15 +77,14 @@ impl IAnimalService for AnimalService {
         match request.valid() {
             Ok(_) => {
                 let mut entity: AnimalEntity = request.into();
-                let json_message = serde_json::to_string(&entity)?;
                 if entity.id != "" {
+                    let json_message = serde_json::to_string(&entity)?;
                     let updateresult = self.animal_repository.update(entity).await;
                     match updateresult {
                         Ok(r) => {
                             let mq = crate::infrastruct::context::mqcontext::MQContext::new();
                             mq.send_message(&json_message, "modfiy_animal", "update")
                                 .await?;
-                            //DOTO: Domain events
                             tracing::info!("call animal_repository update result: {:#?}", r);
                         }
                         Err(e) => {
@@ -100,7 +99,11 @@ impl IAnimalService for AnimalService {
                         Utc::now().format("%Y%m%d-%H%M%S"),
                         rand::thread_rng().gen_range(0001..9999)
                     );
+                    let json_message = serde_json::to_string(&entity)?;
                     let insertresult = self.animal_repository.add(entity).await?;
+                    let mq = crate::infrastruct::context::mqcontext::MQContext::new();
+                    mq.send_message(&json_message, "modfiy_animal", "insert")
+                        .await?;
                     tracing::info!("call animal_repository add result: {:#?}", insertresult);
                 }
             }
@@ -116,9 +119,12 @@ impl IAnimalService for AnimalService {
     async fn delete_animal(&self, id: String) -> Result<(), CustomError> {
         let mut entity = AnimalEntity::new();
         entity.id = id;
+        let json_message = serde_json::to_string(&entity)?;
         let deleteresult = self.animal_repository.delete(entity).await?;
         if deleteresult {
-            //DOTO: Domain events
+            let mq = crate::infrastruct::context::mqcontext::MQContext::new();
+            mq.send_message(&json_message, "modfiy_animal", "delete")
+                .await?;
         }
         Ok(())
     }
