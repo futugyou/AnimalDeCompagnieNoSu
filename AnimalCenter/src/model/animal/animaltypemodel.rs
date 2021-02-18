@@ -11,7 +11,7 @@ pub struct AnimalTypeSearchRequest {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AnimalTypeSearchResponse {
-    #[serde(alias = "_id", default, deserialize_with = "deserialize_object_id")]
+    #[serde(default)]
     pub id: String,
     #[serde(default)]
     pub pid: String,
