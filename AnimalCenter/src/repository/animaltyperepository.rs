@@ -40,23 +40,80 @@ impl AnimalTypeRepository {
 
 #[async_trait]
 impl IAnimalTypeRepository for AnimalTypeRepository {
+    #[tracing::instrument(skip(self))]
     async fn add(&self, entity: AnimalTypeEntity) -> Result<String, CustomError> {
-        todo!()
+        let docs = doc! {
+                "pid": entity.pid,
+                "type": entity.animal_type,
+        };
+        let result = self.collection.insert_one(docs, None).await?;
+        tracing::info!("db insert_one result: {:#?}", result);
+        if let Bson::ObjectId(oid) = result.inserted_id {
+            return Ok(oid.to_hex());
+        }
+        Err(CustomError::new(
+            "40000".to_owned(),
+            "insert_one return an unknown data type".to_owned(),
+            CustomErrorKind::MongodbError,
+        ))
     }
-
+    #[tracing::instrument(skip(self))]
     async fn delete(&self, entity: AnimalTypeEntity) -> Result<bool, CustomError> {
-        todo!()
+        let oid = stringtoObjectId(&entity.id)?;
+        let filter = doc! {"_id":oid};
+        let result = self.collection.delete_one(filter, None).await?;
+        if result.deleted_count == 0 {
+            tracing::warn!(
+                "db delete_one result: id {:#?} can not found in db",
+                &entity.id
+            );
+            return Ok(false);
+        }
+        Ok(true)
     }
-
+    #[tracing::instrument(skip(self))]
     async fn findone(&self, id: String) -> Result<AnimalTypeEntity, CustomError> {
-        todo!()
-    }
+        let oid = stringtoObjectId(&id)?;
+        let filter = doc! {"_id":oid};
+        let result = self.collection.find_one(filter, None).await?;
+        let mut animaltype = AnimalTypeEntity::new();
 
+        if let Some(doc) = result {
+            animaltype = bson::from_bson(Bson::Document(doc))?;
+        }
+        tracing::info!("findone result: {:#?}", animaltype);
+        Ok(animaltype)
+    }
+    #[tracing::instrument(skip(self))]
     async fn findmany(&self, filter: Document) -> Result<Vec<AnimalTypeEntity>, CustomError> {
-        todo!()
+        let find_options = FindOptions::builder()
+            .sort(doc! { "animal_type": 1 })
+            .build();
+        let mut cursor = self.collection.find(filter, find_options).await?;
+        let mut animaltypes = Vec::<AnimalTypeEntity>::new();
+        while let Some(result) = cursor.next().await {
+            animaltypes.push(bson::from_bson(Bson::Document(result?))?);
+        }
+        tracing::info!("findmany result: {:#?}", animaltypes);
+        Ok(animaltypes)
     }
-
+    #[tracing::instrument(skip(self))]
     async fn update(&self, entity: AnimalTypeEntity) -> Result<bool, CustomError> {
-        todo!()
+        let oid = stringtoObjectId(&entity.id)?;
+        let filter = doc! {"_id":oid};
+        let update = doc! {"$set" : doc!{
+                "pid": entity.pid,
+                "type": entity.animal_type,
+        }};
+
+        let result = self.collection.update_one(filter, update, None).await?;
+        if result.modified_count == 0 {
+            tracing::warn!(
+                "db update_one result: id {:#?} can not found in db",
+                &entity.id
+            );
+            return Ok(false);
+        }
+        Ok(true)
     }
 }
