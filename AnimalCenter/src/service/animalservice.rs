@@ -1,3 +1,4 @@
+use crate::model::animal::BaseRequest;
 use crate::{
     entity::animalentity::AnimalEntity,
     infrastruct::{context::mqcontext::IMQContext, custom_error::*},

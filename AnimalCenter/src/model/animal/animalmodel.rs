@@ -1,16 +1,9 @@
 use crate::infrastruct::{serialize::*, *};
-use crate::model::animal::animalmodel::custom_error::CustomError;
+use crate::model::animal::BaseRequest;
 
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate; //ValidationErrornvw
-
-pub trait BaseRequest: Validate {
-    fn valid(&self) -> Result<bool, CustomError> {
-        self.validate()?;
-        Ok(true)
-    }
-}
 
 #[derive(Debug, Validate, Serialize, Deserialize)]
 pub struct AnimalSearchRequest {

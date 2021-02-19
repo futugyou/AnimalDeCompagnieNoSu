@@ -1,6 +1,7 @@
-use crate::infrastruct::serialize::*;
+use crate::model::animal::BaseRequest;
 
 use serde::{Deserialize, Serialize};
+use validator::Validate;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AnimalTypeSearchRequest {
@@ -20,14 +21,16 @@ pub struct AnimalTypeSearchResponse {
     pub animal_type: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Validate, Serialize, Deserialize)]
 pub struct AnimalTypeUpdateRequest {
     #[serde(default)]
     pub id: String,
     #[serde(default)]
     #[serde(rename = "type")]
+    #[validate(length(max = 20))]
     pub animal_type: String,
 }
 
+impl BaseRequest for AnimalTypeUpdateRequest {}
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AnimalTypeUpdateResponse {}
