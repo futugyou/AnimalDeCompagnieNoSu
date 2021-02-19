@@ -26,11 +26,26 @@ pub struct AnimalTypeUpdateRequest {
     #[serde(default)]
     pub id: String,
     #[serde(default)]
+    pub pid: String,
+    #[serde(default)]
     #[serde(rename = "type")]
     #[validate(length(max = 20))]
     pub animal_type: String,
 }
 
+impl AnimalTypeUpdateRequest {
+    pub fn new() -> Self {
+        Self {
+            id: "".to_owned(),
+            pid: "".to_owned(),
+            animal_type: "".to_owned(),
+        }
+    }
+}
+
 impl BaseRequest for AnimalTypeUpdateRequest {}
 #[derive(Debug, Serialize, Deserialize)]
-pub struct AnimalTypeUpdateResponse {}
+pub struct AnimalTypeUpdateResponse {
+    #[serde(default)]
+    pub id: String,
+}

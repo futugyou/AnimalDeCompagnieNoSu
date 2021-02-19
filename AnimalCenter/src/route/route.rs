@@ -38,12 +38,12 @@ fn animalroute(cfg: &mut web::ServiceConfig) {
 fn animaltyperoute(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::resource("/animaltype")
-            .route(web::get().to(|| actix_web::HttpResponse::Ok()))
+            .route(web::get().to(controller::animaltype_controller::get))
             .route(
                 web::route()
                     .guard(guard::Header("Content-Type", "application/json"))
                     .guard(guard::Post())
-                    .to(|| actix_web::HttpResponse::Ok()),
+                    .to(controller::animaltype_controller::post),
             ),
     );
 }

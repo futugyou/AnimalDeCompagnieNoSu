@@ -1,5 +1,6 @@
 use async_trait::async_trait;
 
+use crate::model::animal::BaseRequest;
 use crate::{
     model::animal::animaltypemodel::{
         AnimalTypeSearchRequest, AnimalTypeSearchResponse, AnimalTypeUpdateRequest,
@@ -55,11 +56,41 @@ impl IAnimalTypeService for AnimalTypeService {
         }
         reposonse
     }
-
+    #[tracing::instrument(skip(self))]
     async fn modfiy_animal_type(
         &self,
-        _request: AnimalTypeUpdateRequest,
+        request: AnimalTypeUpdateRequest,
     ) -> AnimalTypeUpdateResponse {
-        todo!()
+        let valid = request.valid();
+        let mut response = AnimalTypeUpdateResponse { id: "".to_owned() };
+        match valid {
+            Ok(_) => {
+                if request.id != "" {
+                    let update_result = self.animaltype_repository.update(request.into()).await;
+                    match update_result {
+                        Ok(_update) => {
+                            //TODO: insert when false
+                        }
+                        Err(error) => {
+                            tracing::warn!("update error : {:#?}", error);
+                        }
+                    }
+                } else {
+                    let insert_result = self.animaltype_repository.add(request.into()).await;
+                    match insert_result {
+                        Ok(insert) => {
+                            response.id = insert;
+                        }
+                        Err(error) => {
+                            tracing::warn!("insert error : {:#?}", error);
+                        }
+                    }
+                }
+            }
+            Err(error) => {
+                tracing::warn!("request valid error : {:#?}", error);
+            }
+        }
+        response
     }
 }

@@ -1,6 +1,8 @@
 use crate::{
     entity::animaltypeentity::AnimalTypeEntity,
-    model::animal::animaltypemodel::{AnimalTypeSearchRequest, AnimalTypeSearchResponse},
+    model::animal::animaltypemodel::{
+        AnimalTypeSearchRequest, AnimalTypeSearchResponse, AnimalTypeUpdateRequest,
+    },
 };
 use bson::{doc, Document};
 
@@ -19,6 +21,15 @@ impl From<AnimalTypeEntity> for AnimalTypeSearchResponse {
             id: entity.id,
             pid: entity.pid,
             animal_type: entity.animal_type,
+        }
+    }
+}
+impl From<AnimalTypeUpdateRequest> for AnimalTypeEntity {
+    fn from(request: AnimalTypeUpdateRequest) -> Self {
+        Self {
+            id: request.id,
+            pid: request.pid,
+            animal_type: request.animal_type,
         }
     }
 }
