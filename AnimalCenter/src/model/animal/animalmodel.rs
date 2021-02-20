@@ -75,7 +75,21 @@ impl AnimalUpdateRequest {
         }
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
-pub struct AnimalUpdateResponse {}
+#[derive(Default, Debug, Serialize, Deserialize)]
+pub struct AnimalUpdateResponse {
+    #[serde(default)]
+    pub id: String,
+    #[serde(default)]
+    pub name: String,
+    #[serde(default)]
+    #[serde(rename = "type")]
+    pub animal_type: String,
+    #[serde(default)]
+    pub sub_type: String,
+    #[serde(with = "date_format")]
+    pub birthday: Option<DateTime<Utc>>,
+    #[serde(default)]
+    pub idcard: String,
+}
 
 pub struct AnimalClearFakeData {}

@@ -107,7 +107,7 @@ impl IAnimalTypeRepository for AnimalTypeRepository {
         }};
 
         let result = self.collection.update_one(filter, update, None).await?;
-        if result.modified_count == 0 {
+        if result.matched_count == 0 && result.modified_count == 0 {
             tracing::warn!(
                 "db update_one result: id {:#?} can not found in db",
                 &entity.id
