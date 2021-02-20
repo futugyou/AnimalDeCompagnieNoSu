@@ -77,16 +77,24 @@ impl IAnimalService for AnimalService {
         let results = AnimalUpdateResponse {};
         match request.valid() {
             Ok(_) => {
-                let mut entity: AnimalEntity = request.into();
+                let entity: AnimalEntity = request.into();
                 if entity.id != "" {
                     let json_message = serde_json::to_string(&entity)?;
-                    let updateresult = self.animal_repository.update(entity).await;
+                    let updateresult = self.animal_repository.update(entity.clone()).await;
                     match updateresult {
                         Ok(r) => {
-                            let mq = crate::infrastruct::context::mqcontext::MQContext::new();
-                            mq.send_message(&json_message, "modfiy_animal", "update")
-                                .await?;
-                            tracing::info!("call animal_repository update result: {:#?}", r);
+                            if r {
+                                let mq = crate::infrastruct::context::mqcontext::MQContext::new();
+                                mq.send_message(&json_message, "modfiy_animal", "update")
+                                    .await?;
+                                tracing::info!("call animal_repository update result: {:#?}", r);
+                            } else {
+                                let insertresult = add_new_animal(entity.clone(), &self).await?;
+                                tracing::info!(
+                                    "call animal_repository add result: {:#?}",
+                                    insertresult
+                                );
+                            }
                         }
                         Err(e) => {
                             tracing::error!("call animal_repository update error: {:#?}", e);
@@ -94,17 +102,7 @@ impl IAnimalService for AnimalService {
                         }
                     }
                 } else {
-                    entity.idcard = format!(
-                        "{}-{}-{:>04}",
-                        &entity.animal_type,
-                        Utc::now().format("%Y%m%d-%H%M%S"),
-                        rand::thread_rng().gen_range(0001..9999)
-                    );
-                    let json_message = serde_json::to_string(&entity)?;
-                    let insertresult = self.animal_repository.add(entity).await?;
-                    let mq = crate::infrastruct::context::mqcontext::MQContext::new();
-                    mq.send_message(&json_message, "modfiy_animal", "insert")
-                        .await?;
+                    let insertresult = add_new_animal(entity, &self).await?;
                     tracing::info!("call animal_repository add result: {:#?}", insertresult);
                 }
             }
@@ -151,4 +149,22 @@ impl IAnimalService for AnimalService {
         }
         Ok(())
     }
+}
+
+async fn add_new_animal(
+    mut entity: AnimalEntity,
+    svc: &AnimalService,
+) -> Result<String, CustomError> {
+    entity.idcard = format!(
+        "{}-{}-{:>04}",
+        &entity.animal_type,
+        Utc::now().format("%Y%m%d-%H%M%S"),
+        rand::thread_rng().gen_range(0001..9999)
+    );
+    let json_message = serde_json::to_string(&entity)?;
+    let insertresult = svc.animal_repository.add(entity).await?;
+    let mq = crate::infrastruct::context::mqcontext::MQContext::new();
+    mq.send_message(&json_message, "modfiy_animal", "insert")
+        .await?;
+    Ok(insertresult)
 }
