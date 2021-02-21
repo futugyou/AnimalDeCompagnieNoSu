@@ -2,7 +2,7 @@ use crate::infrastruct::serialize::*;
 
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct AnimalTypeEntity {
     #[serde(alias = "_id", default, deserialize_with = "deserialize_object_id")]
     pub id: String,
