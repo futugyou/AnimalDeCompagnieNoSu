@@ -1,6 +1,9 @@
 use async_trait::async_trait;
 
-use crate::model::animal::BaseRequest;
+use crate::{
+    entity::animaltypeentity::AnimalTypeEntity, infrastruct::custom_error::CustomError,
+    model::animal::BaseRequest,
+};
 use crate::{
     model::animal::animaltypemodel::{
         AnimalTypeSearchRequest, AnimalTypeSearchResponse, AnimalTypeUpdateRequest,
@@ -18,7 +21,7 @@ pub trait IAnimalTypeService {
     async fn modfiy_animal_type(
         &self,
         request: AnimalTypeUpdateRequest,
-    ) -> AnimalTypeUpdateResponse;
+    ) -> Result<AnimalTypeUpdateResponse, CustomError>;
 }
 
 pub struct AnimalTypeService {
@@ -60,37 +63,48 @@ impl IAnimalTypeService for AnimalTypeService {
     async fn modfiy_animal_type(
         &self,
         request: AnimalTypeUpdateRequest,
-    ) -> AnimalTypeUpdateResponse {
+    ) -> Result<AnimalTypeUpdateResponse, CustomError> {
         let valid = request.valid();
-        let mut response = AnimalTypeUpdateResponse { id: "".to_owned() };
+        let mut response = AnimalTypeUpdateResponse::default();
         match valid {
             Ok(_) => {
-                if request.id != "" {
-                    let update_result = self.animaltype_repository.update(request.into()).await;
+                let entity: AnimalTypeEntity = request.into();
+                if entity.id != "" {
+                    let update_result = self.animaltype_repository.update(entity.clone()).await;
                     match update_result {
-                        Ok(_update) => {
-                            //TODO: insert when false
+                        Ok(update) => {
+                            if update {
+                                tracing::info!("update animal type ok");
+                                let animaltype =
+                                    self.animaltype_repository.findone(entity.id).await?;
+                                response = animaltype.into();
+                            } else {
+                                add_new_animal_type(&self, entity, &mut response).await?;
+                            }
                         }
                         Err(error) => {
                             tracing::warn!("update error : {:#?}", error);
                         }
                     }
                 } else {
-                    let insert_result = self.animaltype_repository.add(request.into()).await;
-                    match insert_result {
-                        Ok(insert) => {
-                            response.id = insert;
-                        }
-                        Err(error) => {
-                            tracing::warn!("insert error : {:#?}", error);
-                        }
-                    }
+                    add_new_animal_type(&self, entity, &mut response).await?;
                 }
             }
             Err(error) => {
                 tracing::warn!("request valid error : {:#?}", error);
             }
         }
-        response
+        Ok(response)
     }
+}
+
+async fn add_new_animal_type(
+    svc: &AnimalTypeService,
+    entity: AnimalTypeEntity,
+    res: &mut AnimalTypeUpdateResponse,
+) -> Result<(), CustomError> {
+    *res = entity.clone().into();
+    let insert_result = svc.animaltype_repository.add(entity).await?;
+    res.id = insert_result;
+    Ok(())
 }

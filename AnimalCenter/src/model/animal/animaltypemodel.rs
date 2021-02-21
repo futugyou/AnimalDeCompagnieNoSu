@@ -21,7 +21,7 @@ pub struct AnimalTypeSearchResponse {
     pub animal_type: String,
 }
 
-#[derive(Debug, Validate, Serialize, Deserialize)]
+#[derive(Debug, Validate, Serialize, Deserialize, Clone)]
 pub struct AnimalTypeUpdateRequest {
     #[serde(default)]
     pub id: String,
@@ -44,8 +44,12 @@ impl AnimalTypeUpdateRequest {
 }
 
 impl BaseRequest for AnimalTypeUpdateRequest {}
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default, Clone)]
 pub struct AnimalTypeUpdateResponse {
     #[serde(default)]
     pub id: String,
+    #[serde(default)]
+    pub pid: String,
+    #[serde(rename = "type")]
+    pub animal_type: String,
 }
