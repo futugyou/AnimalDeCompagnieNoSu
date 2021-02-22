@@ -1,3 +1,5 @@
+use actix_web::HttpRequest;
+use rustc_serialize::base64::{ToBase64, MIME};
 use std::io::Write;
 
 use actix_multipart::Multipart;
@@ -42,4 +44,20 @@ pub async fn post(mut payload: Multipart) -> Result<HttpResponse, Error> {
     }
 
     Ok(HttpResponse::Ok().into())
+}
+pub async fn get(_req: HttpRequest) -> HttpResponse {
+    let dbcontext = DBContext {};
+    let dbclient = dbcontext.get_db_context().await.unwrap();
+    let collection = dbclient.database("react-app").collection("upload");
+    let mut cursor = collection.find(doc! {}, None).await.unwrap();
+    let mut lists = Vec::new();
+    while let Some(result) = cursor.next().await {
+        let doc = result.unwrap();
+        let vec = doc.get_binary_generic("name").unwrap();
+        let base64 = vec.to_base64(MIME);
+        let res_base64 = format!("data:image/{};base64,{}", "png", base64.replace("\r\n", ""));
+
+        lists.push(res_base64);
+    }
+    HttpResponse::Ok().json(lists)
 }

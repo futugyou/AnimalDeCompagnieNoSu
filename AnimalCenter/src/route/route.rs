@@ -50,11 +50,14 @@ fn animaltyperoute(cfg: &mut web::ServiceConfig) {
 }
 fn fileuploadroute(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::resource("/animalfileupload").route(
-            web::route()
-                //.guard(guard::Header("Content-Type", "multipart/form-data"))
-                .guard(guard::Post())
-                .to(controller::fileupload_controller::post),
-        ),
+        web::resource("/animalfileupload")
+            .route(web::get().to(controller::fileupload_controller::get))
+            .route(
+                web::route()
+                    // multipart/form-data; boundary=<calculated when request is sent>
+                    //.guard(guard::Header("Content-Type", "multipart/form-data"))
+                    .guard(guard::Post())
+                    .to(controller::fileupload_controller::post),
+            ),
     );
 }
