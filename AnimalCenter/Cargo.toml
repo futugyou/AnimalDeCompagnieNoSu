@@ -8,34 +8,36 @@ edition = "2018"
 
 [dependencies]
 actix-web = "3"
-actix-multipart = "0.3.0"
-sanitize-filename = "0.3.0"
+actix-multipart = "0.3"
+sanitize-filename = "0.3"
 actix-service = "1"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1"
 async-graphql="2"
 async-graphql-actix-web = "2"
-slab = "0.4.2"
-config = "0.10.1"
-dotenv = "0.15.0"
-async-trait = "0.1.42"
-futures="0.3.12"
+slab = "0.4"
+config = "0.10"
+dotenv = "0.15"
+async-trait = "0.1"
+futures = "0.3"
 bson = "1"
-chrono="0.4.19"
-rand="0.8.3"
+chrono = "0.4"
+rand = "0.8"
 opentelemetry = { version = "0.12", default-features = false, features = ["trace", "metrics","tokio-support"] }
 opentelemetry-jaeger = { version = "0.11"  }
 tokio = { version = "0.2", default-features = false, features = ["rt-core", "blocking", "time", "stream"] }
-actix-web-opentelemetry = {version = "0.10.0",features = ["metrics"]  }
+actix-web-opentelemetry = {version = "0.10",features = ["metrics"]  }
 tracing = "0.1"
-tracing-opentelemetry = "0.11.0"
+tracing-opentelemetry = "0.11"
 tracing-subscriber = "0.2"
-tracing-futures = { version = "0.2.4", default-features = false }
-opentelemetry-prometheus ="0.5.0" 
+tracing-futures = { version = "0.2", default-features = false }
+opentelemetry-prometheus ="0.5" 
 validator = { version = "0.12", features = ["derive"] }
-lapin="1.6.6"
+lapin = "1.6"
+rustc-serialize = "0.3"
+base64 = "0.13"
 
 [dependencies.mongodb]
-version = "1.2.0"
+version = "1.2"
 default-features = false
 features = ["async-std-runtime"]

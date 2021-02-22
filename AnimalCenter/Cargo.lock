@@ -444,6 +444,7 @@ dependencies = [
  "async-graphql",
  "async-graphql-actix-web",
  "async-trait",
+ "base64 0.13.0",
  "bson",
  "chrono",
  "config",
@@ -455,6 +456,7 @@ dependencies = [
  "opentelemetry-jaeger",
  "opentelemetry-prometheus",
  "rand 0.8.3",
+ "rustc-serialize",
  "sanitize-filename",
  "serde 1.0.121",
  "serde_json",
@@ -2750,6 +2752,12 @@ name = "rustc-demangle"
 version = "0.1.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6e3bad0ee36814ca07d7968269dd4b7ec89ec2da10c4bb613928d3077083c232"
+
+[[package]]
+name = "rustc-serialize"
+version = "0.3.24"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dcf128d1287d2ea9d80910b5f1120d0b8eede3fbf1abe91c40d39ea7d51e6fda"
 
 [[package]]
 name = "rustc_version"
