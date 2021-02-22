@@ -14,6 +14,7 @@ pub fn bussisscope() -> Scope {
             }
         }))
         .configure(animalroute)
+        .configure(fileuploadroute)
         .configure(animaltyperoute)
 }
 
@@ -45,5 +46,15 @@ fn animaltyperoute(cfg: &mut web::ServiceConfig) {
                     .guard(guard::Post())
                     .to(controller::animaltype_controller::post),
             ),
+    );
+}
+fn fileuploadroute(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::resource("/animalfileupload").route(
+            web::route()
+                //.guard(guard::Header("Content-Type", "multipart/form-data"))
+                .guard(guard::Post())
+                .to(controller::fileupload_controller::post),
+        ),
     );
 }

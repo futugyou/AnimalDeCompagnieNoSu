@@ -128,6 +128,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "actix-multipart"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "774bfeb11b54bf9c857a005b8ab893293da4eaff79261a66a9200dab7f5ab6e3"
+dependencies = [
+ "actix-service",
+ "actix-utils",
+ "actix-web",
+ "bytes 0.5.6",
+ "derive_more",
+ "futures-util",
+ "httparse",
+ "log",
+ "mime",
+ "twoway",
+]
+
+[[package]]
 name = "actix-router"
 version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -419,6 +437,7 @@ dependencies = [
 name = "animal_center"
 version = "0.1.0"
 dependencies = [
+ "actix-multipart",
  "actix-service",
  "actix-web",
  "actix-web-opentelemetry",
@@ -436,6 +455,7 @@ dependencies = [
  "opentelemetry-jaeger",
  "opentelemetry-prometheus",
  "rand 0.8.3",
+ "sanitize-filename",
  "serde 1.0.121",
  "serde_json",
  "slab",
@@ -2825,6 +2845,16 @@ name = "ryu"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "71d301d4193d031abdd79ff7e3dd721168a9572ef3fe51a1517aba235bd8f86e"
+
+[[package]]
+name = "sanitize-filename"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bf18934a12018228c5b55a6dae9df5d0641e3566b3630cb46cc55564068e7c2f"
+dependencies = [
+ "lazy_static",
+ "regex",
+]
 
 [[package]]
 name = "schannel"
