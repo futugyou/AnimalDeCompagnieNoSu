@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
     <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
   </PropertyGroup> 
 
   <ItemGroup>
-    <PackageReference Include="AntDesign" Version="0.6.0-nightly-2101301739" />
+    <PackageReference Include="AntDesign" Version="0.7.0-nightly-2102220638" />
     <PackageReference Include="AntDesign.Charts" Version="0.2.0" />
     <PackageReference Include="AntDesign.Pro.Layout" Version="0.1.0-nightly-210129055145" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.2" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
-    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-preview.1.21103.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.1.21103.6" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0-preview.1.21102.12" />
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0-preview.1.21102.12" />
   </ItemGroup>
 
 
