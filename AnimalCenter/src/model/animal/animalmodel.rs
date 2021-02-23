@@ -18,7 +18,7 @@ pub struct AnimalSearchRequest {
 impl BaseRequest for AnimalSearchRequest {}
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AnimalSearchResponse {
-    #[serde(alias = "_id", default, deserialize_with = "deserialize_object_id")]
+    #[serde(default)]
     pub id: String,
     #[serde(default)]
     pub name: String,
