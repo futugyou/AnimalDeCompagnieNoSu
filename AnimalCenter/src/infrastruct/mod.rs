@@ -1,6 +1,7 @@
 use chrono::{DateTime, TimeZone, Utc};
 use custom_error::CustomError;
 
+pub mod base64convert;
 pub mod config;
 pub mod context;
 pub mod custom_error;
