@@ -8,14 +8,15 @@ use crate::{
 };
 
 use async_trait::async_trait;
-use bson::doc;
-use bson::{Bson, Document};
+use bson::Bson;
+use bson::{doc, Document};
 use futures::StreamExt;
 use mongodb::options::FindOptions;
 
 #[async_trait]
 pub trait IFileRepository {
     async fn add(&self, entity: FileEntity) -> Result<String, CustomError>;
+    async fn addmany(&self, entitys: Vec<FileEntity>) -> Result<Vec<String>, CustomError>;
     async fn delete(&self, entity: FileEntity) -> Result<bool, CustomError>;
     async fn findone(&self, id: String) -> Result<FileEntity, CustomError>;
     async fn findmany(&self, ids: Vec<String>) -> Result<Vec<FileEntity>, CustomError>;
@@ -89,10 +90,13 @@ impl IFileRepository for FileRepository {
 
     #[tracing::instrument(skip(self))]
     async fn findmany(&self, ids: Vec<String>) -> Result<Vec<FileEntity>, CustomError> {
-        let filter = doc! {
-            "_id": doc!{
-                "$in": ids.iter().map(|id| stringtoObjectId(&id).unwrap() ).collect::<Vec<bson::oid::ObjectId>>()}
-        };
+        let mut filter = doc! {};
+        if ids.len() > 0 {
+            filter = doc! {
+                "_id": doc!{
+                    "$in": ids.iter().map(|id| stringtoObjectId(&id).unwrap() ).collect::<Vec<bson::oid::ObjectId>>()}
+            };
+        }
         let find_options = FindOptions::builder().sort(doc! { "name": 1 }).build();
         let mut cursor = self.collection.find(filter, find_options).await?;
         let mut animals = Vec::<FileEntity>::new();
@@ -101,5 +105,47 @@ impl IFileRepository for FileRepository {
         }
         tracing::info!("findmany result: {:#?}", animals);
         Ok(animals)
+    }
+
+    async fn addmany(&self, entitys: Vec<FileEntity>) -> Result<Vec<String>, CustomError> {
+        let docs = entitys
+            .into_iter()
+            .map(|entity| {
+                doc! {
+                        "name": entity.name,
+                        "ext": entity.ext,
+                        "base64src":entity.base64src,
+                }
+            })
+            .collect::<Vec<Document>>();
+        let result = self.collection.insert_many(docs, None).await?;
+        tracing::info!("db insert_many result: {:#?}", result);
+        if result.inserted_ids.len() > 0 {
+            let ids = result
+                .inserted_ids
+                .into_iter()
+                // .map(|(_x, y)| {
+                //     let mut id = "".to_owned();
+                //     if let Bson::ObjectId(oid) = y {
+                //         id = oid.to_hex();
+                //     }
+                //     id
+                // })
+                .flat_map(|(_, y)| {
+                    if let Bson::ObjectId(oid) = y {
+                        Some(oid.to_hex())
+                    } else {
+                        None
+                    }
+                })
+                .collect::<Vec<String>>();
+            Ok(ids)
+        } else {
+            Err(CustomError::new(
+                "40000".to_owned(),
+                "insert_one return an unknown data type".to_owned(),
+                CustomErrorKind::MongodbError,
+            ))
+        }
     }
 }

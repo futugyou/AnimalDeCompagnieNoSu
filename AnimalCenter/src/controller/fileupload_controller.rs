@@ -1,18 +1,14 @@
-use actix_web::HttpRequest;
-use rustc_serialize::base64::{ToBase64, MIME};
-
 use actix_multipart::Multipart;
+use actix_web::{web, HttpRequest};
 use actix_web::{Error, HttpResponse};
-use bson::doc;
 use futures::{StreamExt, TryStreamExt};
 
-use crate::infrastruct::context::dbcontext::{DBContext, IDbContext};
+use crate::model::animal::filemodel::*;
+use crate::service::fileuploadservice::*;
 
 pub async fn post(mut payload: Multipart) -> Result<HttpResponse, Error> {
-    let dbcontext = DBContext {};
-    let dbclient = dbcontext.get_db_context().await.unwrap();
-    let collection = dbclient.database("react-app").collection("upload2");
-    // iterate over multipart stream
+    let service = FileService::new().await;
+    let mut models = Vec::new();
     while let Ok(Some(mut field)) = payload.try_next().await {
         let content_type = field.content_disposition().unwrap();
         let filename = content_type.get_filename().unwrap();
@@ -24,30 +20,24 @@ pub async fn post(mut payload: Multipart) -> Result<HttpResponse, Error> {
             let data = chunk.unwrap();
             file_data.extend_from_slice(&data);
         }
-        let base64 = file_data.to_base64(MIME);
-        let res_base64 = format!("data:image/{};base64,{}", &ext, base64.replace("\r\n", ""));
-        let docs = doc! {
-                "base64src":res_base64,
-        };
-        let rr = collection.insert_one(docs, None).await.unwrap();
-        println!("----{:#?}", rr);
+        models.push(FileAddModel {
+            name: filepath,
+            ext: ext,
+            data: file_data,
+        })
     }
-
-    Ok(HttpResponse::Ok().into())
+    let resul = service.addfiles(models).await?;
+    Ok(HttpResponse::Ok().json(resul))
 }
-pub async fn get(_req: HttpRequest) -> HttpResponse {
-    let dbcontext = DBContext {};
-    let dbclient = dbcontext.get_db_context().await.unwrap();
-    let collection = dbclient.database("react-app").collection("upload");
-    let mut cursor = collection.find(doc! {}, None).await.unwrap();
-    let mut lists = Vec::new();
-    while let Some(result) = cursor.next().await {
-        let doc = result.unwrap();
-        let vec = doc.get_binary_generic("name").unwrap();
-        let base64 = vec.to_base64(MIME);
-        let res_base64 = format!("data:image/{};base64,{}", "png", base64.replace("\r\n", ""));
-
-        lists.push(res_base64);
-    }
-    HttpResponse::Ok().json(lists)
+pub async fn get(item: Option<web::Json<Vec<String>>>, _req: HttpRequest) -> HttpResponse {
+    let service = FileService::new().await;
+    let mut ids = Vec::new();
+    match item {
+        Some(i) => {
+            ids = i.into_inner();
+        }
+        None => {}
+    };
+    let result = service.find_file_by_ids(ids).await;
+    HttpResponse::Ok().json(result)
 }

@@ -12,14 +12,14 @@ pub struct FileSearchResponse {
     pub base64src: String,
 }
 
-#[derive(Debug, Serialize, Deserialize, Default)]
+#[derive(Debug, Serialize, Deserialize, Default, Clone)]
 pub struct FileAddModel {
     #[serde(default)]
     pub name: String,
     #[serde(default)]
     pub ext: String,
     #[serde(default)]
-    pub base64src: String,
+    pub data: Vec<u8>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Default)]

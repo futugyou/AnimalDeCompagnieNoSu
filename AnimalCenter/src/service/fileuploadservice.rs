@@ -1,11 +1,11 @@
-use crate::model::animal::filemodel::FileSearchResponse;
-use crate::repository::filerepository::FileRepository;
-use crate::repository::filerepository::IFileRepository;
+use crate::model::animal::filemodel::*;
+use crate::repository::filerepository::*;
 use crate::{entity::fileentity::FileEntity, infrastruct::custom_error::*};
 
 use async_trait::async_trait;
 #[async_trait]
 pub trait IFileService {
+    async fn addfiles(&self, model: Vec<FileAddModel>) -> Result<Vec<String>, CustomError>;
     async fn find_file_by_ids(&self, ids: Vec<String>) -> Vec<FileSearchResponse>;
     async fn delete_file(&self, id: String) -> Result<(), CustomError>;
     async fn find_file_by_id(&self, id: String) -> FileSearchResponse;
@@ -68,5 +68,14 @@ impl IFileService for FileService {
                 FileEntity::default().into()
             }
         }
+    }
+
+    async fn addfiles(&self, model: Vec<FileAddModel>) -> Result<Vec<String>, CustomError> {
+        let entitys = model
+            .into_iter()
+            .map(|x| x.into())
+            .collect::<Vec<FileEntity>>();
+        let insert = self.file_repository.addmany(entitys).await?;
+        Ok(insert)
     }
 }
