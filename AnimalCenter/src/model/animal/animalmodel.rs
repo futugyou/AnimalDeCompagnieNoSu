@@ -31,6 +31,8 @@ pub struct AnimalSearchResponse {
     pub birthday: Option<DateTime<Utc>>,
     #[serde(default)]
     pub idcard: String,
+    #[serde(default)]
+    pub avatar: String,
 }
 
 #[derive(Debug, Validate, Serialize, Deserialize)]
@@ -93,6 +95,8 @@ pub struct AnimalUpdateResponse {
     pub birthday: Option<DateTime<Utc>>,
     #[serde(default)]
     pub idcard: String,
+    #[serde(default)]
+    pub avatar: String,
 }
 
 pub struct AnimalClearFakeData {}

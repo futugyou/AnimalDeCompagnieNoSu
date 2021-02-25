@@ -63,6 +63,7 @@ impl From<AnimalEntity> for AnimalSearchResponse {
             sub_type: animal.sub_type,
             birthday: Some(birthday),
             idcard: animal.idcard,
+            avatar: animal.avatar,
         }
     }
 }
@@ -94,6 +95,7 @@ impl From<AnimalEntity> for AnimalUpdateResponse {
             animal_type: entity.animal_type,
             sub_type: entity.sub_type,
             birthday: entity.birthday,
+            avatar: entity.avatar,
         }
     }
 }
