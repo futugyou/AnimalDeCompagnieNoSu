@@ -42,13 +42,16 @@ impl AnimalRepository {
 impl IAnimalRepository for AnimalRepository {
     #[tracing::instrument(skip(self))]
     async fn add(&self, entity: AnimalEntity) -> Result<String, CustomError> {
-        let docs = doc! {
+        let mut docs = doc! {
                 "name": entity.name,
                 "type": entity.animal_type,
                 "birthday":entity.birthday.unwrap(),
                 "sub_type":entity.sub_type,
                 "idcard":entity.idcard,
         };
+        if entity.avatar != "" {
+            docs.insert("avatar", entity.avatar);
+        }
         let result = self.collection.insert_one(docs, None).await?;
         tracing::info!("db insert_one result: {:#?}", result);
         if let Bson::ObjectId(oid) = result.inserted_id {
@@ -65,13 +68,16 @@ impl IAnimalRepository for AnimalRepository {
     async fn update(&self, entity: AnimalEntity) -> Result<bool, CustomError> {
         let oid = stringtoObjectId(&entity.id)?;
         let filter = doc! {"_id":oid};
-        let update = doc! {"$set" : doc!{
+        let mut raw = doc! {
                 "name": entity.name,
                 "type": entity.animal_type,
                 "birthday":entity.birthday.unwrap(),
                 "sub_type":entity.sub_type,
-        }};
-
+        };
+        if entity.avatar != "" {
+            raw.insert("avatar", entity.avatar);
+        }
+        let update = doc! {"$set" : raw};
         let result = self.collection.update_one(filter, update, None).await?;
         if result.matched_count == 0 && result.modified_count == 0 {
             tracing::warn!(

@@ -38,6 +38,8 @@ pub struct AnimalUpdateRequest {
     #[serde(default)]
     pub id: String,
     #[serde(default)]
+    pub avatar: String,
+    #[serde(default)]
     #[validate(length(
         min = 2,
         max = 20,
@@ -71,6 +73,7 @@ impl AnimalUpdateRequest {
             name: "".to_string(),
             animal_type: "".to_string(),
             sub_type: "".to_string(),
+            avatar: "".to_owned(),
             birthday: Some(getdefaultdatetime()),
         }
     }

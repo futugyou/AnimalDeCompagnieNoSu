@@ -18,6 +18,8 @@ pub struct AnimalEntity {
     pub birthday: Option<DateTime<Utc>>,
     #[serde(default)]
     pub idcard: String,
+    #[serde(default)]
+    pub avatar: String,
 }
 
 impl AnimalEntity {
@@ -29,6 +31,7 @@ impl AnimalEntity {
             sub_type: "".to_string(),
             birthday: Some(getdefaultdatetime()),
             idcard: "".to_string(),
+            avatar: "".to_owned(),
         }
     }
 
