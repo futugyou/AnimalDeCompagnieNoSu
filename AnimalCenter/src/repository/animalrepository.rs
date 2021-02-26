@@ -108,12 +108,84 @@ impl IAnimalRepository for AnimalRepository {
     async fn findone(&self, id: String) -> Result<AnimalEntity, CustomError> {
         let oid = stringtoObjectId(&id)?;
         let filter = doc! {"_id":oid};
-        let result = self.collection.find_one(filter, None).await?;
+        // [
+        //     {
+        //         '$match': {
+        //             '_id': ObjectId('602947ed00939a9d0008cb89')
+        //         }
+        //     }, {
+        //         '$addFields': {
+        //             'imageid': {
+        //                 '$toObjectId': '$avatar'
+        //             }
+        //         }
+        //     }, {
+        //         '$lookup': {
+        //             'from': 'fileupload',
+        //             'localField': 'imageid',
+        //             'foreignField': '_id',
+        //             'as': 'avatardata'
+        //         }
+        //     }, {
+        //         '$replaceRoot': {
+        //             'newRoot': {
+        //                 '$mergeObjects': [
+        //                     {
+        //                         '$arrayElemAt': [
+        //                             '$avatardata', 0
+        //                         ]
+        //                     }, '$$ROOT'
+        //                 ]
+        //             }
+        //         }
+        //     }, {
+        //         '$project': {
+        //             'imageid': 0,
+        //             'avatar': 0,
+        //             'ext': 0,
+        //             'avatardata': 0
+        //         }
+        //     }
+        // ]
+        let mut subline = Vec::<Bson>::new();
+        subline.push(Bson::from("$avatardata"));
+        subline.push(Bson::from(0));
+        let pipeline = vec![
+            doc! {"$match":filter.clone()},
+            doc! {"$addFields":doc!{
+                "imageid":doc!{"$toObjectId":"$avatar"}
+            }},
+            doc! {"$lookup":{
+                "from":"fileupload",
+                "localField":"imageid",
+                "foreignField":"_id",
+                "as":"avatardata",
+            }},
+            doc! {"$replaceRoot":doc!{"newRoot":doc!{"$mergeObjects":vec![Bson::from(doc!{"$arrayElemAt":subline}),Bson::from("$$ROOT")]}}},
+            doc! {"$project":{
+                "imageid":0,
+                "avatar":0,
+                "ext":0,
+                "avatardata":0,
+            }},
+            doc! {"$project":{
+                "name":1,
+                "type":1,
+                "birthday":1,
+                "sub_type":1,
+                "idcard":1,
+                "avatar":"$base64src",
+            }},
+        ];
+        // let result = self.collection.find_one(filter, None).await?;
+        let mut cursor = self.collection.aggregate(pipeline, None).await?;
         let mut animal = AnimalEntity::new();
-
-        if let Some(doc) = result {
-            animal = bson::from_bson(Bson::Document(doc))?;
+        while let Some(result) = cursor.next().await {
+            animal = bson::from_bson(Bson::Document(result?))?;
         }
+        // if let Some(doc) = result {
+        //     animal = bson::from_bson(Bson::Document(doc))?;
+        // }
         tracing::info!("findone result: {:#?}", animal);
         Ok(animal)
     }
