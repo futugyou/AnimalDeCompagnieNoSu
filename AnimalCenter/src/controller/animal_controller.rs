@@ -4,6 +4,12 @@ use crate::service::animalservice::{AnimalService, IAnimalService};
 use actix_web::{web, Error, HttpRequest, HttpResponse};
 use std::collections::HashMap;
 
+pub async fn getone(web::Path((id,)): web::Path<(String,)>, _req: HttpRequest) -> HttpResponse {
+    let service = AnimalService::new().await;
+    let response = service.find_animal_by_id(id).await;
+    HttpResponse::Ok().json(response)
+}
+
 pub async fn get(item: Option<web::Json<AnimalSearchRequest>>, _req: HttpRequest) -> HttpResponse {
     let service = AnimalService::new().await;
     let mut rep = AnimalSearchRequest {
