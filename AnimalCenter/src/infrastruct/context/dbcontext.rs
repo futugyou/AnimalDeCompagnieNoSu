@@ -1,7 +1,19 @@
 use crate::infrastruct::{config::Config, custom_error::*};
 
+use async_once::AsyncOnce;
 use async_trait::async_trait;
+use lazy_static::lazy_static;
 use mongodb::{options::ClientOptions, Client};
+
+lazy_static! {
+    static ref LAZY_CONNECTION: AsyncOnce<Result<Client, CustomError>> = AsyncOnce::new(async {
+        let _config = Config::new();
+        let conn_str = _config.mongodb_uri;
+        println!("111111");
+        let client_options = ClientOptions::parse(conn_str.as_str()).await?;
+        Ok(Client::with_options(client_options)?)
+    });
+}
 
 #[async_trait]
 pub trait IDbContext {
@@ -14,9 +26,10 @@ pub struct DBContext {}
 impl IDbContext for DBContext {
     #[tracing::instrument(skip(self))]
     async fn get_db_context(&self) -> Result<Client, CustomError> {
-        let _config = Config::new();
-        let conn_str = _config.mongodb_uri;
-        let client_options = ClientOptions::parse(conn_str.as_str()).await?;
-        Ok(Client::with_options(client_options)?)
+        LAZY_CONNECTION.get().await.to_owned()
+        // let _config = Config::new();
+        // let conn_str = _config.mongodb_uri;
+        // let client_options = ClientOptions::parse(conn_str.as_str()).await?;
+        // Ok(Client::with_options(client_options)?)
     }
 }

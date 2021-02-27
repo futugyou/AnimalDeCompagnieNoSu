@@ -36,6 +36,8 @@ validator = { version = "0.12", features = ["derive"] }
 lapin = "1.6"
 rustc-serialize = "0.3"
 base64 = "0.13"
+lazy_static = "1"
+async_once = "0.2"
 
 [dependencies.mongodb]
 version = "1.2"
