@@ -11,8 +11,8 @@ mod telemetry;
 use actix_web::middleware::Logger;
 use actix_web::{App, HttpServer};
 use actix_web_opentelemetry::RequestTracing;
-use animal::{AnimalSchema, QueryRoot};
-use async_graphql::{EmptyMutation, EmptySubscription, Schema};
+use animal::*;
+use async_graphql::Schema;
 use dotenv::dotenv;
 use route::{route as orgroute, route_fake, route_graphql};
 
@@ -21,7 +21,7 @@ async fn main() -> std::io::Result<()> {
     dotenv().ok();
     let metrics = telemetry::initmetrics();
     let _uninstall = telemetry::inittracer();
-    let schema = Schema::new(QueryRoot::default(), EmptyMutation, EmptySubscription);
+    let schema = Schema::new(QueryRoot::default(), MutationRoot {}, SubscriptionRoot {});
     HttpServer::new(move || {
         let mut app = App::new();
         app = route_fake::makefakeroute(app);

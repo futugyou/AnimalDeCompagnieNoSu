@@ -1,3 +1,3 @@
 mod animal;
 
-pub use animal::{AnimalSchema, QueryRoot};
+pub use animal::*;
