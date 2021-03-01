@@ -1,6 +1,6 @@
-mod animal;
 mod controller;
 mod entity;
+mod graphql;
 mod infrastruct;
 mod model;
 mod repository;
@@ -11,9 +11,9 @@ mod telemetry;
 use actix_web::middleware::Logger;
 use actix_web::{App, HttpServer};
 use actix_web_opentelemetry::RequestTracing;
-use animal::*;
 use async_graphql::Schema;
 use dotenv::dotenv;
+use graphql::*;
 use route::{route as orgroute, route_fake, route_graphql};
 
 #[actix_web::main]
