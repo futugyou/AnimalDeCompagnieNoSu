@@ -109,6 +109,7 @@ impl IAnimalService for AnimalService {
                         }
                     }
                 } else {
+                    marge_entity(&mut entity, request);
                     add_new_animal((*entity), &self, &mut results).await?;
                     tracing::info!("call animal_repository add result: {:#?}", results.id);
                 }

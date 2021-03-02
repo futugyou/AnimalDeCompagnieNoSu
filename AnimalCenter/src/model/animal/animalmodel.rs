@@ -34,6 +34,8 @@ pub struct AnimalSearchResponse {
     pub idcard: String,
     #[serde(default)]
     pub avatar: String,
+    #[serde(default)]
+    pub photoes: Vec<String>,
 }
 #[Object]
 impl AnimalSearchResponse {
@@ -57,6 +59,9 @@ impl AnimalSearchResponse {
     }
     async fn avatar(&self) -> &str {
         &self.avatar
+    }
+    async fn photoes(&self) -> &Vec<String> {
+        &self.photoes
     }
 }
 
@@ -125,30 +130,35 @@ pub struct AnimalUpdateResponse {
     pub idcard: String,
     #[serde(default)]
     pub avatar: String,
+    #[serde(default)]
+    pub photoes: Vec<String>,
 }
 
 #[Object]
 impl AnimalUpdateResponse {
-    async fn id(&self) -> String {
-        self.id.to_string()
+    async fn id(&self) -> &str {
+        &self.id
     }
-    async fn name(&self) -> String {
-        self.name.to_string()
+    async fn name(&self) -> &str {
+        &self.name
     }
-    async fn animal_type(&self) -> String {
-        self.animal_type.to_string()
+    async fn animal_type(&self) -> &str {
+        &self.animal_type
     }
-    async fn sub_type(&self) -> String {
-        self.sub_type.to_string()
+    async fn sub_type(&self) -> &str {
+        &self.sub_type
     }
-    async fn idcard(&self) -> String {
-        self.idcard.to_string()
+    async fn idcard(&self) -> &str {
+        &self.idcard
     }
-    async fn avatar(&self) -> String {
-        self.avatar.to_string()
+    async fn avatar(&self) -> &str {
+        &self.avatar
     }
-    async fn birthday(&self) -> Option<DateTime<Utc>> {
-        self.birthday
+    async fn photoes(&self) -> &Vec<String> {
+        &self.photoes
+    }
+    async fn birthday(&self) -> &Option<DateTime<Utc>> {
+        &self.birthday
     }
 }
 pub struct AnimalClearFakeData {}

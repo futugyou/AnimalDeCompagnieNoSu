@@ -65,6 +65,7 @@ impl From<AnimalEntity> for AnimalSearchResponse {
             birthday: Some(birthday),
             idcard: animal.idcard,
             avatar: animal.avatar,
+            photoes: animal.photoes,
         }
     }
 }
@@ -97,6 +98,21 @@ impl From<AnimalEntity> for AnimalUpdateResponse {
             sub_type: entity.sub_type,
             birthday: entity.birthday,
             avatar: entity.avatar,
+            photoes: entity.photoes,
+        }
+    }
+}
+
+impl From<&AnimalEntity> for Document {
+    fn from(entity: &AnimalEntity) -> Self {
+        doc! {
+                "name": &entity.name,
+                "type": &entity.animal_type,
+                "birthday": &entity.birthday.unwrap(),
+                "sub_type": &entity.sub_type,
+                "idcard": &entity.idcard,
+                "avatar": &entity.avatar,
+                "photoes": &entity.photoes
         }
     }
 }
