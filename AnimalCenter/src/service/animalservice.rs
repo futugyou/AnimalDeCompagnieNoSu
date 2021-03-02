@@ -77,26 +77,26 @@ impl IAnimalService for AnimalService {
         let mut results: AnimalUpdateResponse = AnimalUpdateResponse::default();
         match request.valid() {
             Ok(_) => {
-                let entity: AnimalEntity = request.into();
-                let id = entity.clone().id;
+                let id = request.id.clone();
+                let mut entity = Box::new(AnimalEntity::new());
                 if id != "" {
-                    let mut animal = self.animal_repository.findone(id).await?;
-                    marge_entity(&mut animal, &entity);
-                    let updateresult = self.animal_repository.update(animal.clone()).await;
+                    (*entity) = self.animal_repository.findone(id).await?;
+                    marge_entity(&mut entity, request);
+                    let updateresult = self.animal_repository.update(&entity).await;
                     match updateresult {
                         Ok(update) => {
                             if update {
                                 let mq = crate::infrastruct::context::mqcontext::MQContext::new();
-                                let json_message = serde_json::to_string(&animal)?;
+                                let json_message = serde_json::to_string(&entity)?;
                                 mq.send_message(&json_message, "modfiy_animal", "update")
                                     .await?;
                                 tracing::info!(
                                     "call animal_repository update result: {:#?}",
                                     update
                                 );
-                                results = animal.into();
+                                results = (*entity).into();
                             } else {
-                                add_new_animal(animal.clone(), &self, &mut results).await?;
+                                add_new_animal((*entity), &self, &mut results).await?;
                                 tracing::info!(
                                     "call animal_repository add result: {:#?}",
                                     results.id
@@ -109,7 +109,7 @@ impl IAnimalService for AnimalService {
                         }
                     }
                 } else {
-                    add_new_animal(entity, &self, &mut results).await?;
+                    add_new_animal((*entity), &self, &mut results).await?;
                     tracing::info!("call animal_repository add result: {:#?}", results.id);
                 }
             }
@@ -137,7 +137,7 @@ impl IAnimalService for AnimalService {
 
     #[tracing::instrument(skip(self))]
     async fn find_animal_by_id(&self, id: String) -> AnimalSearchResponse {
-        let findresult = self.animal_repository.findone(id).await;
+        let findresult = self.animal_repository.findaggregateone(id).await;
         match findresult {
             Ok(animal) => animal.into(),
             Err(err) => {
@@ -158,28 +158,24 @@ impl IAnimalService for AnimalService {
     }
 }
 
-fn marge_entity(animal: &mut AnimalEntity, entity: &AnimalEntity) -> () {
-    let entity = entity.clone();
-    if entity.avatar != "" {
-        animal.avatar = entity.avatar;
+fn marge_entity(animal: &mut AnimalEntity, request: AnimalUpdateRequest) -> () {
+    if request.avatar != "" {
+        animal.avatar = request.avatar;
     }
-    if entity.name != "" {
-        animal.name = entity.name;
+    if request.name != "" {
+        animal.name = request.name;
     }
-    if entity.animal_type != "" {
-        animal.animal_type = entity.animal_type;
+    if request.animal_type != "" {
+        animal.animal_type = request.animal_type;
     }
-    if entity.sub_type != "" {
-        animal.sub_type = entity.sub_type;
+    if request.sub_type != "" {
+        animal.sub_type = request.sub_type;
     }
-    if let Some(_a) = entity.birthday {
-        animal.birthday = entity.birthday;
+    if let Some(_a) = request.birthday {
+        animal.birthday = request.birthday;
     }
-    if entity.idcard != "" {
-        animal.idcard = entity.idcard;
-    }
-    if entity.photoes.len() > 0 {
-        animal.photoes = entity.photoes;
+    if request.photoes.len() > 0 {
+        animal.photoes = request.photoes;
     }
 }
 

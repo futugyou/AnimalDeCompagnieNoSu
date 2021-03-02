@@ -18,8 +18,9 @@ pub trait IAnimalRepository {
     async fn add(&self, entity: AnimalEntity) -> Result<String, CustomError>;
     async fn delete(&self, entity: AnimalEntity) -> Result<bool, CustomError>;
     async fn findone(&self, id: String) -> Result<AnimalEntity, CustomError>;
+    async fn findaggregateone(&self, id: String) -> Result<AnimalEntity, CustomError>;
     async fn findmany(&self, filter: Document) -> Result<Vec<AnimalEntity>, CustomError>;
-    async fn update(&self, entity: AnimalEntity) -> Result<bool, CustomError>;
+    async fn update(&self, entity: &AnimalEntity) -> Result<bool, CustomError>;
 }
 
 #[derive(Debug)]
@@ -65,17 +66,17 @@ impl IAnimalRepository for AnimalRepository {
     }
 
     #[tracing::instrument(skip(self))]
-    async fn update(&self, entity: AnimalEntity) -> Result<bool, CustomError> {
+    async fn update(&self, entity: &AnimalEntity) -> Result<bool, CustomError> {
         let oid = stringtoObjectId(&entity.id)?;
         let filter = doc! {"_id":oid};
         let mut raw = doc! {
-                "name": entity.name,
-                "type": entity.animal_type,
-                "birthday":entity.birthday.unwrap(),
-                "sub_type":entity.sub_type,
+                "name": &entity.name,
+                "type": &entity.animal_type,
+                "birthday": &entity.birthday.unwrap(),
+                "sub_type": &entity.sub_type,
         };
-        if entity.avatar != "" {
-            raw.insert("avatar", entity.avatar);
+        if &entity.avatar != "" {
+            raw.insert("avatar", &entity.avatar);
         }
         let update = doc! {"$set" : raw};
         let result = self.collection.update_one(filter, update, None).await?;
@@ -105,48 +106,9 @@ impl IAnimalRepository for AnimalRepository {
     }
 
     #[tracing::instrument(skip(self))]
-    async fn findone(&self, id: String) -> Result<AnimalEntity, CustomError> {
+    async fn findaggregateone(&self, id: String) -> Result<AnimalEntity, CustomError> {
         let oid = stringtoObjectId(&id)?;
         let filter = doc! {"_id":oid};
-        // [
-        //     {
-        //         '$match': {
-        //             '_id': ObjectId('602947ed00939a9d0008cb89')
-        //         }
-        //     }, {
-        //         '$addFields': {
-        //             'imageid': {
-        //                 '$toObjectId': '$avatar'
-        //             }
-        //         }
-        //     }, {
-        //         '$lookup': {
-        //             'from': 'fileupload',
-        //             'localField': 'imageid',
-        //             'foreignField': '_id',
-        //             'as': 'avatardata'
-        //         }
-        //     }, {
-        //         '$replaceRoot': {
-        //             'newRoot': {
-        //                 '$mergeObjects': [
-        //                     {
-        //                         '$arrayElemAt': [
-        //                             '$avatardata', 0
-        //                         ]
-        //                     }, '$$ROOT'
-        //                 ]
-        //             }
-        //         }
-        //     }, {
-        //         '$project': {
-        //             'imageid': 0,
-        //             'avatar': 0,
-        //             'ext': 0,
-        //             'avatardata': 0
-        //         }
-        //     }
-        // ]
         let mut subline = Vec::<Bson>::new();
         subline.push(Bson::from("$avatardata"));
         subline.push(Bson::from(0));
@@ -177,15 +139,11 @@ impl IAnimalRepository for AnimalRepository {
                 "avatar":"$base64src",
             }},
         ];
-        // let result = self.collection.find_one(filter, None).await?;
         let mut cursor = self.collection.aggregate(pipeline, None).await?;
         let mut animal = AnimalEntity::new();
         while let Some(result) = cursor.next().await {
             animal = bson::from_bson(Bson::Document(result?))?;
         }
-        // if let Some(doc) = result {
-        //     animal = bson::from_bson(Bson::Document(doc))?;
-        // }
         tracing::info!("findone result: {:#?}", animal);
         Ok(animal)
     }
@@ -200,5 +158,17 @@ impl IAnimalRepository for AnimalRepository {
         }
         tracing::info!("findmany result: {:#?}", animals);
         Ok(animals)
+    }
+
+    async fn findone(&self, id: String) -> Result<AnimalEntity, CustomError> {
+        let oid = stringtoObjectId(&id)?;
+        let filter = doc! {"_id":oid};
+        let result = self.collection.find_one(filter, None).await?;
+        let mut animal = AnimalEntity::new();
+        if let Some(doc) = result {
+            animal = bson::from_bson(Bson::Document(doc))?;
+        }
+        tracing::info!("findaggregateone result: {:#?}", animal);
+        Ok(animal)
     }
 }
