@@ -9,7 +9,6 @@ lazy_static! {
     static ref LAZY_CONNECTION: AsyncOnce<Result<Client, CustomError>> = AsyncOnce::new(async {
         let _config = Config::new();
         let conn_str = _config.mongodb_uri;
-        println!("111111");
         let client_options = ClientOptions::parse(conn_str.as_str()).await?;
         Ok(Client::with_options(client_options)?)
     });
