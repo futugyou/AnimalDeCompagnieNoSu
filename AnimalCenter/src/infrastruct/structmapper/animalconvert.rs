@@ -25,6 +25,7 @@ impl From<AnimalUpdateRequest> for AnimalEntity {
             birthday: Some(birthday),
             idcard: String::from(""),
             avatar: animal.avatar,
+            photoes: animal.photoes,
         }
     }
 }

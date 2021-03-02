@@ -20,6 +20,8 @@ pub struct AnimalEntity {
     pub idcard: String,
     #[serde(default)]
     pub avatar: String,
+    #[serde(default)]
+    pub photoes: Vec<String>,
 }
 
 impl AnimalEntity {
@@ -32,6 +34,7 @@ impl AnimalEntity {
             birthday: Some(getdefaultdatetime()),
             idcard: "".to_string(),
             avatar: "".to_owned(),
+            photoes: Vec::new(),
         }
     }
 

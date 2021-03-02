@@ -78,23 +78,25 @@ impl IAnimalService for AnimalService {
         match request.valid() {
             Ok(_) => {
                 let entity: AnimalEntity = request.into();
-                if entity.id != "" {
-                    let json_message = serde_json::to_string(&entity)?;
-                    let updateresult = self.animal_repository.update(entity.clone()).await;
+                let id = entity.clone().id;
+                if id != "" {
+                    let mut animal = self.animal_repository.findone(id).await?;
+                    marge_entity(&mut animal, &entity);
+                    let updateresult = self.animal_repository.update(animal.clone()).await;
                     match updateresult {
                         Ok(update) => {
                             if update {
                                 let mq = crate::infrastruct::context::mqcontext::MQContext::new();
+                                let json_message = serde_json::to_string(&animal)?;
                                 mq.send_message(&json_message, "modfiy_animal", "update")
                                     .await?;
                                 tracing::info!(
                                     "call animal_repository update result: {:#?}",
                                     update
                                 );
-                                let animal = self.animal_repository.findone(entity.id).await?;
                                 results = animal.into();
                             } else {
-                                add_new_animal(entity.clone(), &self, &mut results).await?;
+                                add_new_animal(animal.clone(), &self, &mut results).await?;
                                 tracing::info!(
                                     "call animal_repository add result: {:#?}",
                                     results.id
@@ -153,6 +155,31 @@ impl IAnimalService for AnimalService {
             self.animal_repository.delete(entity).await?;
         }
         Ok(())
+    }
+}
+
+fn marge_entity(animal: &mut AnimalEntity, entity: &AnimalEntity) -> () {
+    let entity = entity.clone();
+    if entity.avatar != "" {
+        animal.avatar = entity.avatar;
+    }
+    if entity.name != "" {
+        animal.name = entity.name;
+    }
+    if entity.animal_type != "" {
+        animal.animal_type = entity.animal_type;
+    }
+    if entity.sub_type != "" {
+        animal.sub_type = entity.sub_type;
+    }
+    if let Some(_a) = entity.birthday {
+        animal.birthday = entity.birthday;
+    }
+    if entity.idcard != "" {
+        animal.idcard = entity.idcard;
+    }
+    if entity.photoes.len() > 0 {
+        animal.photoes = entity.photoes;
     }
 }
 
