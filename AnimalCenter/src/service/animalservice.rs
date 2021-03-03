@@ -118,7 +118,6 @@ impl IAnimalService for AnimalService {
         &self,
         request: AnimalInsertRequest,
     ) -> Result<AnimalInsertResponse, CustomError> {
-        let mut results: AnimalInsertResponse = AnimalInsertResponse::default();
         match request.valid() {
             Ok(_) => {
                 let mut entity: AnimalEntity = request.into();
@@ -129,20 +128,20 @@ impl IAnimalService for AnimalService {
                     rand::thread_rng().gen_range(0001..9999)
                 );
                 let json_message = serde_json::to_string(&entity)?;
-                results = entity.clone().into();
+                let mut results: AnimalInsertResponse = entity.clone().into();
                 let insertresult = self.animal_repository.add(entity).await?;
                 let mq = crate::infrastruct::context::mqcontext::MQContext::new();
                 mq.send_message(&json_message, "modfiy_animal", "insert")
                     .await?;
                 tracing::info!("call animal_repository add result: {:#?}", insertresult);
                 results.id = insertresult;
+                return Ok(results);
             }
             Err(err) => {
                 tracing::error!("request.valid() error: {:#?}", err);
                 return Err(err);
             }
         }
-        Ok(results)
     }
 
     #[tracing::instrument(skip(self))]
