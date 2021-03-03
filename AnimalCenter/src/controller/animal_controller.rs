@@ -1,5 +1,5 @@
-use crate::model::animal::animalmodel::{AnimalSearchRequest, AnimalUpdateRequest};
-use crate::service::animalservice::{AnimalService, IAnimalService};
+use crate::model::animal::animalmodel::*;
+use crate::service::animalservice::*;
 
 use actix_web::{web, Error, HttpRequest, HttpResponse};
 use std::collections::HashMap;
@@ -29,6 +29,22 @@ pub async fn get(item: Option<web::Json<AnimalSearchRequest>>, _req: HttpRequest
 }
 
 pub async fn post(
+    item: Option<web::Json<AnimalInsertRequest>>,
+    _req: HttpRequest,
+) -> Result<HttpResponse, Error> {
+    let service = AnimalService::new().await;
+    let mut rep = AnimalInsertRequest::default();
+    match item {
+        Some(i) => {
+            rep = i.into_inner();
+        }
+        None => {}
+    };
+    let response = service.insert_animal(rep).await?;
+    Ok(HttpResponse::Ok().json(response))
+}
+
+pub async fn update(
     item: Option<web::Json<AnimalUpdateRequest>>,
     _req: HttpRequest,
 ) -> Result<HttpResponse, Error> {

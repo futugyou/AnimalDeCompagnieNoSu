@@ -164,7 +164,7 @@ impl AnimalUpdateResponse {
 }
 pub struct AnimalClearFakeData {}
 
-#[derive(Debug, Validate, Serialize, Deserialize)]
+#[derive(Debug, Default, Validate, Serialize, Deserialize)]
 pub struct AnimalInsertRequest {
     #[serde(default)]
     pub avatar: String,

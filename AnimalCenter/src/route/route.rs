@@ -31,6 +31,12 @@ fn animalroute(cfg: &mut web::ServiceConfig) {
                     .guard(guard::Header("Content-Type", "application/json"))
                     .guard(guard::Post())
                     .to(controller::animal_controller::post),
+            )
+            .route(
+                web::route()
+                    .guard(guard::Header("Content-Type", "application/json"))
+                    .guard(guard::Put())
+                    .to(controller::animal_controller::update),
             ),
     );
     cfg.service(
