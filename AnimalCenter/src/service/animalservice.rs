@@ -17,6 +17,10 @@ pub trait IAnimalService {
         &self,
         request: AnimalUpdateRequest,
     ) -> Result<AnimalUpdateResponse, CustomError>;
+    async fn insert_animal(
+        &self,
+        request: AnimalInsertRequest,
+    ) -> Result<AnimalInsertResponse, CustomError>;
     async fn delete_animal(&self, id: String) -> Result<(), CustomError>;
     async fn clear_fake_data(&self) -> Result<(), CustomError>;
     async fn find_animal_by_id(&self, id: String) -> AnimalSearchResponse;
@@ -79,43 +83,62 @@ impl IAnimalService for AnimalService {
             Ok(_) => {
                 let id = request.id.clone();
                 let mut entity = Box::new(AnimalEntity::new());
-                if id != "" {
-                    (*entity) = self.animal_repository.findone(id).await?;
-                    marge_entity(&mut entity, request);
-                    let updateresult = self.animal_repository.update(&entity).await;
-                    match updateresult {
-                        Ok(update) => {
-                            if update {
-                                let mq = crate::infrastruct::context::mqcontext::MQContext::new();
-                                let json_message = serde_json::to_string(&entity)?;
-                                mq.send_message(&json_message, "modfiy_animal", "update")
-                                    .await?;
-                                tracing::info!(
-                                    "call animal_repository update result: {:#?}",
-                                    update
-                                );
-                                results = (*entity).into();
-                            } else {
-                                add_new_animal((*entity), &self, &mut results).await?;
-                                tracing::info!(
-                                    "call animal_repository add result: {:#?}",
-                                    results.id
-                                );
-                            }
-                        }
-                        Err(e) => {
-                            tracing::error!("call animal_repository update error: {:#?}", e);
-                            return Err(e);
+                (*entity) = self.animal_repository.findone(id).await?;
+                marge_entity(&mut entity, request);
+                let updateresult = self.animal_repository.update(&entity).await;
+                match updateresult {
+                    Ok(update) => {
+                        if update {
+                            let mq = crate::infrastruct::context::mqcontext::MQContext::new();
+                            let json_message = serde_json::to_string(&entity)?;
+                            mq.send_message(&json_message, "modfiy_animal", "update")
+                                .await?;
+                            tracing::info!("call animal_repository update result: {:#?}", update);
+                            results = (*entity).into();
+                        } else {
+                            tracing::error!("call animal_repository add result: {:#?}", results.id);
                         }
                     }
-                } else {
-                    marge_entity(&mut entity, request);
-                    add_new_animal((*entity), &self, &mut results).await?;
-                    tracing::info!("call animal_repository add result: {:#?}", results.id);
+                    Err(e) => {
+                        tracing::error!("call animal_repository update error: {:#?}", e);
+                        return Err(e);
+                    }
                 }
             }
             Err(err) => {
                 tracing::error!(" request.valid() error: {:#?}", err);
+                return Err(err);
+            }
+        }
+        Ok(results)
+    }
+
+    #[tracing::instrument(skip(self))]
+    async fn insert_animal(
+        &self,
+        request: AnimalInsertRequest,
+    ) -> Result<AnimalInsertResponse, CustomError> {
+        let mut results: AnimalInsertResponse = AnimalInsertResponse::default();
+        match request.valid() {
+            Ok(_) => {
+                let mut entity: AnimalEntity = request.into();
+                entity.idcard = format!(
+                    "{}-{}-{:>04}",
+                    &entity.animal_type,
+                    Utc::now().format("%Y%m%d-%H%M%S"),
+                    rand::thread_rng().gen_range(0001..9999)
+                );
+                let json_message = serde_json::to_string(&entity)?;
+                results = entity.clone().into();
+                let insertresult = self.animal_repository.add(entity).await?;
+                let mq = crate::infrastruct::context::mqcontext::MQContext::new();
+                mq.send_message(&json_message, "modfiy_animal", "insert")
+                    .await?;
+                tracing::info!("call animal_repository add result: {:#?}", insertresult);
+                results.id = insertresult;
+            }
+            Err(err) => {
+                tracing::error!("request.valid() error: {:#?}", err);
                 return Err(err);
             }
         }
@@ -137,6 +160,15 @@ impl IAnimalService for AnimalService {
     }
 
     #[tracing::instrument(skip(self))]
+    async fn clear_fake_data(&self) -> Result<(), CustomError> {
+        let doc = AnimalClearFakeData {}.into();
+        let serachresult = self.animal_repository.findmany(doc).await?;
+        for entity in serachresult {
+            self.animal_repository.delete(entity).await?;
+        }
+        Ok(())
+    }
+    #[tracing::instrument(skip(self))]
     async fn find_animal_by_id(&self, id: String) -> AnimalSearchResponse {
         let findresult = self.animal_repository.findaggregateone(id).await;
         match findresult {
@@ -146,16 +178,6 @@ impl IAnimalService for AnimalService {
                 AnimalEntity::new().into()
             }
         }
-    }
-
-    #[tracing::instrument(skip(self))]
-    async fn clear_fake_data(&self) -> Result<(), CustomError> {
-        let doc = AnimalClearFakeData {}.into();
-        let serachresult = self.animal_repository.findmany(doc).await?;
-        for entity in serachresult {
-            self.animal_repository.delete(entity).await?;
-        }
-        Ok(())
     }
 }
 
@@ -178,25 +200,4 @@ fn marge_entity(animal: &mut AnimalEntity, request: AnimalUpdateRequest) -> () {
     if request.photoes.len() > 0 {
         animal.photoes = request.photoes;
     }
-}
-
-async fn add_new_animal(
-    mut entity: AnimalEntity,
-    svc: &AnimalService,
-    res: &mut AnimalUpdateResponse,
-) -> Result<String, CustomError> {
-    entity.idcard = format!(
-        "{}-{}-{:>04}",
-        &entity.animal_type,
-        Utc::now().format("%Y%m%d-%H%M%S"),
-        rand::thread_rng().gen_range(0001..9999)
-    );
-    let json_message = serde_json::to_string(&entity)?;
-    *res = entity.clone().into();
-    let insertresult = svc.animal_repository.add(entity).await?;
-    res.id = insertresult.clone();
-    let mq = crate::infrastruct::context::mqcontext::MQContext::new();
-    mq.send_message(&json_message, "modfiy_animal", "insert")
-        .await?;
-    Ok(insertresult)
 }

@@ -1,10 +1,6 @@
 use crate::{
-    entity::animalentity::AnimalEntity,
-    infrastruct::getdefaultdatetime,
-    model::animal::animalmodel::{
-        AnimalClearFakeData, AnimalSearchRequest, AnimalSearchResponse, AnimalUpdateRequest,
-        AnimalUpdateResponse,
-    },
+    entity::animalentity::AnimalEntity, infrastruct::getdefaultdatetime,
+    model::animal::animalmodel::*,
 };
 
 use bson::{doc, Document};
@@ -113,6 +109,41 @@ impl From<&AnimalEntity> for Document {
                 "idcard": &entity.idcard,
                 "avatar": &entity.avatar,
                 "photoes": &entity.photoes
+        }
+    }
+}
+
+impl From<AnimalInsertRequest> for AnimalEntity {
+    fn from(animal: AnimalInsertRequest) -> Self {
+        let d = animal.birthday;
+        let mut birthday = getdefaultdatetime();
+        match d {
+            Some(a) => birthday = a,
+            _ => {}
+        }
+        AnimalEntity {
+            id: "".to_owned(),
+            name: animal.name,
+            animal_type: animal.animal_type,
+            sub_type: animal.sub_type,
+            birthday: Some(birthday),
+            idcard: "".to_owned(),
+            avatar: animal.avatar,
+            photoes: animal.photoes,
+        }
+    }
+}
+impl From<AnimalEntity> for AnimalInsertResponse {
+    fn from(entity: AnimalEntity) -> Self {
+        Self {
+            id: entity.id,
+            name: entity.name,
+            idcard: entity.idcard,
+            animal_type: entity.animal_type,
+            sub_type: entity.sub_type,
+            birthday: entity.birthday,
+            avatar: entity.avatar,
+            photoes: entity.photoes,
         }
     }
 }
