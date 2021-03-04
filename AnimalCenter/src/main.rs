@@ -21,7 +21,7 @@ async fn main() -> std::io::Result<()> {
     dotenv().ok();
     let metrics = telemetry::initmetrics();
     let _uninstall = telemetry::inittracer();
-    let schema = Schema::new(QueryRoot::default(), MutationRoot {}, SubscriptionRoot {});
+    let schema = Schema::new(QueryRoot {}, MutationRoot {}, SubscriptionRoot {});
     HttpServer::new(move || {
         let mut app = App::new();
         app = route_fake::makefakeroute(app);

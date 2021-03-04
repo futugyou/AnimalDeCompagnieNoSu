@@ -2,11 +2,9 @@ use crate::{
     model::animal::animalmodel::*,
     service::animalservice::{AnimalService, IAnimalService},
 };
-use bson::doc;
-use futures::{Stream, StreamExt};
-use serde::{Deserialize, Serialize};
 
 use async_graphql::*;
+use futures::{Stream, StreamExt};
 
 pub type AnimalSchema = Schema<QueryRoot, MutationRoot, SubscriptionRoot>;
 
@@ -14,26 +12,21 @@ pub struct MutationRoot;
 
 #[Object]
 impl MutationRoot {
-    async fn addanimal(&self, request: AnimalUpdateRequest) -> Result<AnimalUpdateResponse> {
+    async fn addanimal(&self, request: AnimalInsertRequest) -> Result<AnimalInsertResponse> {
+        let service = AnimalService::new().await;
+        let response = service.insert_animal(request).await?;
+        Ok(response)
+    }
+    async fn updateanimal(&self, request: AnimalUpdateRequest) -> Result<AnimalUpdateResponse> {
         let service = AnimalService::new().await;
         let response = service.modfiy_animal(request).await?;
         Ok(response)
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Default)]
-pub struct QueryRoot {
-    pub name: String,
-}
-
+pub struct QueryRoot;
 #[Object]
 impl QueryRoot {
-    async fn name(&self) -> String {
-        self.name.to_string()
-    }
-    async fn add(&self, a: i32, b: i32) -> i32 {
-        a + b
-    }
     async fn getanimals(
         &self,
         _ctx: &Context<'_>,

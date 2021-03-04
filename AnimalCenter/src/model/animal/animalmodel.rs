@@ -164,7 +164,7 @@ impl AnimalUpdateResponse {
 }
 pub struct AnimalClearFakeData {}
 
-#[derive(Debug, Default, Validate, Serialize, Deserialize)]
+#[derive(Debug, Default, Validate, Serialize, Deserialize, InputObject)]
 pub struct AnimalInsertRequest {
     #[serde(default)]
     pub avatar: String,
@@ -217,4 +217,32 @@ pub struct AnimalInsertResponse {
     pub avatar: String,
     #[serde(default)]
     pub photoes: Vec<String>,
+}
+
+#[Object]
+impl AnimalInsertResponse {
+    async fn id(&self) -> &str {
+        &self.id
+    }
+    async fn name(&self) -> &str {
+        &self.name
+    }
+    async fn animal_type(&self) -> &str {
+        &self.animal_type
+    }
+    async fn sub_type(&self) -> &str {
+        &self.sub_type
+    }
+    async fn idcard(&self) -> &str {
+        &self.idcard
+    }
+    async fn avatar(&self) -> &str {
+        &self.avatar
+    }
+    async fn photoes(&self) -> &Vec<String> {
+        &self.photoes
+    }
+    async fn birthday(&self) -> &Option<DateTime<Utc>> {
+        &self.birthday
+    }
 }
