@@ -1,6 +1,6 @@
+use crate::model::animal::{animalinsertmodel::*, animalsearchmodel::*, animalupdatemodel::*};
 use crate::{
-    entity::animalentity::AnimalEntity, infrastruct::getdefaultdatetime,
-    model::animal::animalmodel::*,
+    entity::animalentity::AnimalEntity, infrastruct::getdefaultdatetime, model::animal::*,
 };
 
 use bson::{doc, Document};

@@ -1,8 +1,5 @@
-use crate::{
-    model::animal::animalmodel::*,
-    service::animalservice::{AnimalService, IAnimalService},
-};
-
+use crate::model::animal::{animalinsertmodel::*, animalsearchmodel::*, animalupdatemodel::*};
+use crate::service::animalservice::{AnimalService, IAnimalService};
 use async_graphql::*;
 use futures::{Stream, StreamExt};
 

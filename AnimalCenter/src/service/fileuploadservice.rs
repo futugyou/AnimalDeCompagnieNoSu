@@ -1,6 +1,5 @@
-use crate::model::animal::filemodel::*;
-use crate::repository::filerepository::*;
 use crate::{entity::fileentity::FileEntity, infrastruct::custom_error::*};
+use crate::{model::file::filemodel::*, repository::filerepository::*};
 
 use async_trait::async_trait;
 #[async_trait]

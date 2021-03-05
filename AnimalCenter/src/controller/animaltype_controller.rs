@@ -1,11 +1,9 @@
 use crate::{
-    model::animal::animaltypemodel::AnimalTypeUpdateRequest,
+    model::animaltype::animaltypemodel::*,
     service::animaltypeservice::{AnimalTypeService, IAnimalTypeService},
 };
 
 use actix_web::{web, Error, HttpRequest, HttpResponse};
-
-use crate::model::animal::animaltypemodel::AnimalTypeSearchRequest;
 
 pub async fn get(
     item: Option<web::Json<AnimalTypeSearchRequest>>,

@@ -1,15 +1,10 @@
 use async_trait::async_trait;
 
+use crate::repository::animaltyperepository::{AnimalTypeRepository, IAnimalTypeRepository};
 use crate::{
-    entity::animaltypeentity::AnimalTypeEntity, infrastruct::custom_error::CustomError,
-    model::animal::BaseRequest,
-};
-use crate::{
-    model::animal::animaltypemodel::{
-        AnimalTypeSearchRequest, AnimalTypeSearchResponse, AnimalTypeUpdateRequest,
-        AnimalTypeUpdateResponse,
-    },
-    repository::animaltyperepository::{AnimalTypeRepository, IAnimalTypeRepository},
+    entity::animaltypeentity::AnimalTypeEntity,
+    infrastruct::custom_error::CustomError,
+    model::{animal::BaseRequest, animaltype::animaltypemodel::*},
 };
 
 #[async_trait]

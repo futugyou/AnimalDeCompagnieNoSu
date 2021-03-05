@@ -1,4 +1,4 @@
-use crate::model::animal::animalmodel::*;
+use crate::model::animal::{animalinsertmodel::*, animalsearchmodel::*, animalupdatemodel::*};
 use crate::service::animalservice::*;
 
 use actix_web::{web, Error, HttpRequest, HttpResponse};

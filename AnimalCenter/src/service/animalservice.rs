@@ -1,8 +1,7 @@
-use crate::model::animal::BaseRequest;
+use crate::model::animal::{animalinsertmodel::*, animalsearchmodel::*, animalupdatemodel::*, *};
 use crate::{
     entity::animalentity::AnimalEntity,
     infrastruct::{context::mqcontext::IMQContext, custom_error::*},
-    model::animal::animalmodel::*,
     repository::animalrepository::*,
 };
 

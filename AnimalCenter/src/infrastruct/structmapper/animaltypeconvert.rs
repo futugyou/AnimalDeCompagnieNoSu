@@ -1,10 +1,4 @@
-use crate::{
-    entity::animaltypeentity::AnimalTypeEntity,
-    model::animal::animaltypemodel::{
-        AnimalTypeSearchRequest, AnimalTypeSearchResponse, AnimalTypeUpdateRequest,
-        AnimalTypeUpdateResponse,
-    },
-};
+use crate::{entity::animaltypeentity::AnimalTypeEntity, model::animaltype::animaltypemodel::*};
 use bson::{doc, Document};
 
 impl From<AnimalTypeSearchRequest> for Document {

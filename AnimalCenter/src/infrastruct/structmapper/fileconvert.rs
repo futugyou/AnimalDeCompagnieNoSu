@@ -1,6 +1,6 @@
 use crate::{
     entity::fileentity::FileEntity, infrastruct::base64convert::vectobase64,
-    model::animal::filemodel::*,
+    model::file::filemodel::*,
 };
 
 impl From<FileEntity> for FileSearchResponse {

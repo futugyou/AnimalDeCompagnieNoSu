@@ -1,10 +1,9 @@
-use actix_multipart::Multipart;
-use actix_web::{web, HttpRequest};
-use actix_web::{Error, HttpResponse};
-use futures::{StreamExt, TryStreamExt};
-
-use crate::model::animal::filemodel::*;
+use crate::model::file::filemodel::*;
 use crate::service::fileuploadservice::*;
+
+use actix_multipart::Multipart;
+use actix_web::{web, Error, HttpRequest, HttpResponse};
+use futures::{StreamExt, TryStreamExt};
 
 pub async fn post(mut payload: Multipart) -> Result<HttpResponse, Error> {
     let service = FileService::new().await;
