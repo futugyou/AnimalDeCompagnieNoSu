@@ -1,4 +1,4 @@
-use crate::model::animal::{animalinsertmodel::*, animalsearchmodel::*, animalupdatemodel::*};
+use crate::graphql::animalmodel::*;
 use crate::service::animalservice::{AnimalService, IAnimalService};
 use async_graphql::*;
 use futures::{Stream, StreamExt};
@@ -11,13 +11,13 @@ pub struct MutationRoot;
 impl MutationRoot {
     async fn addanimal(&self, request: AnimalInsertRequest) -> Result<AnimalInsertResponse> {
         let service = AnimalService::new().await;
-        let response = service.insert_animal(request).await?;
-        Ok(response)
+        let response = service.insert_animal(request.into()).await?;
+        Ok(response.into())
     }
     async fn updateanimal(&self, request: AnimalUpdateRequest) -> Result<AnimalUpdateResponse> {
         let service = AnimalService::new().await;
-        let response = service.modfiy_animal(request).await?;
-        Ok(response)
+        let response = service.modfiy_animal(request.into()).await?;
+        Ok(response.into())
     }
 }
 
@@ -30,13 +30,13 @@ impl QueryRoot {
         request: AnimalSearchRequest,
     ) -> Vec<AnimalSearchResponse> {
         let service = AnimalService::new().await;
-        let response = service.search_animals(request).await;
-        response
+        let response = service.search_animals(request.into()).await;
+        response.into_iter().map(|x| x.into()).collect()
     }
     async fn getanimal(&self, _ctx: &Context<'_>, id: String) -> AnimalSearchResponse {
         let service = AnimalService::new().await;
         let response = service.find_animal_by_id(id).await;
-        response
+        response.into()
     }
 }
 

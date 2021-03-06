@@ -1,4 +1,4 @@
 mod animal;
-mod animalmodel;
+pub mod animalmodel;
 
 pub use animal::*;
