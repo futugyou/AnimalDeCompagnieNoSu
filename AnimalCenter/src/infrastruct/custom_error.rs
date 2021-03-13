@@ -38,7 +38,7 @@ pub enum CustomErrorKind {
 impl std::error::Error for CustomError {}
 impl std::fmt::Display for CustomError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "({})", self)
+        write!(f, "({} {} {:?})", self.code, self.message, self.error_kind)
     }
 }
 
@@ -106,6 +106,7 @@ impl std::convert::From<serde_json::Error> for CustomError {
 
 impl std::convert::From<validator::ValidationErrors> for CustomError {
     fn from(error: validator::ValidationErrors) -> Self {
+        print!("@");
         Self {
             code: "20001".to_owned(),
             message: error.to_string(),
