@@ -1,3 +1,4 @@
+use async_graphql::validators::*;
 use async_graphql::*;
 
 use chrono::{DateTime, Utc};
@@ -5,18 +6,18 @@ use chrono::{DateTime, Utc};
 #[derive(Debug, InputObject)]
 pub struct AnimalUpdateRequest {
     pub id: String,
-    #[graphql(default)]
-    pub avatar: String,
-    #[graphql(default)]
+    #[graphql(validator(and(StringMinLength(length = "2"), StringMaxLength(length = "20"))))]
     pub name: String,
-    #[graphql(default)]
+    #[graphql(validator(and(StringMinLength(length = "2"), StringMaxLength(length = "20"))))]
     pub animal_type: String,
-    #[graphql(default)]
+    #[graphql(validator(and(StringMinLength(length = "2"), StringMaxLength(length = "20"))))]
     pub sub_type: String,
     #[graphql(default)]
     pub birthday: Option<DateTime<Utc>>,
     #[graphql(default)]
     pub photoes: Vec<String>,
+    #[graphql(default)]
+    pub avatar: String,
 }
 
 #[derive(Debug)]
@@ -60,7 +61,9 @@ impl AnimalUpdateResponse {
 }
 #[derive(Debug, InputObject)]
 pub struct AnimalSearchRequest {
+    #[graphql(default)]
     pub name: String,
+    #[graphql(default)]
     pub animal_type: Vec<String>,
 }
 
@@ -104,12 +107,18 @@ impl AnimalSearchResponse {
 
 #[derive(Debug, Default, InputObject)]
 pub struct AnimalInsertRequest {
-    pub avatar: String,
+    #[graphql(validator(and(StringMinLength(length = "2"), StringMaxLength(length = "20"))))]
     pub name: String,
+    #[graphql(validator(and(StringMinLength(length = "2"), StringMaxLength(length = "20"))))]
     pub animal_type: String,
+    #[graphql(validator(and(StringMinLength(length = "2"), StringMaxLength(length = "20"))))]
     pub sub_type: String,
+    #[graphql(default)]
     pub birthday: Option<DateTime<Utc>>,
+    #[graphql(default)]
     pub photoes: Vec<String>,
+    #[graphql(default)]
+    pub avatar: String,
 }
 
 #[derive(Default, Debug)]
