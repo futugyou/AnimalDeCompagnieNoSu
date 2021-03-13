@@ -4,13 +4,18 @@ use chrono::{DateTime, Utc};
 
 #[derive(Debug, InputObject)]
 pub struct AnimalUpdateRequest {
-    #[graphql(default)]
     pub id: String,
+    #[graphql(default)]
     pub avatar: String,
+    #[graphql(default)]
     pub name: String,
+    #[graphql(default)]
     pub animal_type: String,
+    #[graphql(default)]
     pub sub_type: String,
+    #[graphql(default)]
     pub birthday: Option<DateTime<Utc>>,
+    #[graphql(default)]
     pub photoes: Vec<String>,
 }
 
