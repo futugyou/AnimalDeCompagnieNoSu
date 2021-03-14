@@ -30,22 +30,12 @@ impl IReportService for ReportService {
         &self,
         request: RescueClassificationRequest,
     ) -> Vec<RescueClassificationResponse> {
-        //         [
-        //     {
-        //         '$group': {
-        //             '_id': '$sub_type',
-        //             'count': {
-        //                 '$sum': 1
-        //             }
-        //         }
-        //     }, {
-        //         '$project': {
-        //             'classification': '$_id',
-        //             'count': 1,
-        //             '_id': 0
-        //         }
-        //     }
-        // ]
-        vec![RescueClassificationResponse::default()]
+        let mut result: Vec<RescueClassificationResponse> = Vec::new();
+        let exec_result = self.repository.get_age_rescue_data(request.into()).await;
+        match exec_result {
+            Ok(res) => result = res.into_iter().map(|x| x.into()).collect(),
+            Err(error) => tracing::error!("call  get_age_rescue_data error: {:#?}", error),
+        }
+        result
     }
 }

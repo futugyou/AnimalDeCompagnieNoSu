@@ -1,10 +1,15 @@
+use crate::{entity::animalentity::AnimalEntity, infrastruct::custom_error::CustomError};
 use crate::{entity::rescueentity::RescueEntity, infrastruct::context::dbcontext::*};
 use async_trait::async_trait;
-use bson::Document;
+use bson::{Bson, Document};
+use futures::StreamExt;
 
 #[async_trait]
 pub trait IReportRepository {
-    async fn get_age_rescue_data(&self, req: Document) -> Vec<RescueEntity>;
+    async fn get_age_rescue_data(
+        &self,
+        req: Vec<Document>,
+    ) -> Result<Vec<RescueEntity>, CustomError>;
 }
 
 pub struct ReportRepository {
@@ -22,7 +27,19 @@ impl ReportRepository {
 
 #[async_trait]
 impl IReportRepository for ReportRepository {
-    async fn get_age_rescue_data(&self, req: Document) -> Vec<RescueEntity> {
-        todo!()
+    #[tracing::instrument(skip(self))]
+    async fn get_age_rescue_data(
+        &self,
+        pipeline: Vec<Document>,
+    ) -> Result<Vec<RescueEntity>, CustomError> {
+        let collection = self.context.collection(AnimalEntity::get_collection_name());
+        let mut cursor = collection.aggregate(pipeline, None).await?;
+        let mut datas = Vec::<RescueEntity>::new();
+        while let Some(result) = cursor.next().await {
+            let data = bson::from_bson(Bson::Document(result?))?;
+            datas.push(data);
+        }
+        tracing::info!("findaggregateone result: {:#?}", datas);
+        Ok(datas)
     }
 }
