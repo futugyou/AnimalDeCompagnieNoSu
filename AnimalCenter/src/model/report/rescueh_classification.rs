@@ -2,7 +2,7 @@ use serde::*;
 
 #[derive(Debug, Default, Deserialize)]
 pub struct RescuehClassificationRequest {
-    #[serde(default = "age")]
+    #[serde(default = "default_rescueh")]
     rescueh_classification: String,
 }
 
@@ -12,4 +12,8 @@ pub struct RescuehClassificationResponse {
     classification: String,
     #[serde(default)]
     count: u32,
+}
+
+fn default_rescueh() -> String {
+    "age".to_owned()
 }
