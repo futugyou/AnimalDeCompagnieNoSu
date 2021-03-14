@@ -1,13 +1,13 @@
 use serde::*;
 
 #[derive(Debug, Default, Deserialize)]
-pub struct RescuehClassificationRequest {
+pub struct RescueClassificationRequest {
     #[serde(default = "default_rescueh")]
     rescueh_classification: String,
 }
 
 #[derive(Debug, Default, Serialize)]
-pub struct RescuehClassificationResponse {
+pub struct RescueClassificationResponse {
     #[serde(default)]
     classification: String,
     #[serde(default)]

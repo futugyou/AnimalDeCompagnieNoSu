@@ -1,1 +1,1 @@
-pub mod rescueh_classification;
+pub mod rescue_classification;

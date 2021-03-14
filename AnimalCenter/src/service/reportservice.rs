@@ -1,13 +1,13 @@
 use async_trait::async_trait;
 
-use crate::{model::report::rescueh_classification::*, repository::reportrepository::*};
+use crate::{model::report::rescue_classification::*, repository::reportrepository::*};
 
 #[async_trait]
 pub trait IReportService {
     async fn get_rescue_classification(
         &self,
-        request: RescuehClassificationRequest,
-    ) -> Vec<RescuehClassificationResponse>;
+        request: RescueClassificationRequest,
+    ) -> Vec<RescueClassificationResponse>;
 }
 
 pub struct ReportService {
@@ -28,8 +28,24 @@ impl IReportService for ReportService {
     #[tracing::instrument(skip(self))]
     async fn get_rescue_classification(
         &self,
-        request: RescuehClassificationRequest,
-    ) -> Vec<RescuehClassificationResponse> {
-        vec![RescuehClassificationResponse::default()]
+        request: RescueClassificationRequest,
+    ) -> Vec<RescueClassificationResponse> {
+        //         [
+        //     {
+        //         '$group': {
+        //             '_id': '$sub_type',
+        //             'count': {
+        //                 '$sum': 1
+        //             }
+        //         }
+        //     }, {
+        //         '$project': {
+        //             'classification': '$_id',
+        //             'count': 1,
+        //             '_id': 0
+        //         }
+        //     }
+        // ]
+        vec![RescueClassificationResponse::default()]
     }
 }

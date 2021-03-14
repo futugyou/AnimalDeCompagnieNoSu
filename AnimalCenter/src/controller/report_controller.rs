@@ -1,12 +1,12 @@
-use crate::model::report::rescueh_classification::RescuehClassificationRequest;
+use crate::model::report::rescue_classification::RescueClassificationRequest;
 use crate::service::reportservice::*;
 use actix_web::{web, HttpRequest, HttpResponse};
 
 pub async fn get_rescue_classification(
-    item: Option<web::Json<RescuehClassificationRequest>>,
+    item: Option<web::Json<RescueClassificationRequest>>,
     _req: HttpRequest,
 ) -> HttpResponse {
-    let mut paramter = RescuehClassificationRequest::default();
+    let mut paramter = RescueClassificationRequest::default();
     match item {
         Some(r) => paramter = r.into_inner(),
         None => (),
