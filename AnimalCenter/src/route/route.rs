@@ -13,6 +13,7 @@ pub fn bussisscope() -> Scope {
                 None => false,
             }
         }))
+        .configure(reportroute)
         .configure(animalroute)
         .configure(fileuploadroute)
         .configure(animaltyperoute)
@@ -68,5 +69,12 @@ fn fileuploadroute(cfg: &mut web::ServiceConfig) {
                     .guard(guard::Post())
                     .to(controller::fileupload_controller::post),
             ),
+    );
+}
+
+fn reportroute(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::resource("/animalreport")
+            .route(web::get().to(controller::report_controller::get_rescue_classification)),
     );
 }
