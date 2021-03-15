@@ -3,6 +3,7 @@ use crate::{
     entity::animalentity::AnimalEntity, infrastruct::getdefaultdatetime, model::animal::*,
 };
 use bson::{doc, Document};
+use chrono::DateTime;
 use chrono::Utc;
 
 impl From<AnimalUpdateRequest> for AnimalEntity {
@@ -11,7 +12,7 @@ impl From<AnimalUpdateRequest> for AnimalEntity {
         if let Some(data) = animal.birthday {
             birthday = data;
         }
-        let mut rescue_date = Utc::now();
+        let mut rescue_date: DateTime<Utc> = Utc::now();
         if let Some(data) = animal.rescue_date {
             rescue_date = data;
         }
@@ -50,21 +51,24 @@ impl From<AnimalSearchRequest> for Document {
 
 impl From<AnimalEntity> for AnimalSearchResponse {
     fn from(animal: AnimalEntity) -> Self {
-        let d = animal.birthday;
-        let mut birthday = getdefaultdatetime();
-        match d {
-            Some(a) => birthday = a,
-            _ => {}
-        }
+        // let mut birthday: Option<DateTime<Utc>> = None;
+        // if let Some(data) = animal.birthday {
+        //     birthday = Some(data);
+        // }
+        // let mut rescue_date: Option<DateTime<Utc>> = None;
+        // if let Some(data) = animal.rescue_date {
+        //     rescue_date = Some(data);
+        // }
         AnimalSearchResponse {
             id: animal.id,
             name: animal.name,
             animal_type: animal.animal_type,
             sub_type: animal.sub_type,
-            birthday: Some(birthday),
+            birthday: animal.birthday,
             idcard: animal.idcard,
             avatar: animal.avatar,
             photoes: animal.photoes,
+            rescue_date: animal.rescue_date,
         }
     }
 }
@@ -112,7 +116,8 @@ impl From<&AnimalEntity> for Document {
                 "sub_type": &entity.sub_type,
                 "idcard": &entity.idcard,
                 "avatar": &entity.avatar,
-                "photoes": &entity.photoes
+                "photoes": &entity.photoes,
+                "rescue_date": &entity.rescue_date.unwrap(),
         }
     }
 }
@@ -151,6 +156,7 @@ impl From<AnimalEntity> for AnimalInsertResponse {
             birthday: entity.birthday,
             avatar: entity.avatar,
             photoes: entity.photoes,
+            rescue_date: entity.rescue_date,
         }
     }
 }

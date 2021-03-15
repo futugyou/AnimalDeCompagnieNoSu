@@ -34,4 +34,6 @@ pub struct AnimalSearchResponse {
     pub avatar: String,
     #[serde(default)]
     pub photoes: Vec<String>,
+    #[serde(with = "date_format")]
+    pub rescue_date: Option<DateTime<Utc>>,
 }

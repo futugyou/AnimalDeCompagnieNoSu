@@ -119,6 +119,7 @@ impl IAnimalRepository for AnimalRepository {
                 "birthday":1,
                 "sub_type":1,
                 "idcard":1,
+                "rescue_date":1,
                 "photoes":1,
                 "avatar":"$base64src",
             }},
