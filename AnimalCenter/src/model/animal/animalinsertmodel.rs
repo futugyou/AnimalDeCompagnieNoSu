@@ -34,6 +34,8 @@ pub struct AnimalInsertRequest {
     pub birthday: Option<DateTime<Utc>>,
     #[serde(default)]
     pub photoes: Vec<String>,
+    #[serde(with = "date_format", default)]
+    pub rescue_date: Option<DateTime<Utc>>,
 }
 
 impl BaseRequest for AnimalInsertRequest {}

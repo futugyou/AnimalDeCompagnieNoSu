@@ -22,6 +22,8 @@ pub struct AnimalEntity {
     pub avatar: String,
     #[serde(default)]
     pub photoes: Vec<String>,
+    #[serde(with = "date_format_bson", default)]
+    pub rescue_date: Option<DateTime<Utc>>,
 }
 
 impl AnimalEntity {
@@ -35,6 +37,7 @@ impl AnimalEntity {
             idcard: "".to_string(),
             avatar: "".to_owned(),
             photoes: Vec::new(),
+            rescue_date: Some(Utc::now()),
         }
     }
 

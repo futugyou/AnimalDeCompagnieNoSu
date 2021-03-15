@@ -2,16 +2,18 @@ use crate::model::animal::{animalinsertmodel::*, animalsearchmodel::*, animalupd
 use crate::{
     entity::animalentity::AnimalEntity, infrastruct::getdefaultdatetime, model::animal::*,
 };
-
 use bson::{doc, Document};
+use chrono::Utc;
 
 impl From<AnimalUpdateRequest> for AnimalEntity {
     fn from(animal: AnimalUpdateRequest) -> Self {
-        let d = animal.birthday;
         let mut birthday = getdefaultdatetime();
-        match d {
-            Some(a) => birthday = a,
-            _ => {}
+        if let Some(data) = animal.birthday {
+            birthday = data;
+        }
+        let mut rescue_date = Utc::now();
+        if let Some(data) = animal.rescue_date {
+            rescue_date = data;
         }
         AnimalEntity {
             id: animal.id,
@@ -22,6 +24,7 @@ impl From<AnimalUpdateRequest> for AnimalEntity {
             idcard: String::from(""),
             avatar: animal.avatar,
             photoes: animal.photoes,
+            rescue_date: Some(rescue_date),
         }
     }
 }
@@ -95,6 +98,7 @@ impl From<AnimalEntity> for AnimalUpdateResponse {
             birthday: entity.birthday,
             avatar: entity.avatar,
             photoes: entity.photoes,
+            rescue_date: entity.rescue_date,
         }
     }
 }
@@ -115,11 +119,13 @@ impl From<&AnimalEntity> for Document {
 
 impl From<AnimalInsertRequest> for AnimalEntity {
     fn from(animal: AnimalInsertRequest) -> Self {
-        let d = animal.birthday;
         let mut birthday = getdefaultdatetime();
-        match d {
-            Some(a) => birthday = a,
-            _ => {}
+        if let Some(data) = animal.birthday {
+            birthday = data;
+        }
+        let mut rescue_date = Utc::now();
+        if let Some(data) = animal.rescue_date {
+            rescue_date = data;
         }
         AnimalEntity {
             id: "".to_owned(),
@@ -130,6 +136,7 @@ impl From<AnimalInsertRequest> for AnimalEntity {
             idcard: "".to_owned(),
             avatar: animal.avatar,
             photoes: animal.photoes,
+            rescue_date: Some(rescue_date),
         }
     }
 }

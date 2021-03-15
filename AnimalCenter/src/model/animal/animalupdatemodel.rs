@@ -37,6 +37,8 @@ pub struct AnimalUpdateRequest {
     pub birthday: Option<DateTime<Utc>>,
     #[serde(default)]
     pub photoes: Vec<String>,
+    #[serde(with = "date_format", default)]
+    pub rescue_date: Option<DateTime<Utc>>,
 }
 
 impl BaseRequest for AnimalUpdateRequest {}
@@ -50,6 +52,7 @@ impl AnimalUpdateRequest {
             avatar: "".to_owned(),
             birthday: Some(getdefaultdatetime()),
             photoes: Vec::new(),
+            rescue_date: None,
         }
     }
 }
@@ -72,4 +75,6 @@ pub struct AnimalUpdateResponse {
     pub avatar: String,
     #[serde(default)]
     pub photoes: Vec<String>,
+    #[serde(with = "date_format")]
+    pub rescue_date: Option<DateTime<Utc>>,
 }

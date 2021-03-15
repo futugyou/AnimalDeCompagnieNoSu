@@ -18,6 +18,8 @@ pub struct AnimalUpdateRequest {
     pub photoes: Vec<String>,
     #[graphql(default)]
     pub avatar: String,
+    #[graphql(default)]
+    pub rescue_date: Option<DateTime<Utc>>,
 }
 
 #[derive(Debug)]
@@ -30,6 +32,7 @@ pub struct AnimalUpdateResponse {
     pub idcard: String,
     pub avatar: String,
     pub photoes: Vec<String>,
+    pub rescue_date: Option<DateTime<Utc>>,
 }
 
 #[Object]
@@ -57,6 +60,9 @@ impl AnimalUpdateResponse {
     }
     async fn birthday(&self) -> &Option<DateTime<Utc>> {
         &self.birthday
+    }
+    async fn rescue_date(&self) -> &Option<DateTime<Utc>> {
+        &self.rescue_date
     }
 }
 #[derive(Debug, InputObject)]
@@ -119,6 +125,8 @@ pub struct AnimalInsertRequest {
     pub photoes: Vec<String>,
     #[graphql(default)]
     pub avatar: String,
+    #[graphql(default)]
+    pub rescue_date: Option<DateTime<Utc>>,
 }
 
 #[derive(Default, Debug)]

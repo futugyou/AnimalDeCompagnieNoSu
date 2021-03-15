@@ -36,6 +36,7 @@ impl From<crate::graphql::animalmodel::AnimalInsertRequest>
             animal_type: req.animal_type,
             avatar: req.avatar,
             photoes: req.photoes,
+            rescue_date: req.rescue_date,
         }
     }
 }
@@ -69,6 +70,7 @@ impl From<crate::graphql::animalmodel::AnimalUpdateRequest>
             animal_type: req.animal_type,
             avatar: req.avatar,
             photoes: req.photoes,
+            rescue_date: req.rescue_date,
         }
     }
 }
@@ -86,6 +88,7 @@ impl From<crate::model::animal::animalupdatemodel::AnimalUpdateResponse>
             animal_type: res.animal_type,
             avatar: res.avatar,
             photoes: res.photoes,
+            rescue_date: res.rescue_date,
         }
     }
 }
