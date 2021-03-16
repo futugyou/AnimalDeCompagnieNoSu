@@ -1,4 +1,6 @@
 use crate::infrastruct::serialize::*;
+
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
@@ -11,6 +13,8 @@ pub struct FileEntity {
     pub ext: String,
     #[serde(default)]
     pub base64src: String,
+    #[serde(with = "naive_date_format_bson", default)]
+    pub uploaddate: Option<NaiveDateTime>,
 }
 
 impl FileEntity {

@@ -10,6 +10,7 @@ impl From<FileEntity> for FileSearchResponse {
             name: file.name,
             ext: file.ext,
             base64src: file.base64src,
+            uploaddate: file.uploaddate,
         }
     }
 }
@@ -22,6 +23,7 @@ impl From<FileAddModel> for FileEntity {
             name: file.name,
             ext: file.ext,
             base64src: base64,
+            uploaddate: file.uploaddate,
         }
     }
 }
