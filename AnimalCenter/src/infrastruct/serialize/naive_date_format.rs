@@ -1,4 +1,4 @@
-use crate::infrastruct::{NAIVE_DATETIMEDEFAULT, NAIVE_FORMAT};
+use crate::infrastruct::{NAIVE_FORMAT, *};
 
 use chrono::NaiveDateTime;
 use serde::{self, Deserialize, Deserializer, Serializer};
@@ -12,7 +12,10 @@ where
             let s = format!("{}", d.format(NAIVE_FORMAT));
             serializer.serialize_str(&s)
         }
-        None => serializer.serialize_str(NAIVE_DATETIMEDEFAULT),
+        None => {
+            let s = getdefaultnaivedatetime().to_string();
+            serializer.serialize_str(&s)
+        }
     }
 }
 
@@ -21,7 +24,7 @@ where
     D: Deserializer<'de>,
 {
     let deresult = String::deserialize(deserializer);
-    let mut str = String::from(NAIVE_DATETIMEDEFAULT);
+    let mut str = getdefaultnaivedatetime().to_string();
     let _ = match deresult {
         Ok(a) => str = a,
         Err(_) => {}

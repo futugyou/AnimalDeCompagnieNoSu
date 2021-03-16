@@ -1,4 +1,4 @@
-use crate::infrastruct::{NAIVE_DATETIMEDEFAULT, NAIVE_FORMAT};
+use crate::infrastruct::{NAIVE_FORMAT, *};
 
 use chrono::NaiveDateTime;
 use serde::{self, Deserialize, Deserializer, Serializer};
@@ -12,7 +12,10 @@ where
             let s = format!("{}", d.format(NAIVE_FORMAT));
             serializer.serialize_str(&s)
         }
-        None => serializer.serialize_str(NAIVE_DATETIMEDEFAULT),
+        None => {
+            let s = getdefaultnaivedatetime().to_string();
+            serializer.serialize_str(&s)
+        }
     }
 }
 
@@ -21,14 +24,14 @@ where
     D: Deserializer<'de>,
 {
     let s = std::collections::HashMap::<String, String>::deserialize(deserializer);
-    let mut str = String::from(NAIVE_DATETIMEDEFAULT);
+    let mut str = getdefaultnaivedatetime().to_string();
     let _ = match s {
         Ok(a) => {
             str = a.get("$date").unwrap().to_string();
         }
         Err(_) => (),
     };
-
+    println!("{:?}", str);
     let r = NaiveDateTime::parse_from_str(&str, NAIVE_FORMAT);
     match r {
         Ok(t) => Ok(Option::from(t)),
