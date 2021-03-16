@@ -1,5 +1,6 @@
 pub mod date_format;
 pub mod date_format_bson;
+pub mod naive_date_format;
 
 use serde::{de, Deserialize, Deserializer};
 use std::fmt::Display;
