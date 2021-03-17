@@ -1,7 +1,6 @@
 use crate::model::animal::{animalinsertmodel::*, animalsearchmodel::*, animalupdatemodel::*};
-use crate::{
-    entity::animalentity::AnimalEntity, infrastruct::getdefaultdatetime, model::animal::*,
-};
+use crate::{entity::animalentity::AnimalEntity, infrastruct::*, model::animal::*};
+
 use bson::{doc, Document};
 use chrono::DateTime;
 use chrono::Utc;
@@ -12,7 +11,7 @@ impl From<AnimalUpdateRequest> for AnimalEntity {
         if let Some(data) = animal.birthday {
             birthday = data;
         }
-        let mut rescue_date: DateTime<Utc> = Utc::now();
+        let mut rescue_date: DateTime<Utc> = getutcnowwithformat();
         if let Some(data) = animal.rescue_date {
             rescue_date = data;
         }
@@ -128,7 +127,7 @@ impl From<AnimalInsertRequest> for AnimalEntity {
         if let Some(data) = animal.birthday {
             birthday = data;
         }
-        let mut rescue_date = Utc::now();
+        let mut rescue_date = getutcnowwithformat();
         if let Some(data) = animal.rescue_date {
             rescue_date = data;
         }

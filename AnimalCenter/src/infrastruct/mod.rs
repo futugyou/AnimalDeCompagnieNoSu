@@ -22,6 +22,12 @@ pub fn getdefaultdatetime() -> DateTime<Utc> {
     Utc.datetime_from_str(DATETIMEDEFAULT, FORMAT).unwrap()
 }
 
+pub fn getutcnowwithformat() -> DateTime<Utc> {
+    let date_string = Utc::now().format(FORMAT).to_string();
+    let date = Utc.datetime_from_str(&date_string, FORMAT).unwrap();
+    date
+}
+
 #[allow(non_snake_case)]
 pub fn stringtoObjectId(str: &str) -> Result<bson::oid::ObjectId, CustomError> {
     Ok(bson::oid::ObjectId::with_string(str)?)

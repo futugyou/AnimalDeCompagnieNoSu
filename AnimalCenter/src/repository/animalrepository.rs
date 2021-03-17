@@ -127,6 +127,7 @@ impl IAnimalRepository for AnimalRepository {
         let mut cursor = self.collection.aggregate(pipeline, None).await?;
         let mut animal = AnimalEntity::new();
         while let Some(result) = cursor.next().await {
+            println!("{:?}", result);
             animal = bson::from_bson(Bson::Document(result?))?;
         }
         tracing::info!("findaggregateone result: {:#?}", animal);

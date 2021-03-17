@@ -37,7 +37,7 @@ impl AnimalEntity {
             idcard: "".to_string(),
             avatar: "".to_owned(),
             photoes: Vec::new(),
-            rescue_date: Some(Utc::now()),
+            rescue_date: Some(getutcnowwithformat()),
         }
     }
 
