@@ -1,4 +1,4 @@
-use crate::infrastruct::getdefaultnaivedatetime;
+use crate::infrastruct::*;
 use crate::model::file::filemodel::*;
 use crate::service::fileuploadservice::*;
 
@@ -24,7 +24,7 @@ pub async fn post(mut payload: Multipart) -> Result<HttpResponse, Error> {
             name: filepath,
             ext: ext,
             data: file_data,
-            uploaddate: Some(getdefaultnaivedatetime()),
+            uploaddate: Some(getutcnowwithformat()),
         })
     }
     let resul = service.addfiles(models).await?;

@@ -1,6 +1,8 @@
 pub mod date_format;
 pub mod date_format_bson;
+#[allow(dead_code)]
 pub mod naive_date_format;
+#[allow(dead_code)]
 pub mod naive_date_format_bson;
 
 use serde::{de, Deserialize, Deserializer};

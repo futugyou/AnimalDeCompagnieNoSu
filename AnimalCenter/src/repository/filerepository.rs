@@ -6,7 +6,6 @@ use crate::{
         stringtoObjectId,
     },
 };
-use chrono::*;
 
 use async_trait::async_trait;
 use bson::Bson;
@@ -43,14 +42,11 @@ impl FileRepository {
 impl IFileRepository for FileRepository {
     #[tracing::instrument(skip(self))]
     async fn add(&self, entity: FileEntity) -> Result<String, CustomError> {
-        let date_time: DateTime<Utc> = Utc
-            .from_local_datetime(&entity.uploaddate.unwrap())
-            .unwrap();
         let docs = doc! {
                 "name": entity.name,
                 "ext": entity.ext,
                 "base64src":entity.base64src,
-                "uploaddate":date_time ,
+                "uploaddate":entity.uploaddate.unwrap() ,
         };
         let result = self.collection.insert_one(docs, None).await?;
         tracing::info!("db insert_one result: {:#?}", result);
@@ -120,7 +116,7 @@ impl IFileRepository for FileRepository {
                         "name": entity.name,
                         "ext": entity.ext,
                         "base64src":entity.base64src,
-                        "uploaddate": Utc.from_local_datetime(&entity.uploaddate.unwrap()).unwrap()
+                        "uploaddate":  entity.uploaddate.unwrap(),
                 }
             })
             .collect::<Vec<Document>>();

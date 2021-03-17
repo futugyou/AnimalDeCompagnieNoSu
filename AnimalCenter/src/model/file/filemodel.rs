@@ -1,5 +1,6 @@
 use crate::infrastruct::serialize::*;
-use chrono::NaiveDateTime;
+
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Default)]
@@ -12,8 +13,8 @@ pub struct FileSearchResponse {
     pub ext: String,
     #[serde(default)]
     pub base64src: String,
-    #[serde(with = "naive_date_format")]
-    pub uploaddate: Option<NaiveDateTime>,
+    #[serde(with = "date_format_bson", default)]
+    pub uploaddate: Option<DateTime<Utc>>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Default, Clone)]
@@ -24,8 +25,8 @@ pub struct FileAddModel {
     pub ext: String,
     #[serde(default)]
     pub data: Vec<u8>,
-    #[serde(with = "naive_date_format")]
-    pub uploaddate: Option<NaiveDateTime>,
+    #[serde(with = "date_format_bson", default)]
+    pub uploaddate: Option<DateTime<Utc>>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Default)]
