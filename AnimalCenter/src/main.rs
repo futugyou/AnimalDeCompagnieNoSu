@@ -8,6 +8,7 @@ mod route;
 mod service;
 mod telemetry;
 
+use actix_cors::Cors;
 use actix_web::middleware::Logger;
 use actix_web::{App, HttpServer};
 use actix_web_opentelemetry::RequestTracing;
@@ -25,15 +26,25 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         let mut app = App::new();
         app = route_fake::makefakeroute(app);
-        app.wrap(Logger::default())
-            .wrap(RequestTracing::new())
-            .wrap(metrics.clone())
-            // #region -> base curd service
-            .service(orgroute::bussisscope())
-            // #endregion
-            // #region -> graphql
-            .data(schema.clone())
-            .service(route_graphql::graphqlscope())
+        app.wrap(
+            Cors::default()
+                // .send_wildcard()
+                // .allowed_origin("http://localhost:5000")
+                .allow_any_origin()
+                .allow_any_method()
+                .allow_any_header()
+                .supports_credentials()
+                .max_age(3600),
+        )
+        .wrap(Logger::default())
+        .wrap(RequestTracing::new())
+        .wrap(metrics.clone())
+        // #region -> base curd service
+        .service(orgroute::bussisscope())
+        // #endregion
+        // #region -> graphql
+        .data(schema.clone())
+        .service(route_graphql::graphqlscope())
         // #endregion
     })
     .bind("127.0.0.1:8080")?
