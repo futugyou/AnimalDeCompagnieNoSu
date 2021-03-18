@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AnimalDeCompagnieNoSuBlazor.Models
@@ -29,5 +30,13 @@ namespace AnimalDeCompagnieNoSuBlazor.Models
         public int Count { get; set; }
         public string Agerang { get; set; }
     }
-    
+
+
+    public class RescueClassificationResponse
+    {
+        [JsonPropertyName("classification")]
+        public string Classification { get; set; }
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+    }     
 }

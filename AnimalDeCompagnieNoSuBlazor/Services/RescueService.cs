@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace AnimalDeCompagnieNoSuBlazor.Services
@@ -31,7 +33,21 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
 
         public async Task<List<ChartPieType>> GetRescueTypeAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<ChartPieType>>("/data/rescue-type.json");
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Add("apikey", "apivalue");
+
+            try
+            {
+                var httpResponse = await _httpClient.GetAsync("http://127.0.0.1:8080/api/animalreport");
+                List <RescueClassificationResponse> Rescueh = await httpResponse.Content.ReadFromJsonAsync<List<RescueClassificationResponse>>();
+                return Rescueh.Select(p => new ChartPieType { Count = p.Count, Type = p.Classification }).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            //return await _httpClient.GetFromJsonAsync<List<ChartPieType>>("/data/rescue-type.json");
         }
     }
 }
