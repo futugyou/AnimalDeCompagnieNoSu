@@ -4,7 +4,7 @@ use crate::{entity::rescueentity::RescueEntity, model::report::rescue_classifica
 
 impl From<RescueClassificationRequest> for Vec<Document> {
     fn from(entity: RescueClassificationRequest) -> Self {
-        if entity.rescueh_classification == "age" {
+        if entity.rescue_classification == "age" {
             return vec![
                 doc! {"$project":doc!{"subyear":doc!{"$subtract":vec![doc!{"$year":"$$NOW"},doc!{"$year": "$birthday"}]}}},
                 doc! {"$group":{"_id":"$subyear","count":{"$sum":1}}},
