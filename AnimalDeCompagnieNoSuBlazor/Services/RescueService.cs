@@ -14,16 +14,17 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
     public class RescueService : IRescueService
     {
         private readonly HttpClient _httpClient;
-        public RescueService(HttpClient httpClient) => _httpClient = httpClient;
+        private readonly HttpClient _animalClient;
+
+        public RescueService(HttpClient httpClient, IHttpClientFactory httpClientFactory)
+        {
+            _animalClient = httpClientFactory.CreateClient("AnimalCenter");
+            _httpClient = httpClient;
+        }
 
         public async Task<List<ChartFunnelType>> GetFunnelDataAsync()
         {
             return await _httpClient.GetFromJsonAsync<List<ChartFunnelType>>("/data/funnel-data.json");
-        }
-
-        public async Task<List<ChartPieageType>> GetRescueAgeRangAsync()
-        {
-            return await _httpClient.GetFromJsonAsync<List<ChartPieageType>>("/data/rescue-age.json");
         }
 
         public async Task<List<ChartDataItem>> GetRescueDataAsync()
@@ -31,15 +32,28 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
             return await _httpClient.GetFromJsonAsync<List<ChartDataItem>>("/data/rescue.json");
         }
 
-        public async Task<List<ChartPieType>> GetRescueTypeAsync()
+        public async Task<List<ChartPieageType>> GetRescueAgeRangAsync()
         {
-            _httpClient.DefaultRequestHeaders.Clear();
-            _httpClient.DefaultRequestHeaders.Add("apikey", "apivalue");
-
             try
             {
-                var httpResponse = await _httpClient.GetAsync("http://127.0.0.1:8080/api/animalreport");
-                List <RescueClassificationResponse> Rescueh = await httpResponse.Content.ReadFromJsonAsync<List<RescueClassificationResponse>>();
+                var httpResponse = await _animalClient.GetAsync("api/animalreport");
+                List<RescueClassificationResponse> Rescueh = await httpResponse.Content.ReadFromJsonAsync<List<RescueClassificationResponse>>();
+                return Rescueh.Select(p => new ChartPieageType { Count = p.Count, Agerang = p.Classification + " year" }).OrderBy(p => p.Agerang).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            //return await _httpClient.GetFromJsonAsync<List<ChartPieageType>>("/data/rescue-age.json");
+        }
+
+        public async Task<List<ChartPieType>> GetRescueTypeAsync()
+        {
+            try
+            {
+                var httpResponse = await _animalClient.GetAsync("api/animalreport?rescue_classification=classic");
+                List<RescueClassificationResponse> Rescueh = await httpResponse.Content.ReadFromJsonAsync<List<RescueClassificationResponse>>();
                 return Rescueh.Select(p => new ChartPieType { Count = p.Count, Type = p.Classification }).ToList();
             }
             catch (Exception ex)

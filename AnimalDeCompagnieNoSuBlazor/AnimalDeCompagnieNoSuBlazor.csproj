@@ -12,6 +12,7 @@
     <PackageReference Include="AntDesign.Pro.Layout" Version="0.1.0-nightly-210311054507" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-preview.2.21154.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.2.21154.6" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-preview.2.21154.6" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0-preview.2.21154.6" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0-preview.2.21154.6" />
   </ItemGroup>

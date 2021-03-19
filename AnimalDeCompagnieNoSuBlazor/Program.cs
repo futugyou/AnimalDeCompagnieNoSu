@@ -1,3 +1,4 @@
+using AnimalDeCompagnieNoSuBlazor.Models;
 using AnimalDeCompagnieNoSuBlazor.Services;
 using AntDesign.Pro.Layout;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -19,6 +20,13 @@ namespace AnimalDeCompagnieNoSuBlazor
             builder.Services.AddAntDesign();
             AntDesign.LocaleProvider.SetLocale("zh-CN");
             builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
+            //builder.Services.Configure<ServiceEndpoint>(builder.Configuration.GetSection("ServiceEndpoint"));
+            builder.Services.AddHttpClient("AnimalCenter",
+                client =>
+                {
+                    client.BaseAddress = new Uri(builder.Configuration["ServiceEndpoint:AnimalCenter"]);
+                    client.DefaultRequestHeaders.Add("apikey", "apivalue");
+                });
             builder.Services.AddScoped<IAnimalService, AnimalService>();
             builder.Services.AddScoped<IAnimalTypeService, AnimalTypeService>();
             builder.Services.AddScoped<IAnimalEventService, AnimalEventService>();
