@@ -9,6 +9,7 @@ mod service;
 mod telemetry;
 
 use actix_cors::Cors;
+use actix_files::Files;
 use actix_web::middleware::Logger;
 use actix_web::{App, HttpServer};
 use actix_web_opentelemetry::RequestTracing;
@@ -39,6 +40,8 @@ async fn main() -> std::io::Result<()> {
         .wrap(Logger::default())
         .wrap(RequestTracing::new())
         .wrap(metrics.clone())
+        // static file
+        .service(Files::new("/images", "fileupload/"))
         // #region -> base curd service
         .service(orgroute::bussisscope())
         // #endregion
