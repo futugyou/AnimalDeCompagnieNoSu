@@ -4,4 +4,5 @@
 */node_modules/
 */*/debug.log
 AnimalCenter/target
+AnimalCenter/fileupload
 */.env
