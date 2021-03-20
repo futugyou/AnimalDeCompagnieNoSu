@@ -9,6 +9,7 @@ mod service;
 mod telemetry;
 
 use actix_cors::Cors;
+use actix_files::Files;
 use actix_web::middleware::Logger;
 use actix_web::{App, HttpServer};
 use actix_web_opentelemetry::RequestTracing;
@@ -36,6 +37,8 @@ async fn main() -> std::io::Result<()> {
                 .supports_credentials()
                 .max_age(3600),
         )
+        // static file
+        .service(Files::new("/images", "fileupload/"))
         .wrap(Logger::default())
         .wrap(RequestTracing::new())
         .wrap(metrics.clone())
