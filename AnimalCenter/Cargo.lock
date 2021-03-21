@@ -479,6 +479,7 @@ dependencies = [
  "actix-web-opentelemetry",
  "async-graphql",
  "async-graphql-actix-web",
+ "async-std",
  "async-trait",
  "async_once",
  "base64 0.13.0",
