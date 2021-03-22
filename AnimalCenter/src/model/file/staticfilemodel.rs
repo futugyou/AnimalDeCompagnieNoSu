@@ -1,3 +1,4 @@
+use actix_web::web::Bytes;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Default)]
@@ -10,4 +11,10 @@ pub struct StaticfileResponse {
     pub thumb_url: String,
     #[serde(default)]
     pub url: String,
+}
+
+#[derive(Debug, Default)]
+pub struct StaticfileRequest {
+    pub filename: String,
+    pub filedata: Vec<Bytes>,
 }
