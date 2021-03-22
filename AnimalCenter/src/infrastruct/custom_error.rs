@@ -144,3 +144,13 @@ impl std::convert::From<lapin::Error> for CustomError {
         }
     }
 }
+
+impl std::convert::From<std::io::Error> for CustomError {
+    fn from(error: std::io::Error) -> Self {
+        Self {
+            code: "70001".to_owned(),
+            message: error.to_string(),
+            error_kind: CustomErrorKind::BusinessError,
+        }
+    }
+}
