@@ -32,19 +32,23 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             new TabPaneItem {Key = "photoes", Tab = "照片墙"},
             new TabPaneItem {Key = "events", Tab = "重大事件"}
         };
+        private readonly Dictionary<string, string> Headers = new Dictionary<string, string> { { "apikey", "apivalue" } };
+        private string _avatarUrl = "";
 
         private void HandleChange(UploadInfo fileinfo)
         {
             if (fileinfo.File.State == UploadState.Success)
             {
-                fileinfo.File.Url = fileinfo.File.ObjectURL;
-                AnimalViewModel.Avatar = "/images/head.jpg";
-                //TODO: save data
+                var result = fileinfo.File.GetResponse<ResponseModel>();
+                fileinfo.File.Url = result.url;
+                _avatarUrl = result.url;
             }
         }
 
         private void HandleOk(MouseEventArgs e)
         {
+            //TODO: update animal data
+            AnimalViewModel.Avatar = _avatarUrl;
             uploadImageVisable = false;
         }
 
@@ -66,9 +70,9 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             await base.OnInitializedAsync();
             if (!int.TryParse(Id, out var aid) || aid == 0)
             {
-                NavigationManager.NavigateTo("/animal");
+                //NavigationManager.NavigateTo("/animal");
             }
-            AnimalViewModel = await AnimalService.GetAnimal(aid);
+            AnimalViewModel = await AnimalService.GetAnimal(Id);
             AnimalEvents = (await AnimalEventService.GetBigEventByAnimalId(aid)).OrderBy(p => p.EventTime).ToList();
         }
     }

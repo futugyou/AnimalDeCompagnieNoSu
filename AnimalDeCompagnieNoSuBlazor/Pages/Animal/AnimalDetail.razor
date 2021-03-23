@@ -6,14 +6,16 @@
         <Card>
             <div class="col-detail">
                 <div class="box">
-                    <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" @onclick="OpenFaceChange" />
+                    <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" @onclick="OpenFaceChange" onerror="this.src='/images/none-image.png'" />
+                    @*<Image Src="@(AnimalViewModel.Avatar)" Fallback="/images/none-image.png" OnClick="OpenFaceChange" />*@
                     <Modal Visible="@uploadImageVisable"
                            OnOk="@HandleOk"
                            OnCancel="@HandleCancel">
-                        <Upload Action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        <Upload Action="http://127.0.0.1:8080/api/staticfile"
+                                Headers="Headers"
                                 Name="Avatar"
                                 ListType="picture-card"
-                                OnChange="HandleChange"
+                                OnSingleCompleted="HandleChange"
                                 Class="image-display-center">
                             <div>
                                 <Icon Type="plus"></Icon>
@@ -53,17 +55,18 @@
                         </Tab>
                         <ChildContent>
                             @if (AnimalViewModel.Photoes.Count > 0)
-                            {
-                                <Carousel Effect="@CarouselEffect.Fade" Autoplay="TimeSpan.FromSeconds(4)">
-                                    @foreach (var photo in AnimalViewModel.Photoes)
+                                {
+                            <Carousel Effect="@CarouselEffect.Fade" Autoplay="TimeSpan.FromSeconds(4)">
+                                @foreach (var photo in AnimalViewModel.Photoes)
                                     {
-                                        <CarouselSlick>
-                                            <div class="image-display-center">
-                                                <img class="img" style="display:initial" alt="cat" src="@(photo)" />
-                                            </div>
-                                        </CarouselSlick>
-                                    }
-                                </Carousel>
+                                <CarouselSlick>
+                                    <div class="image-display-center">
+                                        <img class="img" style="display:initial" alt="cat" src="@(photo)"  onerror="this.src='/images/none-image.png'" />
+                                        @*<Image Src="@(photo)" Fallback="/images/none-image.png" class="img" style="display:initial" />*@
+                                    </div>
+                                </CarouselSlick>
+                                }
+                            </Carousel>
                             }
                         </ChildContent>
                     </TabPane>
@@ -74,11 +77,11 @@
                         <ChildContent>
                             <Timeline Mode="alternate">
                                 @if (AnimalEvents != null)
-                                {
-                                    @foreach (var @event in AnimalEvents)
                                     {
-                                        <TimelineItem>@(@event.Event) @(@event.EventTime)</TimelineItem>
-                                    }
+                                @foreach (var @event in AnimalEvents)
+                                        {
+                                <TimelineItem>@(@event.Event) @(@event.EventTime)</TimelineItem>
+                                }
                                 }
                             </Timeline>
                         </ChildContent>
