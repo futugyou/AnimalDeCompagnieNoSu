@@ -11,14 +11,25 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
     public class AnimalService : IAnimalService
     {
         private readonly HttpClient _httpClient;
-        public AnimalService(HttpClient httpClient)
+        private readonly HttpClient _animalClient;
+        public AnimalService(HttpClient httpClient, IHttpClientFactory httpClientFactory)
         {
+            _animalClient = httpClientFactory.CreateClient("AnimalCenter");
             _httpClient = httpClient;
         }
 
-        public async Task<AnimalViewModel> GetAnimal(int aid)
+        public async Task<AnimalViewModel> GetAnimal(string aid)
         {
-            return await _httpClient.GetFromJsonAsync<AnimalViewModel>("data/animal.json");
+            try
+            {
+                var httpResponse = await _animalClient.GetAsync($"api/animal/{aid}");
+                return await httpResponse.Content.ReadFromJsonAsync<AnimalViewModel>();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            //return await _httpClient.GetFromJsonAsync<AnimalViewModel>("data/animal.json");
         }
 
         public async Task<AnimalUpdateModel> GetAnimalForUpdate(int aid)
@@ -28,7 +39,16 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
 
         public async Task<List<AnimalListViewModel>> GetAnimalList()
         {
-            return await _httpClient.GetFromJsonAsync<List<AnimalListViewModel>>("data/animal-list.json");
+            try
+            {
+                var httpResponse = await _animalClient.GetAsync("api/animal");
+                return await httpResponse.Content.ReadFromJsonAsync<List<AnimalListViewModel>>();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            //return await _httpClient.GetFromJsonAsync<List<AnimalListViewModel>>("data/animal-list.json");
         }
 
         public async Task<AnimalViewModel> UpdateAnimal(AnimalUpdateModel animalUpdateModel)
