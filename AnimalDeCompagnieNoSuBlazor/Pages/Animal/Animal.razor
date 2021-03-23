@@ -62,7 +62,10 @@
                 <Extra>
                     <a slot="extra" href="/animal/@(context.Id)">详细信息</a>
                 </Extra>
-                <Cover><img alt="example" src="@(context.Photoe)" /></Cover>
+                <Cover>
+                    @*<img alt="example" src="@(context.Photoe)" />*@
+                    <Image Src="@(context.Photoe)" Fallback="/images/none-image.png" />
+                </Cover>
                 <Body>
                     this is body
 
@@ -78,14 +81,20 @@
 
 @code
 {
-    private RenderFragment actionSetting =@<Template>
+    private RenderFragment actionSetting =
+    @<Template>
         <Icon Type="setting" />
-    </Template>;
-private RenderFragment actionEdit =@<Template>
-    <Icon Type="edit" />
-</Template>;
-private RenderFragment actionEllipsis =@<Template>
-    <Icon Type="ellipsis" />
-</Template>;
+    </Template>
+    ;
+    private RenderFragment actionEdit =
+    @<Template>
+        <Icon Type="edit" />
+    </Template>
+    ;
+    private RenderFragment actionEllipsis =
+    @<Template>
+        <Icon Type="ellipsis" />
+    </Template>
+    ;
 
 }
