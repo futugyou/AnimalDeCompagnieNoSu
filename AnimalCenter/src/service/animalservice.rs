@@ -166,9 +166,10 @@ impl IAnimalService for AnimalService {
         }
         Ok(())
     }
+
     #[tracing::instrument(skip(self))]
     async fn find_animal_by_id(&self, id: String) -> AnimalSearchResponse {
-        let findresult = self.animal_repository.findaggregateone(id).await;
+        let findresult = self.animal_repository.findone(id).await;
         match findresult {
             Ok(animal) => animal.into(),
             Err(err) => {
