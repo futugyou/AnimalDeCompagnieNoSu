@@ -12,6 +12,7 @@
                            OnOk="@HandleOk"
                            OnCancel="@HandleCancel">
                         <Upload Action="@uploadaction"
+                                Accept="image/png, image/jpeg"
                                 Headers="Headers"
                                 Name="Avatar"
                                 ListType="picture-card"
@@ -61,7 +62,7 @@
                                     {
                                 <CarouselSlick>
                                     <div class="image-display-center">
-                                        <img class="img" style="display:initial" alt="cat" src="@(photo)"  onerror="this.src='/images/none-image.png'" />
+                                        <img class="img" style="display:initial" alt="cat" src="@(photo)" onerror="this.src='/images/none-image.png'" />
                                         @*<Image Src="@(photo)" Fallback="/images/none-image.png" class="img" style="display:initial" />*@
                                     </div>
                                 </CarouselSlick>
