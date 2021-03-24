@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 
 namespace AnimalDeCompagnieNoSuBlazor.Models
 {
-    public class ServiceEndpoint
+    public class AnimalCenter
     {
-        public string AnimalCenter { get; set; }
+        public string Host { get; set; }
+        public string HttpHeadKey { get; set; }
+        public string HttpHeadValue { get; set; }
+        
     }
 }

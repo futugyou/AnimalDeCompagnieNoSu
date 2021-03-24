@@ -24,7 +24,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         [Inject]
         private IAnimalEventService AnimalEventService { get; set; }
         [Inject]
-        private IOptionsMonitor<ServiceEndpoint> optionsMonitor { get; set; }
+        private IOptionsMonitor<AnimalCenter> optionsMonitor { get; set; }
 
         private AnimalViewModel AnimalViewModel = new();
         private List<AnimalEvent> AnimalEvents = new();
@@ -36,7 +36,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             new TabPaneItem {Key = "photoes", Tab = "照片墙"},
             new TabPaneItem {Key = "events", Tab = "重大事件"}
         };
-        private readonly Dictionary<string, string> Headers = new Dictionary<string, string> { { "apikey", "apivalue" } };
+        private Dictionary<string, string> Headers;
         private string _avatarUrl = "";
 
         private void HandleChange(UploadInfo fileinfo)
@@ -49,10 +49,11 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             }
         }
 
-        private void HandleOk(MouseEventArgs e)
+        private async Task HandleOk(MouseEventArgs e)
         {
             //TODO: update animal data
             AnimalViewModel.Avatar = _avatarUrl;
+            _ = await Task.FromResult(0);
             uploadImageVisable = false;
         }
 
@@ -72,7 +73,9 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            uploadaction = optionsMonitor.CurrentValue.AnimalCenter + "api/staticfile";
+            var endpoint = optionsMonitor.CurrentValue;
+            uploadaction = endpoint.Host + "api/staticfile";
+            Headers = new Dictionary<string, string> { { endpoint.HttpHeadKey, endpoint.HttpHeadValue } };
             if (!int.TryParse(Id, out var aid) || aid == 0)
             {
                 //NavigationManager.NavigateTo("/animal");
