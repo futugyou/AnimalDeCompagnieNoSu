@@ -53,7 +53,15 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         {
             //TODO: update animal data
             AnimalViewModel.Avatar = _avatarUrl;
-            _ = await Task.FromResult(0);
+            var model = new AnimalAvatarUploadModel
+            {
+                Id = AnimalViewModel.Id,
+                Name = AnimalViewModel.Name,
+                Avatar = AnimalViewModel.Avatar,
+                Type = AnimalViewModel.Type,
+                SubType = AnimalViewModel.SubType
+            };
+            await AnimalService.UpdateAnimalAvatar(model);
             uploadImageVisable = false;
         }
 
