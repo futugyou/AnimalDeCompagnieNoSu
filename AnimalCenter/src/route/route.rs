@@ -30,13 +30,13 @@ fn animalroute(cfg: &mut web::ServiceConfig) {
             .route(web::get().to(controller::animal_controller::get))
             .route(
                 web::route()
-                    .guard(guard::Header("Content-Type", "application/json"))
+                    //.guard(guard::Header("Content-Type", "application/json"))
                     .guard(guard::Post())
                     .to(controller::animal_controller::post),
             )
             .route(
                 web::route()
-                    .guard(guard::Header("Content-Type", "application/json"))
+                    //.guard(guard::Header("Content-Type", "application/json"))
                     .guard(guard::Put())
                     .to(controller::animal_controller::update),
             ),
