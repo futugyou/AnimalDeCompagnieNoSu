@@ -11,7 +11,7 @@
                     <Modal Visible="@uploadImageVisable"
                            OnOk="@HandleOk"
                            OnCancel="@HandleCancel">
-                        <Upload Action="http://127.0.0.1:8080/api/staticfile"
+                        <Upload Action="@uploadaction"
                                 Headers="Headers"
                                 Name="Avatar"
                                 ListType="picture-card"

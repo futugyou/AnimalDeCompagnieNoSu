@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.Web;
 using AnimalDeCompagnieNoSuBlazor.Services;
 using System.Linq;
 using AntDesign;
+using Microsoft.Extensions.Options;
 
 namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 {
@@ -22,10 +23,13 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         private IAnimalService AnimalService { get; set; }
         [Inject]
         private IAnimalEventService AnimalEventService { get; set; }
+        [Inject]
+        private IOptionsMonitor<ServiceEndpoint> optionsMonitor { get; set; }
 
         private AnimalViewModel AnimalViewModel = new();
         private List<AnimalEvent> AnimalEvents = new();
         private bool uploadImageVisable = false;
+        private string uploadaction;
 
         private readonly IList<TabPaneItem> _tabList = new List<TabPaneItem>
         {
@@ -68,6 +72,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+            uploadaction = optionsMonitor.CurrentValue.AnimalCenter + "api/staticfile";
             if (!int.TryParse(Id, out var aid) || aid == 0)
             {
                 //NavigationManager.NavigateTo("/animal");

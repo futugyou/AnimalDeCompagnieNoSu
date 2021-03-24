@@ -20,7 +20,7 @@ namespace AnimalDeCompagnieNoSuBlazor
             builder.Services.AddAntDesign();
             AntDesign.LocaleProvider.SetLocale("zh-CN");
             builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
-            //builder.Services.Configure<ServiceEndpoint>(builder.Configuration.GetSection("ServiceEndpoint"));
+            builder.Services.Configure<ServiceEndpoint>(builder.Configuration.GetSection("ServiceEndpoint"));
             builder.Services.AddHttpClient("AnimalCenter",
                 client =>
                 {
