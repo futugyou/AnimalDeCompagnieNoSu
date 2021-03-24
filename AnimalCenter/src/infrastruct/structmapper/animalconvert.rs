@@ -108,16 +108,21 @@ impl From<AnimalEntity> for AnimalUpdateResponse {
 
 impl From<&AnimalEntity> for Document {
     fn from(entity: &AnimalEntity) -> Self {
-        doc! {
+        let mut doc = doc! {
                 "name": &entity.name,
                 "type": &entity.animal_type,
-                "birthday": &entity.birthday.unwrap(),
                 "sub_type": &entity.sub_type,
                 "idcard": &entity.idcard,
                 "avatar": &entity.avatar,
                 "photoes": &entity.photoes,
-                "rescue_date": &entity.rescue_date.unwrap(),
+        };
+        if let Some(day) = &entity.birthday {
+            doc.insert("birthday", day);
         }
+        if let Some(day) = &entity.rescue_date {
+            doc.insert("rescue_date", day);
+        }
+        doc
     }
 }
 
