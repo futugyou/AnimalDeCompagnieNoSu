@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AnimalDeCompagnieNoSuBlazor.Services
@@ -55,6 +58,21 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
         {
             await Task.Delay(3000);
             return await _httpClient.GetFromJsonAsync<AnimalViewModel>("data/animal.json");
+        }
+
+        public async Task UpdateAnimalAvatar(AnimalAvatarUploadModel animalAvatarUploadNodel)
+        {
+            try
+            {
+                HttpContent httpContent = new StringContent(JsonSerializer.Serialize(animalAvatarUploadNodel)
+                      , Encoding.UTF8, "application/json");
+                var httpResponse = await _animalClient.PutAsync("api/animal", httpContent);
+                await httpResponse.Content.ReadAsStringAsync();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }
