@@ -51,18 +51,17 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         private async Task HandleOk(MouseEventArgs e)
         {
-            //TODO: update animal data
-            AnimalViewModel.Avatar = _avatarUrl;
             var model = new AnimalAvatarUploadModel
             {
                 Id = AnimalViewModel.Id,
                 Name = AnimalViewModel.Name,
-                Avatar = AnimalViewModel.Avatar,
+                Avatar = _avatarUrl,
                 Type = AnimalViewModel.Type,
                 SubType = AnimalViewModel.SubType
             };
             await AnimalService.UpdateAnimalAvatar(model);
             uploadImageVisable = false;
+            AnimalViewModel.Avatar = _avatarUrl;
         }
 
         private void HandleCancel(MouseEventArgs e)
