@@ -25,14 +25,12 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
         {
             try
             {
-                var httpResponse = await _animalClient.GetAsync($"api/animal/{aid}");
-                return await httpResponse.Content.ReadFromJsonAsync<AnimalViewModel>();
+                return await _animalClient.GetFromJsonAsync<AnimalViewModel>($"api/animal/{aid}");
             }
             catch (Exception ex)
             {
                 throw;
             }
-            //return await _httpClient.GetFromJsonAsync<AnimalViewModel>("data/animal.json");
         }
 
         public async Task<AnimalUpdateModel> GetAnimalForUpdate(int aid)
@@ -44,14 +42,12 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
         {
             try
             {
-                var httpResponse = await _animalClient.GetAsync("api/animal");
-                return await httpResponse.Content.ReadFromJsonAsync<List<AnimalListViewModel>>();
+                return await _animalClient.GetFromJsonAsync<List<AnimalListViewModel>>("api/animal");
             }
             catch (Exception ex)
             {
                 throw;
             }
-            //return await _httpClient.GetFromJsonAsync<List<AnimalListViewModel>>("data/animal-list.json");
         }
 
         public async Task<AnimalViewModel> UpdateAnimal(AnimalUpdateModel animalUpdateModel)
@@ -64,9 +60,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
         {
             try
             {
-                HttpContent httpContent = new StringContent(JsonSerializer.Serialize(animalAvatarUploadNodel)
-                      , Encoding.UTF8, "application/json");
-                var httpResponse = await _animalClient.PutAsync("api/animal", httpContent);
+                var httpResponse = await _animalClient.PutAsJsonAsync("api/animal", animalAvatarUploadNodel);
                 await httpResponse.Content.ReadAsStringAsync();
             }
             catch (Exception ex)
