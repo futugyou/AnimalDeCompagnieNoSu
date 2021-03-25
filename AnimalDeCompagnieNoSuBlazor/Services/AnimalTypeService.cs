@@ -10,14 +10,15 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
 {
     public class AnimalTypeService : IAnimalTypeService
     {
-        private readonly HttpClient _httpClient;
-        public AnimalTypeService(HttpClient httpClient)
+        private readonly HttpClient _animalClient;
+        public AnimalTypeService(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _animalClient = httpClientFactory.CreateClient("AnimalCenter");
         }
-        public async Task<string> GetAllAnimalTypes()
+        public async Task<List<AnimalType>> GetAllAnimalTypes()
         {
-            return await _httpClient.GetStringAsync("/data/animal-type.json");
+            return await _animalClient.GetFromJsonAsync<List<AnimalType>>("api/animaltype");
         }
+
     }
 }

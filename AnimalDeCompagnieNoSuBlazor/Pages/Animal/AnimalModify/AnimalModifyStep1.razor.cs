@@ -1,4 +1,5 @@
-﻿using AnimalDeCompagnieNoSuBlazor.Models;
+﻿using AnimalDeCompagnieNoSuBlazor.Extensions;
+using AnimalDeCompagnieNoSuBlazor.Models;
 using AnimalDeCompagnieNoSuBlazor.Services;
 using AntDesign;
 using Microsoft.AspNetCore.Components;
@@ -131,8 +132,8 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         private async Task GetAnimalTypeData()
         {
-            var subtypestring = await AnimalTypeService.GetAllAnimalTypes();
-            selectNodes = System.Text.Json.JsonSerializer.Deserialize<List<CascaderNode>>(subtypestring);
+            var animalTypes = await AnimalTypeService.GetAllAnimalTypes();
+            selectNodes = TypeConvertTools.AnimalTypeToCascaderNode(animalTypes);
         }
 
     }

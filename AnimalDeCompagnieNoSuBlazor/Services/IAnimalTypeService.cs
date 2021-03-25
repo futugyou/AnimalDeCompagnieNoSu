@@ -8,6 +8,6 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
 {
     public interface IAnimalTypeService
     {
-        Task<string> GetAllAnimalTypes();
+        Task<List<AnimalType>> GetAllAnimalTypes();
     }
 }
