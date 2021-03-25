@@ -125,7 +125,9 @@ impl IAnimalService for AnimalService {
                     &entity.animal_type,
                     Utc::now().format("%Y%m%d-%H%M%S"),
                     rand::thread_rng().gen_range(0001..9999)
-                );
+                )
+                .as_str()
+                .to_ascii_uppercase();
                 let json_message = serde_json::to_string(&entity)?;
                 let mut results: AnimalInsertResponse = entity.clone().into();
                 let insertresult = self.animal_repository.add(entity).await?;
