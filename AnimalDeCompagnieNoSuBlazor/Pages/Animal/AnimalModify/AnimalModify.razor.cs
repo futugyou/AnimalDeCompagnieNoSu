@@ -57,11 +57,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            if (!int.TryParse(Id, out var aid) || aid == 0)
-            {
-                return;
-            }
-            AnimalUpdateModel = await AnimalService.GetAnimalForUpdate(aid);
+            AnimalUpdateModel = await AnimalService.GetAnimalForUpdate(Id);
         }
     }
 }

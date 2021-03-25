@@ -10,7 +10,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
     {
         Task<List<AnimalListViewModel>> GetAnimalList();
         Task<AnimalViewModel> GetAnimal(string aid);
-        Task<AnimalUpdateModel> GetAnimalForUpdate(int aid);
+        Task<AnimalUpdateModel> GetAnimalForUpdate(string aid);
         Task<AnimalViewModel> UpdateAnimal(AnimalUpdateModel animalUpdateModel);
         Task UpdateAnimalAvatar(AnimalAvatarUploadModel animalAvatarUploadNodel);
     }
