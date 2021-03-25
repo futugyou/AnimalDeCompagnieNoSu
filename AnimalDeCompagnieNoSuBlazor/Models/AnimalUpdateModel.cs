@@ -9,15 +9,21 @@ namespace AnimalDeCompagnieNoSuBlazor.Models
 {
     public class AnimalUpdateModel
     {
-        public int Id { get; set; }
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+        [JsonPropertyName("idcard")]
         public string Idcard { get; set; }
+        [JsonPropertyName("type")]
         public string Type { get; set; }
+        [JsonPropertyName("sub_type")]
         public string SubType { get; set; }
-        [Required]
-        public string Name { get; set; }
-        public double Age { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; } 
+        [JsonPropertyName("short_describe")]
         public string ShortDescribe { get; set; }
+        [JsonPropertyName("photoes")]
         public List<string> Photoes { get; set; } = new List<string>();
+        [JsonPropertyName("birthday")]
         public DateTime? Birthday { get; set; }
     }
 
