@@ -13,12 +13,10 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
 {
     public class AnimalService : IAnimalService
     {
-        private readonly HttpClient _httpClient;
         private readonly HttpClient _animalClient;
         public AnimalService(HttpClient httpClient, IHttpClientFactory httpClientFactory)
         {
             _animalClient = httpClientFactory.CreateClient("AnimalCenter");
-            _httpClient = httpClient;
         }
 
         public async Task<AnimalViewModel> GetAnimal(string aid)
@@ -59,8 +57,15 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
 
         public async Task<AnimalViewModel> UpdateAnimal(AnimalUpdateModel animalUpdateModel)
         {
-            await Task.Delay(3000);
-            return await _httpClient.GetFromJsonAsync<AnimalViewModel>("data/animal.json");
+            try
+            {
+                var httpResponse = await _animalClient.PutAsJsonAsync("api/animal", animalUpdateModel);
+                return await httpResponse.Content.ReadFromJsonAsync<AnimalViewModel>();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public async Task UpdateAnimalAvatar(AnimalAvatarUploadModel animalAvatarUploadNodel)

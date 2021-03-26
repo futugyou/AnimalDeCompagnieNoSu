@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnimalDeCompagnieNoSuBlazor.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,12 +19,15 @@ namespace AnimalDeCompagnieNoSuBlazor.Models
         [JsonPropertyName("sub_type")]
         public string SubType { get; set; }
         [JsonPropertyName("name")]
-        public string Name { get; set; } 
+        public string Name { get; set; }
+        [JsonPropertyName("avatar")]
+        public string Avatar { get; set; }
         [JsonPropertyName("short_describe")]
         public string ShortDescribe { get; set; }
         [JsonPropertyName("photoes")]
         public List<string> Photoes { get; set; } = new List<string>();
         [JsonPropertyName("birthday")]
+        [JsonConverter(typeof(DateTimeJsonConverter))]
         public DateTime? Birthday { get; set; }
     }
 
