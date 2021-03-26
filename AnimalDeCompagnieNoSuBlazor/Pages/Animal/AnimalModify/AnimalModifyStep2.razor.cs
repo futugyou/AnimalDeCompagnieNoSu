@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AntDesign;
 using AnimalDeCompagnieNoSuBlazor.Services;
+using AnimalDeCompagnieNoSuBlazor.Extensions;
 
 namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 {
@@ -123,17 +124,20 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             {
                 foreach (var photo in photoes)
                 {
-                    var id = Guid.NewGuid().ToString();
-                    var file = new UploadFileItem
+                    if (Tools.IsPicture(photo))
                     {
-                        Id = id,
-                        FileName = photo,
-                        State = UploadState.Success,
-                        Url = photo,
-                        Ext = ".jpg",
-                        Type = "image/jpeg",
-                    };
-                    fileList.Add(file);
+                        var id = Guid.NewGuid().ToString();
+                        var file = new UploadFileItem
+                        {
+                            Id = id,
+                            FileName = photo,
+                            State = UploadState.Success,
+                            Url = photo,
+                            Ext = ".jpg",
+                            Type = "image/jpeg",
+                        };
+                        fileList.Add(file);
+                    }
                 }
             }
         }
