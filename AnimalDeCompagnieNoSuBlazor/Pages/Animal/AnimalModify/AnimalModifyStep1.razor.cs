@@ -38,7 +38,43 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         private void OnAnimalTypeSelected(List<CascaderNode> nodeList, string value, string label)
         {
+            AnimalUpdateModel.SubType = value;
+            var node = selectNodes.FirstOrDefault(p => p.Value == value);
+            if (node != null)
+            {
+                AnimalUpdateModel.Type = value;
+            }
+            else
+            {
+                AnimalUpdateModel.Type = GetAnimalTypeBySubType(value);
+            }
+        }
 
+        private string GetAnimalTypeBySubType(string target)
+        {
+            foreach (var item in selectNodes)
+            {
+                var parent = GetAnimalTypeBySubTypeLoop(item, item.Children, target);
+                if (!string.IsNullOrEmpty(parent))
+                {
+                    return parent;
+                }
+            }
+            return "";
+        }
+
+        private string GetAnimalTypeBySubTypeLoop(CascaderNode item, IEnumerable<CascaderNode> children, string target)
+        {
+            if (!children.Any())
+            {
+                return "";
+            }
+            var sublist = children.FirstOrDefault(p => p.Value == target);
+            if (sublist != null)
+            {
+                return item.Value;
+            }
+            return GetAnimalTypeBySubTypeLoop(item, children.SelectMany(p => p.Children), target);
         }
 
         private async Task HandleSubmitAsync()
