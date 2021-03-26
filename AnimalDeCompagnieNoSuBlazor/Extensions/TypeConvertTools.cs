@@ -24,7 +24,22 @@ namespace AnimalDeCompagnieNoSuBlazor.Extensions
                     tmp.Children = tmp.Children.Append(node).ToList();
                 }
             }
+            ChangeNodeValue(nodelist);
             return nodelist;
+        }
+
+        private static void ChangeNodeValue(IEnumerable<CascaderNode> cascaderNodes)
+        {
+            if (cascaderNodes == null || !cascaderNodes.Any())
+            {
+                return;
+            }
+            foreach (var item in cascaderNodes)
+            {
+                item.Value = item.Label;
+            }
+            var subnodes = cascaderNodes.SelectMany(p => p.Children);
+            ChangeNodeValue(subnodes);
         }
 
         private static CascaderNode GetCascaderNode(List<CascaderNode> cascaderNodes, string pid)
