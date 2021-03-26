@@ -9,7 +9,9 @@
       Loading="loading">
     <ChildContent>
         <FormItem WrapperColOffset="3" WrapperColSpan="18">
-            <Upload Action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            <Upload Action="@uploadaction"
+                    Accept="image/png, image/jpeg"
+                    Headers="Headers"
                     Name="photoes"
                     @bind-FileList="fileList"
                     ShowButton="fileList?.Count < 8"

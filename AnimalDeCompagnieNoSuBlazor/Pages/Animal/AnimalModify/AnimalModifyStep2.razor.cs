@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AntDesign;
 using AnimalDeCompagnieNoSuBlazor.Services;
 using AnimalDeCompagnieNoSuBlazor.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 {
@@ -32,6 +33,8 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         [Inject]
         private IAnimalService AnimalService { get; set; }
+        [Inject]
+        private IOptionsMonitor<AnimalCenter> optionsMonitor { get; set; }
 
         private AnimalUpdateModel AnimalUpdateModel = new();
         private bool previewVisible = false;
@@ -40,35 +43,35 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         private List<UploadFileItem> fileList = new();
         private string with = "80%";
         private bool loading = false;
-
-        private void HandleChange(UploadInfo fileinfo)
-        {
-            if (fileinfo.File.State == UploadState.Success)
-            {
-                fileinfo.File.Url = fileinfo.File.ObjectURL;
-                // AnimalUpdateModel.Photoes.Add(fileinfo.File.Url);
-                AnimalUpdateModel.Photoes.Add("/images/cat03.jpg");
-            }
-        }
+        private string uploadaction;
+        private Dictionary<string, string> Headers;
 
         private void HandlePreview(UploadFileItem file)
         {
-            Console.WriteLine(file.FileName);
-            Console.WriteLine(file.Url);
             previewVisible = true;
             previewTitle = file.FileName;
             imgUrl = file.Url;
         }
 
-        private void HandleModalCancel()
+        private void HandleChange(UploadInfo fileinfo)
         {
-            previewVisible = false;
+            if (fileinfo.File.State == UploadState.Success)
+            {
+                var result = fileinfo.File.GetResponse<ResponseModel>();
+                fileinfo.File.Url = result.url;
+                AnimalUpdateModel.Photoes.Add(result.url);
+            }
         }
 
         private Task<bool> HandleRemove(UploadFileItem file)
         {
             AnimalUpdateModel.Photoes.Remove(file.Url);
             return Task.FromResult(true);
+        }
+
+        private void HandleModalCancel()
+        {
+            previewVisible = false;
         }
 
         private async Task HandleSubmitAsync()
@@ -114,6 +117,9 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+            var endpoint = optionsMonitor.CurrentValue;
+            uploadaction = endpoint.Host + "api/staticfile";
+            Headers = new Dictionary<string, string> { { endpoint.HttpHeadKey, endpoint.HttpHeadValue } };
             AnimalUpdateModel = AnimalModifyForm.AnimalUpdateModel;
             MakePhotoeShow(AnimalUpdateModel?.Photoes);
         }
