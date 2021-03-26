@@ -16,7 +16,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         [Inject]
         private NavigationManager NavigationManager { get; set; }
 
-        private readonly AnimalUpdateModel AnimalUpdateModel = new();
+        private AnimalUpdateModel AnimalUpdateModel = new();
         private void ReturnToDetail()
         {
             AnimalUpdateModel = AnimalModifyForm.AnimalUpdateModel;
