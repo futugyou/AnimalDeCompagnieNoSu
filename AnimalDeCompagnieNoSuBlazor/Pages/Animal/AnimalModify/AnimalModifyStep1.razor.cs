@@ -36,46 +36,19 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             AnimalUpdateModel = AnimalModifyForm.AnimalUpdateModel;
         }
 
+        private int AnimalTypeSelectedCount = 0;
         private void OnAnimalTypeSelected(List<CascaderNode> nodeList, string value, string label)
         {
-            AnimalUpdateModel.SubType = value;
-            var node = selectNodes.FirstOrDefault(p => p.Value == value);
-            if (node != null)
+            ///when page load ,the "nodeList" is not complete, it lost parent's path
+            ///when choose then option on page ,the "nodeLits" will fix with all path
+            ///ant may not fix this ,so i use "AnimalTypeSelectedCount" to record vist times
+            if (AnimalTypeSelectedCount > 0 && nodeList != null && nodeList.Any())
             {
-                AnimalUpdateModel.Type = value;
+                AnimalUpdateModel.SubType = value;
+                AnimalUpdateModel.Type = nodeList[0].Value;
             }
-            else
-            {
-                AnimalUpdateModel.Type = GetAnimalTypeBySubType(value);
-            }
-        }
-
-        private string GetAnimalTypeBySubType(string target)
-        {
-            foreach (var item in selectNodes)
-            {
-                var parent = GetAnimalTypeBySubTypeLoop(item, item.Children, target);
-                if (!string.IsNullOrEmpty(parent))
-                {
-                    return parent;
-                }
-            }
-            return "";
-        }
-
-        private string GetAnimalTypeBySubTypeLoop(CascaderNode item, IEnumerable<CascaderNode> children, string target)
-        {
-            if (!children.Any())
-            {
-                return "";
-            }
-            var sublist = children.FirstOrDefault(p => p.Value == target);
-            if (sublist != null)
-            {
-                return item.Value;
-            }
-            return GetAnimalTypeBySubTypeLoop(item, children.SelectMany(p => p.Children), target);
-        }
+            AnimalTypeSelectedCount++;
+        } 
 
         private async Task HandleSubmitAsync()
         {
@@ -106,33 +79,11 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
                 await MessageService.Warning(config);
             }
             else
-            {
-                AnimalUpdateModel.Type = GetAnimalTypeBySubType(selectNodes, null, AnimalUpdateModel.SubType);
+            { 
                 MessageService.Destroy();
                 AnimalModifyForm.Next();
             }
-        }
-
-
-        private string GetAnimalTypeBySubType(List<CascaderNode> nodeList, string parent, string target)
-        {
-            if (nodeList == null) return null;
-            if (nodeList.Any(p => p.Value == target))
-            {
-                return parent == null ? target : parent;
-            }
-
-            foreach (var item in nodeList)
-            {
-                var t = GetAnimalTypeBySubType(item.Children?.ToList(), item.Value, target);
-                if (t == null)
-                {
-                    continue;
-                }
-                return parent == null ? t : parent + "," + t;
-            }
-            return null;
-        }
+        } 
 
         private static Task ReturnCancel()
         {

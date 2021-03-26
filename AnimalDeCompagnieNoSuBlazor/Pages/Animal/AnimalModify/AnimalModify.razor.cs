@@ -34,26 +34,6 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             StateHasChanged();
         }
 
-        private string GetAnimalTypeBySubType(List<CascaderNode> nodeList, string parent, string target)
-        {
-            if (nodeList == null) return null;
-            if (nodeList.Any(p => p.Value == target))
-            {
-                return parent == null ? target : parent;
-            }
-
-            foreach (var item in nodeList)
-            {
-                var t = GetAnimalTypeBySubType(item.Children?.ToList(), item.Value, target);
-                if (t == null)
-                {
-                    continue;
-                }
-                return parent == null ? t : parent + "," + t;
-            }
-            return null;
-        }
-
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
