@@ -136,7 +136,7 @@ impl IAnimalRepository for AnimalRepository {
 
     #[tracing::instrument(skip(self))]
     async fn findmany(&self, filter: Document) -> Result<Vec<AnimalEntity>, CustomError> {
-        let find_options = FindOptions::builder().sort(doc! { "name": 1 }).build();
+        let find_options = FindOptions::builder().sort(doc! {}).build();
         let mut cursor = self.collection.find(filter, find_options).await?;
         let mut animals = Vec::<AnimalEntity>::new();
         while let Some(result) = cursor.next().await {

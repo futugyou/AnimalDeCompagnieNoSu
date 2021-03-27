@@ -33,8 +33,8 @@
             <Descriptions Bordered="false" Column="2" Layout="@DescriptionsLayout.Horizontal">
                 <DescriptionsItem Title="种类">@(AnimalViewModel.Type)</DescriptionsItem>
                 <DescriptionsItem Title="子类别">@(AnimalViewModel.SubType)</DescriptionsItem>
-                <DescriptionsItem Title="年龄">@(AnimalViewModel.Age)</DescriptionsItem>
-                <DescriptionsItem Title="生日">@(AnimalViewModel.Birthday?.ToString("d"))</DescriptionsItem>
+                <DescriptionsItem Title="年龄">@(AnimalViewModel.Age) 岁</DescriptionsItem>
+                <DescriptionsItem Title="生日">@(AnimalViewModel.Birthday?.ToString("yyyy/MM/dd"))</DescriptionsItem>
                 <DescriptionsItem Title="简介" Class="animal-describe">@(AnimalViewModel.ShortDescribe)</DescriptionsItem>
             </Descriptions>
             <Divider Dashed />

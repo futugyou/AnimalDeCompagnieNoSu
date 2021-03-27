@@ -21,7 +21,17 @@ namespace AnimalDeCompagnieNoSuBlazor.Models
         [JsonPropertyName("avatar")]
         public string Avatar { get; set; }
         [JsonPropertyName("age")]
-        public double Age { get; set; }
+        public double Age
+        {
+            get
+            {
+                if (Birthday.HasValue)
+                {
+                    return (DateTime.Now - Birthday.Value).Days / 365;
+                }
+                return 0;
+            }
+        }
         [JsonPropertyName("short_describe")]
         public string ShortDescribe { get; set; }
         [JsonPropertyName("photoes")]
