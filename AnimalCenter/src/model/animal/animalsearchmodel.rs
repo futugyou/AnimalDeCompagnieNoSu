@@ -9,8 +9,9 @@ pub struct AnimalSearchRequest {
     #[serde(default)]
     #[validate(length(max = 20))]
     pub name: String,
-    #[serde(default)]
     #[serde(rename = "type")]
+    #[serde(default)]
+    #[serde(deserialize_with = "deserialize_stringified_list")]
     pub animal_type: Vec<String>,
 }
 

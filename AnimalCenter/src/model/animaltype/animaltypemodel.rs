@@ -7,6 +7,7 @@ use validator::Validate;
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AnimalTypeSearchRequest {
     #[serde(rename = "type")]
+    #[serde(default)]
     #[serde(deserialize_with = "deserialize_stringified_list")]
     pub animal_type: Vec<String>,
 }

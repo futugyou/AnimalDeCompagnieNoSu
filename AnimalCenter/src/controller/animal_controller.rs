@@ -1,7 +1,10 @@
 use crate::model::animal::{animalinsertmodel::*, animalsearchmodel::*, animalupdatemodel::*};
 use crate::service::animalservice::*;
 
-use actix_web::{web, Error, HttpRequest, HttpResponse};
+use actix_web::{
+    web::{self, Query},
+    Error, HttpRequest, HttpResponse,
+};
 use std::collections::HashMap;
 
 pub async fn getone(web::Path((id,)): web::Path<(String,)>, _req: HttpRequest) -> HttpResponse {
@@ -10,21 +13,9 @@ pub async fn getone(web::Path((id,)): web::Path<(String,)>, _req: HttpRequest) -
     HttpResponse::Ok().json(response)
 }
 
-pub async fn get(item: Option<web::Json<AnimalSearchRequest>>, _req: HttpRequest) -> HttpResponse {
+pub async fn get(Query(request): Query<AnimalSearchRequest>, _req: HttpRequest) -> HttpResponse {
     let service = AnimalService::new().await;
-    let mut rep = AnimalSearchRequest {
-        name: String::from(""),
-        animal_type: Vec::<String>::new(),
-    };
-    match item {
-        Some(i) => {
-            let query = i.into_inner();
-            rep.name = query.name;
-            rep.animal_type = query.animal_type;
-        }
-        None => {}
-    };
-    let response = service.search_animals(rep).await;
+    let response = service.search_animals(request).await;
     HttpResponse::Ok().json(response)
 }
 
