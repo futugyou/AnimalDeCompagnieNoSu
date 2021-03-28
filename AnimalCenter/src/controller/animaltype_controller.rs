@@ -3,24 +3,17 @@ use crate::{
     service::animaltypeservice::{AnimalTypeService, IAnimalTypeService},
 };
 
-use actix_web::{web, Error, HttpRequest, HttpResponse};
+use actix_web::{
+    web::{self, Query},
+    Error, HttpRequest, HttpResponse,
+};
 
 pub async fn get(
-    item: Option<web::Json<AnimalTypeSearchRequest>>,
+    Query(request): Query<AnimalTypeSearchRequest>,
     _req: HttpRequest,
 ) -> HttpResponse {
     let service = AnimalTypeService::new().await;
-    let mut rep = AnimalTypeSearchRequest {
-        animal_type: Vec::<String>::new(),
-    };
-    match item {
-        Some(i) => {
-            let query = i.into_inner();
-            rep.animal_type = query.animal_type;
-        }
-        None => {}
-    };
-    let response = service.search_animal_types(rep).await;
+    let response = service.search_animal_types(request).await;
     HttpResponse::Ok().json(response)
 }
 

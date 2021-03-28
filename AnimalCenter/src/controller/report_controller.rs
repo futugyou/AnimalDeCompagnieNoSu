@@ -4,7 +4,6 @@ use actix_web::{web::Query, HttpRequest, HttpResponse};
 
 pub async fn get_rescue_classification(
     Query(classic): Query<RescueClassificationRequest>,
-    //item: Option<web::Json<RescueClassificationRequest>>,
     _req: HttpRequest,
 ) -> HttpResponse {
     let service = ReportService::new().await;

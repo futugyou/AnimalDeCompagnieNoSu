@@ -1,3 +1,4 @@
+use crate::infrastruct::serialize::*;
 use crate::model::animal::BaseRequest;
 
 use serde::{Deserialize, Serialize};
@@ -5,8 +6,8 @@ use validator::Validate;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AnimalTypeSearchRequest {
-    #[serde(default)]
     #[serde(rename = "type")]
+    #[serde(deserialize_with = "deserialize_stringified_list")]
     pub animal_type: Vec<String>,
 }
 
