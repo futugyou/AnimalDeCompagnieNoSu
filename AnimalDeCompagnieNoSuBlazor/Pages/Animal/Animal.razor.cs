@@ -7,18 +7,24 @@ using System;
 using AnimalDeCompagnieNoSuBlazor.Services;
 using System.Text.Json.Serialization;
 using System.Linq;
+using AnimalDeCompagnieNoSuBlazor.Extensions;
 
 namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 {
     public partial class Animal
     {
+        [Inject]
+        private IAnimalService AnimalService { get; set; }
+        [Inject]
+        private IAnimalTypeService AnimalTypeService { get; set; }
+
         private readonly ListGridType _listGridType = new ListGridType
         {
             Gutter = 24,
             Column = 4
         };
 
-        private readonly List<SelectType> _typeItems = new()
+        private List<SelectType> _typeItems = new()
         {
             new SelectType { Text = "cat", Value = "cat" },
             new SelectType { Text = "dog", Value = "dog" },
@@ -33,9 +39,15 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
 
         private IEnumerable<string> _selectedTypeValues;
-        private void OnSelectedTypesChangedHandler(IEnumerable<SelectType> values)
+        private async void OnSelectedTypesChangedHandler(IEnumerable<SelectType> values)
         {
-            //TODO :filter AnimalList
+            if (values == null || !values.Any())
+            {
+                _selectedTypeValues = Array.Empty<string>();
+            }
+            var request = new AnimalListSearchModel { Type = string.Join(",", _selectedTypeValues) };
+            var list = await AnimalService.GetAnimalList(request);
+            _data = list.ToArray();
         }
 
         private IEnumerable<string> _selectedSterilizationValues;
@@ -51,11 +63,12 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         }
 
         private AnimalListViewModel[] _data = { };
-        [Inject] private IAnimalService AnimalService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+            var animalTypes = await AnimalTypeService.GetAllAnimalTypes();
+            _typeItems = TypeConvertTools.AnimalTypeToSelectType(animalTypes);
             var list = await AnimalService.GetAnimalList();
             _data = list.ToArray();
         }
@@ -64,5 +77,6 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
     {
         public string Value { get; set; }
         public string Text { get; set; }
+        public string Group { get; set; }
     }
 }
