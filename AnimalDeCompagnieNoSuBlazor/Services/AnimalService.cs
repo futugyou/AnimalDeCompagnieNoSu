@@ -43,11 +43,16 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
             }
         }
 
-        public async Task<List<AnimalListViewModel>> GetAnimalList()
+        public async Task<List<AnimalListViewModel>> GetAnimalList(AnimalListSearchModel request = null)
         {
             try
             {
-                return await _animalClient.GetFromJsonAsync<List<AnimalListViewModel>>("api/animal");
+                string searchuri = "api/animal";
+                if (request != null)
+                {
+                    searchuri += request.ToString();
+                }
+                return await _animalClient.GetFromJsonAsync<List<AnimalListViewModel>>(searchuri);
             }
             catch (Exception ex)
             {
