@@ -1,4 +1,5 @@
 ﻿using AnimalDeCompagnieNoSuBlazor.Models;
+using AnimalDeCompagnieNoSuBlazor.Pages.Animal;
 using AntDesign;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,18 @@ namespace AnimalDeCompagnieNoSuBlazor.Extensions
                 return tmp;
             }
             return GetCascaderNode(cascaderNodes.SelectMany(p => p.Children).ToList(), pid);
+        }
+
+        internal static List<SelectType> AnimalTypeToSelectType(List<AnimalType> animalTypes)
+        {
+            var selectList = animalTypes.Where(p => string.IsNullOrEmpty(p.Pid))
+                .Select(p => new SelectType { Value = p.Type, Text = p.Type, Group = p.Pid }).ToList();
+            foreach (var item in animalTypes.Where(p => p.Pid != ""))
+            {
+                var parent = animalTypes.FirstOrDefault(p => p.Id == item.Pid);
+                selectList.Add(new SelectType { Value = item.Type, Text = item.Type, Group = parent.Type });
+            }
+            return selectList;
         }
     }
 }
