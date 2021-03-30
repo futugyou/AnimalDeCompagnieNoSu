@@ -38,7 +38,8 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         };
 
 
-        private IEnumerable<string> _selectedTypeValues;
+        private IEnumerable<string> _selectedTypeValues = Array.Empty<string>();
+
         private async void OnSelectedTypesChangedHandler(IEnumerable<SelectType> values)
         {
             if (values == null || !values.Any())
@@ -48,9 +49,11 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             var request = new AnimalListSearchModel { Type = string.Join(",", _selectedTypeValues) };
             var list = await AnimalService.GetAnimalList(request);
             _data = list.ToArray();
+            await InvokeAsync(StateHasChanged);
         }
 
         private IEnumerable<string> _selectedSterilizationValues;
+
         private void OnSelectedSterilizationChangedHandler(IEnumerable<SelectType> values)
         {
             //TODO :filter AnimalList
