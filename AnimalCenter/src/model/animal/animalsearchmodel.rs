@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate; //ValidationErrornvw
 
-#[derive(Debug, Clone, Validate, Serialize, Deserialize)]
+#[derive(Debug, Clone, Validate, Deserialize)]
 pub struct AnimalSearchRequest {
     #[serde(default)]
     #[validate(length(max = 20))]
@@ -14,7 +14,8 @@ pub struct AnimalSearchRequest {
     #[serde(deserialize_with = "deserialize_stringified_list")]
     pub animal_type: Vec<String>,
     #[serde(flatten)]
-    pub paging: PageModel,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub paging: Option<PageModel>,
 }
 
 impl BaseRequest for AnimalSearchRequest {}

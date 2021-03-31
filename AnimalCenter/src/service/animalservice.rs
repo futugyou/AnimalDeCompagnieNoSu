@@ -45,10 +45,7 @@ impl IAnimalService for AnimalService {
         match request.valid() {
             Ok(_) => {
                 let doc = request.clone().into();
-                let serach_result = self
-                    .animal_repository
-                    .findmany(doc, Some(request.paging))
-                    .await;
+                let serach_result = self.animal_repository.findmany(doc, request.paging).await;
                 match serach_result {
                     Ok(search) => {
                         let mut results = Vec::<AnimalSearchResponse>::new();
