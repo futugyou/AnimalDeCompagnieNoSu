@@ -39,6 +39,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
 
         private IEnumerable<string> _selectedTypeValues = Array.Empty<string>();
+        private PageViewModel page = new PageViewModel();
 
         private async void OnSelectedTypesChangedHandler(IEnumerable<SelectType> values)
         {
@@ -46,13 +47,31 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             {
                 _selectedTypeValues = Array.Empty<string>();
             }
-            var request = new AnimalListSearchModel { Type = string.Join(",", _selectedTypeValues) };
-            var list = await AnimalService.GetAnimalList(request);
-            _data = list.ToArray();
+            await FillAnimalPage();
             await InvokeAsync(StateHasChanged);
         }
 
+        private async Task FillAnimalPage()
+        {
+            var request = new AnimalListSearchModel { Type = string.Join(",", _selectedTypeValues) };
+            var list = await AnimalService.GetAnimalList(request, new PageModel { PageSize = page.PageSize, PageIndex = page.PageIndex - 1 });
+            _data = list.ToArray();
+            var datecount = _data.Count();
+            _ = datecount switch
+            {
+                0 => page.TotalCount = page.PageIndex == 1 ? 0 : (page.PageIndex - 1) * page.PageSize,
+                _ when datecount == page.PageSize => page.TotalCount = page.PageSize + page.PageIndex * page.PageSize,
+                _ => page.TotalCount = page.PageIndex * page.PageSize,
+            };
+        }
+
         private IEnumerable<string> _selectedSterilizationValues;
+
+        private async Task OnPageIndexChange(int pageindex)
+        {
+            page.PageIndex = pageindex;
+            await FillAnimalPage();
+        }
 
         private void OnSelectedSterilizationChangedHandler(IEnumerable<SelectType> values)
         {
@@ -72,8 +91,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             await base.OnInitializedAsync();
             var animalTypes = await AnimalTypeService.GetAllAnimalTypes();
             _typeItems = TypeConvertTools.AnimalTypeToSelectType(animalTypes);
-            var list = await AnimalService.GetAnimalList();
-            _data = list.ToArray();
+            await FillAnimalPage();
         }
     }
     public class SelectType
