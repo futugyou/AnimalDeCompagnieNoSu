@@ -5,6 +5,7 @@ use crate::{
         custom_error::{CustomError, CustomErrorKind},
         stringtoObjectId,
     },
+    model::PageModel,
 };
 
 use async_trait::async_trait;
@@ -19,7 +20,11 @@ pub trait IAnimalRepository {
     async fn delete(&self, entity: AnimalEntity) -> Result<bool, CustomError>;
     async fn findone(&self, id: String) -> Result<AnimalEntity, CustomError>;
     async fn findaggregateone(&self, id: String) -> Result<AnimalEntity, CustomError>;
-    async fn findmany(&self, filter: Document) -> Result<Vec<AnimalEntity>, CustomError>;
+    async fn findmany(
+        &self,
+        filter: Document,
+        pageing: Option<PageModel>,
+    ) -> Result<Vec<AnimalEntity>, CustomError>;
     async fn update(&self, entity: &AnimalEntity) -> Result<bool, CustomError>;
 }
 
@@ -57,23 +62,6 @@ impl IAnimalRepository for AnimalRepository {
     }
 
     #[tracing::instrument(skip(self))]
-    async fn update(&self, entity: &AnimalEntity) -> Result<bool, CustomError> {
-        let oid = stringtoObjectId(&entity.id)?;
-        let filter = doc! {"_id":oid};
-        let raw: Document = entity.into();
-        let update = doc! {"$set" : raw};
-        let result = self.collection.update_one(filter, update, None).await?;
-        if result.matched_count == 0 && result.modified_count == 0 {
-            tracing::warn!(
-                "db update_one result: id {:#?} can not found in db",
-                &entity.id
-            );
-            return Ok(false);
-        }
-        Ok(true)
-    }
-
-    #[tracing::instrument(skip(self))]
     async fn delete(&self, entity: AnimalEntity) -> Result<bool, CustomError> {
         let oid = stringtoObjectId(&entity.id)?;
         let filter = doc! {"_id":oid};
@@ -86,6 +74,18 @@ impl IAnimalRepository for AnimalRepository {
             return Ok(false);
         }
         Ok(true)
+    }
+
+    async fn findone(&self, id: String) -> Result<AnimalEntity, CustomError> {
+        let oid = stringtoObjectId(&id)?;
+        let filter = doc! {"_id":oid};
+        let result = self.collection.find_one(filter, None).await?;
+        let mut animal = AnimalEntity::new();
+        if let Some(doc) = result {
+            animal = bson::from_bson(Bson::Document(doc))?;
+        }
+        tracing::info!("findone result: {:#?}", animal);
+        Ok(animal)
     }
 
     #[tracing::instrument(skip(self))]
@@ -135,8 +135,22 @@ impl IAnimalRepository for AnimalRepository {
     }
 
     #[tracing::instrument(skip(self))]
-    async fn findmany(&self, filter: Document) -> Result<Vec<AnimalEntity>, CustomError> {
-        let find_options = FindOptions::builder().sort(doc! {}).build();
+    async fn findmany(
+        &self,
+        filter: Document,
+        pageing: Option<PageModel>,
+    ) -> Result<Vec<AnimalEntity>, CustomError> {
+        let mut skip: i64 = 0;
+        let mut limit: i64 = 0;
+        if let Some(page) = pageing {
+            skip = page.pageindex * page.pagesize;
+            limit = page.pagesize;
+        }
+        let find_options = FindOptions::builder()
+            .skip(Some(skip))
+            .limit(Some(limit))
+            .sort(doc! {})
+            .build();
         let mut cursor = self.collection.find(filter, find_options).await?;
         let mut animals = Vec::<AnimalEntity>::new();
         while let Some(result) = cursor.next().await {
@@ -146,15 +160,20 @@ impl IAnimalRepository for AnimalRepository {
         Ok(animals)
     }
 
-    async fn findone(&self, id: String) -> Result<AnimalEntity, CustomError> {
-        let oid = stringtoObjectId(&id)?;
+    #[tracing::instrument(skip(self))]
+    async fn update(&self, entity: &AnimalEntity) -> Result<bool, CustomError> {
+        let oid = stringtoObjectId(&entity.id)?;
         let filter = doc! {"_id":oid};
-        let result = self.collection.find_one(filter, None).await?;
-        let mut animal = AnimalEntity::new();
-        if let Some(doc) = result {
-            animal = bson::from_bson(Bson::Document(doc))?;
+        let raw: Document = entity.into();
+        let update = doc! {"$set" : raw};
+        let result = self.collection.update_one(filter, update, None).await?;
+        if result.matched_count == 0 && result.modified_count == 0 {
+            tracing::warn!(
+                "db update_one result: id {:#?} can not found in db",
+                &entity.id
+            );
+            return Ok(false);
         }
-        tracing::info!("findone result: {:#?}", animal);
-        Ok(animal)
+        Ok(true)
     }
 }

@@ -44,8 +44,11 @@ impl IAnimalService for AnimalService {
     async fn search_animals(&self, request: AnimalSearchRequest) -> Vec<AnimalSearchResponse> {
         match request.valid() {
             Ok(_) => {
-                let doc = request.into();
-                let serach_result = self.animal_repository.findmany(doc).await;
+                let doc = request.clone().into();
+                let serach_result = self
+                    .animal_repository
+                    .findmany(doc, Some(request.paging))
+                    .await;
                 match serach_result {
                     Ok(search) => {
                         let mut results = Vec::<AnimalSearchResponse>::new();
@@ -162,7 +165,7 @@ impl IAnimalService for AnimalService {
     #[tracing::instrument(skip(self))]
     async fn clear_fake_data(&self) -> Result<(), CustomError> {
         let doc = AnimalClearFakeData {}.into();
-        let serachresult = self.animal_repository.findmany(doc).await?;
+        let serachresult = self.animal_repository.findmany(doc, None).await?;
         for entity in serachresult {
             self.animal_repository.delete(entity).await?;
         }
