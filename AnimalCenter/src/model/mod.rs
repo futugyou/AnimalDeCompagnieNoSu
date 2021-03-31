@@ -6,10 +6,10 @@ pub mod animaltype;
 pub mod file;
 pub mod report;
 
-#[derive(Debug, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PageModel {
     #[serde(deserialize_with = "from_str")]
-    pub pageindex: u64,
+    pub pageindex: i64,
     #[serde(deserialize_with = "from_str")]
-    pub pagesize: u64,
+    pub pagesize: i64,
 }

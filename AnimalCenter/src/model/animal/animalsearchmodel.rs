@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate; //ValidationErrornvw
 
-#[derive(Debug, Validate, Serialize, Deserialize)]
+#[derive(Debug, Clone, Validate, Serialize, Deserialize)]
 pub struct AnimalSearchRequest {
     #[serde(default)]
     #[validate(length(max = 20))]
