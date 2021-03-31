@@ -1,3 +1,5 @@
+use crate::model::PageModel;
+
 impl From<crate::graphql::animalmodel::AnimalSearchRequest>
     for crate::model::animal::animalsearchmodel::AnimalSearchRequest
 {
@@ -5,6 +7,7 @@ impl From<crate::graphql::animalmodel::AnimalSearchRequest>
         Self {
             name: request.name,
             animal_type: request.animal_type,
+            paging: PageModel::default(),
         }
     }
 }

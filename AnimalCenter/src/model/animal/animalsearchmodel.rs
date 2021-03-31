@@ -1,5 +1,5 @@
-use crate::infrastruct::serialize::*;
 use crate::model::animal::BaseRequest;
+use crate::{infrastruct::serialize::*, model::PageModel};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate; //ValidationErrornvw
@@ -13,6 +13,8 @@ pub struct AnimalSearchRequest {
     #[serde(default)]
     #[serde(deserialize_with = "deserialize_stringified_list")]
     pub animal_type: Vec<String>,
+    #[serde(flatten)]
+    pub paging: PageModel,
 }
 
 impl BaseRequest for AnimalSearchRequest {}
