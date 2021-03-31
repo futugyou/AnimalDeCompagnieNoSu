@@ -43,7 +43,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
             }
         }
 
-        public async Task<List<AnimalListViewModel>> GetAnimalList(AnimalListSearchModel request = null)
+        public async Task<List<AnimalListViewModel>> GetAnimalList(AnimalListSearchModel request = null, PageModel pageModel = default)
         {
             try
             {
@@ -51,6 +51,10 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
                 if (request != null)
                 {
                     searchuri += request.ToString();
+                }
+                if (pageModel != null)
+                {
+                    searchuri += searchuri.IndexOf("?") > 0 ? "&" + pageModel.ToString() : "?" + pageModel.ToString();
                 }
                 return await _animalClient.GetFromJsonAsync<List<AnimalListViewModel>>(searchuri);
             }
