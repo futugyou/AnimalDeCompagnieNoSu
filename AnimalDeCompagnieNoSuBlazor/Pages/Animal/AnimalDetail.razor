@@ -6,8 +6,9 @@
         <Card>
             <div class="col-detail">
                 <div class="box">
-                    <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" @onclick="OpenFaceChange" onerror="this.src='/images/none-image.png'" />
-                    @*<Image Src="@(AnimalViewModel.Avatar)" Fallback="/images/none-image.png" OnClick="OpenFaceChange" />*@
+                    <AntDesign.Tooltip Title="@("修改头像")">
+                        <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" @onclick="OpenFaceChange" onerror="this.src='/images/none-image.png'" />
+                    </AntDesign.Tooltip>
                     <Modal Visible="@uploadImageVisable"
                            OnOk="@HandleOk"
                            OnCancel="@HandleCancel">
@@ -35,7 +36,7 @@
                 <DescriptionsItem Title="子类别">@(AnimalViewModel.SubType)</DescriptionsItem>
                 <DescriptionsItem Title="年龄">@(AnimalViewModel.Age) 岁</DescriptionsItem>
                 <DescriptionsItem Title="生日">@(AnimalViewModel.Birthday?.ToString("yyyy/MM/dd"))</DescriptionsItem>
-                <DescriptionsItem Title="简介" Class="animal-describe">@(AnimalViewModel.ShortDescribe)</DescriptionsItem>
+                @*<DescriptionsItem Title="简介" Class="animal-describe">@(AnimalViewModel.ShortDescribe)</DescriptionsItem>*@
             </Descriptions>
             <Divider Dashed />
             <Statistic Title="疫苗状态" Value="@("已接种疫苗")" />
