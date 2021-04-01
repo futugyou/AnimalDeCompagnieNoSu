@@ -40,6 +40,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         private IEnumerable<string> _selectedTypeValues = Array.Empty<string>();
         private PageViewModel page = new PageViewModel();
+        private bool _loading = true;
 
         private async void OnSelectedTypesChangedHandler(IEnumerable<SelectType> values)
         {
@@ -53,6 +54,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
 
         private async Task FillAnimalPage()
         {
+            _loading = true;
             var request = new AnimalListSearchModel { Type = string.Join(",", _selectedTypeValues) };
             var list = await AnimalService.GetAnimalList(request, new PageModel { PageSize = page.PageSize, PageIndex = page.PageIndex - 1 });
             _data = list.ToArray();
@@ -63,6 +65,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
                 _ when datecount == page.PageSize => page.TotalCount = page.PageSize + page.PageIndex * page.PageSize,
                 _ => page.TotalCount = page.PageIndex * page.PageSize,
             };
+            _loading = false;
         }
 
         private IEnumerable<string> _selectedSterilizationValues;
