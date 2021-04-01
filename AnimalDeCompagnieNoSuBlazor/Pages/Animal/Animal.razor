@@ -60,7 +60,10 @@
                  ItemLayout="ListItemLayout.Horizontal"
                  Grid="_listGridType">
                 <ListItem NoFlex Grid="_listGridType">
-                    <Card Bordered Class="card" Actions="new[] { actionSetting, actionEdit, actionEllipsis }">
+                    <Card Bordered Class="card" Actions="new[] {
+                        actionSetting(()=> OnSettingClick(context.Id)),
+                        actionEdit(()=> OnEditClick(context.Id)),
+                        actionEllipsis(()=> OnEllipsisClick(context.Id)) }">
                         <TitleTemplate>
                             <div>@(context.Name)</div>
                             <Tag Color="magenta">@(context.Type)</Tag>
@@ -70,17 +73,16 @@
                             <a slot="extra" href="/animal/@(context.Id)">详细信息</a>
                         </Extra>
                         <Cover>
-                            @*<img alt="example" src="@(context.Photoe)" />*@
-                            <Image Src="@(context.Photoe)" Fallback="/images/none-image.png" />
+                            <Image Src="@(context.Photoe)" Fallback="/images/none-image.png">
+                            </Image>
                         </Cover>
-                        <Body>
+                        @*<Body>
                             this is body
-
-                        </Body>
+                            </Body>*@
                     </Card>
                 </ListItem>
             </AntList>
-            <Pagination PageIndex="page.PageIndex" Size="page.PageSize" Total="page.TotalCount" PageIndexChanged="OnPageIndexChange"></Pagination>
+        <Pagination PageIndex="page.PageIndex" Size="page.PageSize" Total="page.TotalCount" PageIndexChanged="OnPageIndexChange"></Pagination>
         }
     </div>
 </Spin>
@@ -91,19 +93,27 @@
 
 @code
 {
-    private RenderFragment actionSetting =
+    private RenderFragment actionSetting(Action clickAction) =>
     @<Template>
-        <Icon Type="setting" />
+        <AntDesign.Tooltip Title="@("详情")">
+            <Icon Type="setting" OnClick="@clickAction" />
+        </AntDesign.Tooltip>
     </Template>
     ;
-    private RenderFragment actionEdit =
+
+private RenderFragment actionEdit(Action clickAction) =>
     @<Template>
-        <Icon Type="edit" />
+        <AntDesign.Tooltip Title="@("修改")">
+            <Icon Type="edit" OnClick="@clickAction" />
+        </AntDesign.Tooltip>
     </Template>
     ;
-    private RenderFragment actionEllipsis =
+
+private RenderFragment actionEllipsis(Action clickAction) =>
     @<Template>
-        <Icon Type="ellipsis" />
+        <AntDesign.Tooltip Title="@("暂无")">
+            <Icon Type="ellipsis" OnClick="@clickAction" />
+        </AntDesign.Tooltip>
     </Template>
     ;
 

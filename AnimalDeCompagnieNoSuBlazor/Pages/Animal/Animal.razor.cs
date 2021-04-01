@@ -96,6 +96,21 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             _typeItems = TypeConvertTools.AnimalTypeToSelectType(animalTypes);
             await FillAnimalPage();
         }
+
+        private void OnSettingClick(string id)
+        {
+            NavigationManager.NavigateTo("/animal/" + id);
+        }
+
+        private void OnEditClick(string id)
+        {
+            NavigationManager.NavigateTo("/animal/updateinfo/" + id);
+        }
+
+        private void OnEllipsisClick(string id)
+        {
+
+        }
     }
     public class SelectType
     {
