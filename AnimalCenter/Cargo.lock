@@ -1304,6 +1304,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "entity"
+version = "0.1.0"
+
+[[package]]
 name = "enum-as-inner"
 version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2024,6 +2028,10 @@ dependencies = [
  "socket2",
  "winapi 0.3.9",
 ]
+
+[[package]]
+name = "model"
+version = "0.1.0"
 
 [[package]]
 name = "mongodb"
@@ -2781,6 +2789,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "repository"
+version = "0.1.0"
+
+[[package]]
 name = "resolv-conf"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3014,6 +3026,20 @@ dependencies = [
  "quote",
  "syn",
 ]
+
+[[package]]
+name = "serialize"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "serde 1.0.121",
+ "serde_json",
+ "tool",
+]
+
+[[package]]
+name = "service"
+version = "0.1.0"
 
 [[package]]
 name = "sha-1"
@@ -3479,6 +3505,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a31142970826733df8241ef35dc040ef98c679ab14d7c3e54d827099b3acecaa"
 dependencies = [
  "serde 1.0.121",
+]
+
+[[package]]
+name = "tool"
+version = "0.1.0"
+dependencies = [
+ "chrono",
 ]
 
 [[package]]
