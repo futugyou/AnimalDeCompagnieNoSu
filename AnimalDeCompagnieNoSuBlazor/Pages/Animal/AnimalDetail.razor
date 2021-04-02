@@ -6,9 +6,7 @@
         <Card>
             <div class="col-detail">
                 <div class="box">
-                    <AntDesign.Tooltip Title="@("修改头像")">
-                        <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" @onclick="OpenFaceChange" onerror="this.src='/images/none-image.png'" />
-                    </AntDesign.Tooltip>
+                    <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" @onclick="OpenFaceChange" onerror="this.src='/images/none-image.png'" />
                     <Modal Visible="@uploadImageVisable"
                            OnOk="@HandleOk"
                            OnCancel="@HandleCancel">
