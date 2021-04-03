@@ -485,11 +485,13 @@ dependencies = [
  "base64 0.13.0",
  "bson",
  "chrono",
- "config",
  "dotenv",
+ "entity",
  "futures",
+ "infrastruct",
  "lapin",
  "lazy_static",
+ "model",
  "mongodb",
  "opentelemetry",
  "opentelemetry-jaeger",
@@ -499,8 +501,10 @@ dependencies = [
  "sanitize-filename",
  "serde 1.0.121",
  "serde_json",
+ "serialize",
  "slab",
  "tokio 0.2.24",
+ "tool",
  "tracing",
  "tracing-futures",
  "tracing-opentelemetry",
@@ -1306,6 +1310,13 @@ dependencies = [
 [[package]]
 name = "entity"
 version = "0.1.0"
+dependencies = [
+ "bson",
+ "chrono",
+ "serde 1.0.121",
+ "serialize",
+ "tool",
+]
 
 [[package]]
 name = "enum-as-inner"
@@ -1729,6 +1740,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "infrastruct"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "async_once",
+ "config",
+ "lapin",
+ "lazy_static",
+ "mongodb",
+ "serde 1.0.121",
+ "tool",
+ "tracing",
+ "tracing-futures",
+]
+
+[[package]]
 name = "instant"
 version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2032,6 +2059,17 @@ dependencies = [
 [[package]]
 name = "model"
 version = "0.1.0"
+dependencies = [
+ "actix-web",
+ "async-graphql",
+ "bson",
+ "chrono",
+ "entity",
+ "serde 1.0.121",
+ "serialize",
+ "tool",
+ "validator",
+]
 
 [[package]]
 name = "mongodb"
@@ -2289,7 +2327,7 @@ dependencies = [
  "pin-project 1.0.4",
  "rand 0.8.3",
  "thiserror",
- "tokio 1.2.0",
+ "tokio 1.4.0",
  "tokio-stream",
 ]
 
@@ -3441,9 +3479,9 @@ dependencies = [
 
 [[package]]
 name = "tokio"
-version = "1.2.0"
+version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e8190d04c665ea9e6b6a0dc45523ade572c088d2e6566244c1122671dbf4ae3a"
+checksum = "134af885d758d645f0f0505c9a8b3f9bf8a348fd822e112ab5248138348f1722"
 dependencies = [
  "autocfg",
  "pin-project-lite 0.2.4",
@@ -3474,13 +3512,13 @@ dependencies = [
 
 [[package]]
 name = "tokio-stream"
-version = "0.1.3"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1981ad97df782ab506a1f43bf82c967326960d278acf3bf8279809648c3ff3ea"
+checksum = "e177a5d8c3bf36de9ebe6d58537d8879e964332f93fb3339e43f618c81361af0"
 dependencies = [
  "futures-core",
  "pin-project-lite 0.2.4",
- "tokio 1.2.0",
+ "tokio 1.4.0",
 ]
 
 [[package]]
@@ -3514,6 +3552,10 @@ dependencies = [
  "actix-web",
  "bson",
  "chrono",
+ "config",
+ "lapin",
+ "mongodb",
+ "rustc-serialize",
  "serde 1.0.121",
  "serde_json",
  "validator",
@@ -3798,9 +3840,9 @@ dependencies = [
 
 [[package]]
 name = "validator"
-version = "0.12.0"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "841d6937c33ec6039d8071bcf72933146b5bbe378d645d8fa59bdadabfc2a249"
+checksum = "be110dc66fa015b8b1d2c4eae40c495a27fae55f82b9cae3efb8178241ed20eb"
 dependencies = [
  "idna",
  "lazy_static",
@@ -3815,9 +3857,9 @@ dependencies = [
 
 [[package]]
 name = "validator_derive"
-version = "0.12.0"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4286b4497f270f59276a89ae0ad109d5f8f18c69b613e3fb22b61201aadb0c4d"
+checksum = "68f14fe757e2894ce4271991901567be07fbc3eac6b24246122214e1d5a16554"
 dependencies = [
  "if_chain",
  "lazy_static",

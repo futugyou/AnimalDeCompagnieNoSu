@@ -1,6 +1,7 @@
 use crate::custom_error::CustomError;
 use chrono::{DateTime, Duration, NaiveDateTime, TimeZone, Utc};
 
+pub mod base64convert;
 pub mod custom_error;
 
 pub const FORMAT: &'static str = "%Y-%m-%dT%H:%M:%SZ";

@@ -1,22 +1,23 @@
 [package]
-name = "tool"
+name = "infrastruct"
 version = "0.1.0"
 authors = ["futugyousuzu <17871902+futugyu@users.noreply.github.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dependencies]
-chrono = "0.4"
-bson = "1"
-actix-web = "3"
+[dependencies] 
 serde = { version = "1.0", features = ["derive"] }
-serde_json = "1"
-validator = { version = "0.13", features = ["derive"] }
-lapin = "1.6"
-rustc-serialize = "0.3" 
+async_once = "0.2"
+async-trait = "0.1"
+lazy_static = "1"
 config = "0.11"
+lapin = "1.6"
+tracing = "0.1"
+tracing-futures = { version = "0.2", default-features = false }
 
+
+tool = {path ="../tool"}
 
 [dependencies.mongodb]
 version = "1.2"
