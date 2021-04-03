@@ -3511,7 +3511,12 @@ dependencies = [
 name = "tool"
 version = "0.1.0"
 dependencies = [
+ "actix-web",
+ "bson",
  "chrono",
+ "serde 1.0.121",
+ "serde_json",
+ "validator",
 ]
 
 [[package]]

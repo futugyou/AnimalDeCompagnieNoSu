@@ -1,4 +1,7 @@
+use crate::custom_error::CustomError;
 use chrono::{DateTime, Duration, NaiveDateTime, TimeZone, Utc};
+
+pub mod custom_error;
 
 pub const FORMAT: &'static str = "%Y-%m-%dT%H:%M:%SZ";
 pub const NAIVE_FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
@@ -17,7 +20,7 @@ pub fn getutcnowwithformat() -> DateTime<Utc> {
     date
 }
 
-// #[allow(non_snake_case)]
-// pub fn stringtoObjectId(str: &str) -> Result<bson::oid::ObjectId, CustomError> {
-//     Ok(bson::oid::ObjectId::with_string(str)?)
-// }
+#[allow(non_snake_case)]
+pub fn stringtoObjectId(str: &str) -> Result<bson::oid::ObjectId, CustomError> {
+    Ok(bson::oid::ObjectId::with_string(str)?)
+}
