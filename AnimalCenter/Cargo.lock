@@ -503,6 +503,7 @@ dependencies = [
  "serde 1.0.121",
  "serde_json",
  "serialize",
+ "service",
  "slab",
  "tokio 0.2.24",
  "tool",
@@ -3091,6 +3092,20 @@ dependencies = [
 [[package]]
 name = "service"
 version = "0.1.0"
+dependencies = [
+ "async-std",
+ "async-trait",
+ "chrono",
+ "entity",
+ "infrastruct",
+ "model",
+ "rand 0.8.3",
+ "repository",
+ "serde_json",
+ "tool",
+ "tracing",
+ "tracing-futures",
+]
 
 [[package]]
 name = "sha-1"

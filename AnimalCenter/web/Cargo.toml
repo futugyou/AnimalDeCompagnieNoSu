@@ -49,6 +49,7 @@ entity = {path= "../entity" }
 model = {path= "../model" }
 infrastruct = {path= "../infrastruct" }
 repository = {path= "../repository"}
+service = {path= "../service"}
 
 [dependencies.mongodb]
 version = "1.2"

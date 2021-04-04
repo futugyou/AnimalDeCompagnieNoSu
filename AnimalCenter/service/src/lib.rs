@@ -1,7 +1,5 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
+pub mod animalservice;
+pub mod animaltypeservice;
+pub mod fileuploadservice;
+pub mod reportservice;
+pub mod staticfileservice;

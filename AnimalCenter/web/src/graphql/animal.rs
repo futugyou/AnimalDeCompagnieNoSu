@@ -1,7 +1,7 @@
-use crate::service::animalservice::{AnimalService, IAnimalService};
 use async_graphql::*;
 use futures::{Stream, StreamExt};
 use model::animal::animalmodel::*;
+use service::animalservice::{AnimalService, IAnimalService};
 
 pub type AnimalSchema = Schema<QueryRoot, MutationRoot, SubscriptionRoot>;
 

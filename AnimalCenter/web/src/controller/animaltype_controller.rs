@@ -1,5 +1,5 @@
-use crate::service::animaltypeservice::{AnimalTypeService, IAnimalTypeService};
 use model::animaltype::animaltypemodel::*;
+use service::animaltypeservice::{AnimalTypeService, IAnimalTypeService};
 
 use actix_web::{
     web::{self, Query},

@@ -1,7 +1,6 @@
 mod controller;
 mod graphql;
 mod route;
-mod service;
 mod telemetry;
 
 use actix_cors::Cors;

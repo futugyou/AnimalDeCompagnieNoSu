@@ -1,6 +1,6 @@
-use crate::service::reportservice::*;
 use actix_web::{web::Query, HttpRequest, HttpResponse};
 use model::report::rescue_classification::RescueClassificationRequest;
+use service::reportservice::*;
 
 pub async fn get_rescue_classification(
     Query(classic): Query<RescueClassificationRequest>,

@@ -1,5 +1,5 @@
-use crate::service::animalservice::*;
 use model::animal::{animalinsertmodel::*, animalsearchmodel::*, animalupdatemodel::*};
+use service::animalservice::*;
 
 use actix_web::{
     web::{self, Query},

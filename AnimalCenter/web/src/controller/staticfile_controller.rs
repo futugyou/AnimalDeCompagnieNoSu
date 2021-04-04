@@ -1,6 +1,6 @@
-use crate::service::staticfileservice::IStaticfileService;
-use crate::service::staticfileservice::StaticfileService;
 use model::file::staticfilemodel::*;
+use service::staticfileservice::IStaticfileService;
+use service::staticfileservice::StaticfileService;
 use tool::custom_error::CustomError;
 
 use actix_multipart::Multipart;
