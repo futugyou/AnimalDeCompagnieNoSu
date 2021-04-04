@@ -1,8 +1,8 @@
-use crate::repository::animaltyperepository::{AnimalTypeRepository, IAnimalTypeRepository};
 use async_trait::async_trait;
 use entity::animaltypeentity::AnimalTypeEntity;
 use model::animaltype::animaltypemodel::*;
 use model::BaseRequest;
+use repository::animaltyperepository::{AnimalTypeRepository, IAnimalTypeRepository};
 use tool::custom_error::CustomError;
 
 #[async_trait]

@@ -1,6 +1,6 @@
-use crate::repository::reportrepository::*;
 use async_trait::async_trait;
 use model::report::rescue_classification::*;
+use repository::reportrepository::*;
 
 #[async_trait]
 pub trait IReportService {

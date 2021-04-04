@@ -1,6 +1,5 @@
 mod controller;
 mod graphql;
-mod repository;
 mod route;
 mod service;
 mod telemetry;

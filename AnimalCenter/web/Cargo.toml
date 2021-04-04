@@ -48,6 +48,7 @@ tool = {path= "../tool" }
 entity = {path= "../entity" }
 model = {path= "../model" }
 infrastruct = {path= "../infrastruct" }
+repository = {path= "../repository"}
 
 [dependencies.mongodb]
 version = "1.2"
