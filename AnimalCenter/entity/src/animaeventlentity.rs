@@ -1,7 +1,6 @@
 use serialize::*;
-use tool::*;
 
-use bson::{doc, Document};
+use bson::doc;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 

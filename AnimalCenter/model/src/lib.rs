@@ -4,6 +4,7 @@ use tool::custom_error::CustomError;
 use validator::Validate;
 
 pub mod animal;
+pub mod animalevent;
 pub mod animaltype;
 pub mod file;
 pub mod report;
