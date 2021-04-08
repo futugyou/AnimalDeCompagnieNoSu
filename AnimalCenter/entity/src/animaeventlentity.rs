@@ -1,3 +1,4 @@
+use bson::Document;
 use serialize::*;
 
 use bson::doc;
@@ -25,5 +26,19 @@ impl AnimalEventEntity {
 
     pub fn get_collection_name() -> &'static str {
         "animal-event"
+    }
+}
+
+impl From<AnimalEventEntity> for Document {
+    fn from(entity: AnimalEventEntity) -> Self {
+        let mut doc = doc! {
+                "animalid": &entity.animalid,
+                "event_type": &entity.event_type,
+                "event": &entity.event,
+        };
+        if let Some(day) = &entity.event_time {
+            doc.insert("event_time", day);
+        }
+        doc
     }
 }
