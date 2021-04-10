@@ -37,6 +37,12 @@ impl IAnimalEventService for AnimalEventService {
 
     #[tracing::instrument(skip(self))]
     async fn getanimaleventlist(&self, animalid: String) -> Vec<AnimalEventSearchResponse> {
-        todo!()
+        let mut response = Vec::<AnimalEventSearchResponse>::new();
+        if let Ok(result) = self.repository.find(animalid).await {
+            for elem in result {
+                response.push(elem.into());
+            }
+        }
+        response
     }
 }
