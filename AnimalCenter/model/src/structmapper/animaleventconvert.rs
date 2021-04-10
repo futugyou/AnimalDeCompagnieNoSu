@@ -1,15 +1,20 @@
 use entity::animaeventlentity::AnimalEventEntity;
+use tool::getutcnowwithformat;
 
 use crate::animalevent::animaleventmodel::{AnimalEventAddRequest, AnimalEventSearchResponse};
 
 impl From<AnimalEventAddRequest> for AnimalEventEntity {
     fn from(request: AnimalEventAddRequest) -> Self {
+        let mut event_time = getutcnowwithformat();
+        if let Some(data) = request.event_time {
+            event_time = data;
+        }
         Self {
             id: "".to_owned(),
             animalid: request.animalid,
             event: request.event,
             event_type: request.event_type,
-            event_time: request.event_time,
+            event_time: Some(event_time),
         }
     }
 }
