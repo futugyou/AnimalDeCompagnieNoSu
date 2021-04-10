@@ -9,6 +9,7 @@ pub async fn get(web::Path((id,)): web::Path<(String,)>, _req: HttpRequest) -> H
 }
 
 pub async fn post(
+    web::Path((id,)): web::Path<(String,)>,
     item: Option<web::Json<AnimalEventAddRequest>>,
     _req: HttpRequest,
 ) -> Result<HttpResponse, Error> {
@@ -17,6 +18,7 @@ pub async fn post(
     match item {
         Some(i) => {
             rep = i.into_inner();
+            rep.animalid = id;
         }
         None => {}
     };

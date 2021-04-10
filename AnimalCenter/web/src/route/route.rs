@@ -16,9 +16,23 @@ pub fn bussisscope() -> Scope {
         }))
         .configure(reportroute)
         .configure(animalroute)
+        .configure(animaleventroute)
         .configure(fileuploadroute)
         .configure(animaltyperoute)
         .configure(staticfileuploadroute)
+}
+
+fn animaleventroute(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::resource("/animal/{id}/event")
+            .route(web::get().to(controller::animalevent_controller::get))
+            .route(
+                web::route()
+                    //.guard(guard::Header("Content-Type", "application/json"))
+                    .guard(guard::Post())
+                    .to(controller::animalevent_controller::post),
+            ),
+    );
 }
 
 fn animalroute(cfg: &mut web::ServiceConfig) {
