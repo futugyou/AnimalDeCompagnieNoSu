@@ -14,7 +14,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
     public class AnimalService : IAnimalService
     {
         private readonly HttpClient _animalClient;
-        public AnimalService(HttpClient httpClient, IHttpClientFactory httpClientFactory)
+        public AnimalService(IHttpClientFactory httpClientFactory)
         {
             _animalClient = httpClientFactory.CreateClient("AnimalCenter");
         }
