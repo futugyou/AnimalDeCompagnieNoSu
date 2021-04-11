@@ -24,6 +24,7 @@ impl From<AnimalEventEntity> for AnimalEventSearchResponse {
         Self {
             event: entity.event,
             event_time: entity.event_time,
+            event_type: entity.event_type,
         }
     }
 }

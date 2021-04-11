@@ -9,6 +9,8 @@ use crate::BaseRequest;
 pub struct AnimalEventSearchResponse {
     #[serde(default)]
     pub event: String,
+    #[serde(default)]
+    pub event_type: String,
     #[serde(with = "date_format", default)]
     pub event_time: Option<DateTime<Utc>>,
 }
