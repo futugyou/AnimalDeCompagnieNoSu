@@ -10,14 +10,21 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
 {
     public class AnimalEventService : IAnimalEventService
     {
-        private readonly HttpClient _httpClient;
-        public AnimalEventService(HttpClient httpClient)
+        private readonly HttpClient _animalClient;
+        public AnimalEventService(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _animalClient = httpClientFactory.CreateClient("AnimalCenter");
         }
-        public async Task<List<AnimalEvent>> GetBigEventByAnimalId(int animalId)
+        public async Task<List<AnimalEvent>> GetBigEventByAnimalId(string animalId)
         {
-            return await _httpClient.GetFromJsonAsync<List<AnimalEvent>>("/data/animal-event.json");
+            try
+            {
+                return await _animalClient.GetFromJsonAsync<List<AnimalEvent>>($"api/animal/{animalId}/event");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

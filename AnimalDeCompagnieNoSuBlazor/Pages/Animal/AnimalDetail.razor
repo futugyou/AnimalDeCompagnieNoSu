@@ -80,7 +80,7 @@
                                     {
                                 @foreach (var @event in AnimalEvents)
                                         {
-                                <TimelineItem>@(@event.Event) @(@event.EventTime)</TimelineItem>
+                                <TimelineItem>@(@event.Event) @(@event.EventTime.ToString("yyyy/MM/dd HH:mm:ss"))</TimelineItem>
                                 }
                                 }
                             </Timeline>

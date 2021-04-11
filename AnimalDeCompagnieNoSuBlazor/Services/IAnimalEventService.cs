@@ -8,6 +8,6 @@ namespace AnimalDeCompagnieNoSuBlazor.Services
 {
     public interface IAnimalEventService
     {
-        Task<List<AnimalEvent>> GetBigEventByAnimalId(int animalId);
+        Task<List<AnimalEvent>> GetBigEventByAnimalId(string animalId);
     }
 }

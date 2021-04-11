@@ -83,12 +83,8 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
             var endpoint = optionsMonitor.CurrentValue;
             uploadaction = endpoint.Host + "api/staticfile";
             Headers = new Dictionary<string, string> { { endpoint.HttpHeadKey, endpoint.HttpHeadValue } };
-            if (!int.TryParse(Id, out var aid) || aid == 0)
-            {
-                //NavigationManager.NavigateTo("/animal");
-            }
             AnimalViewModel = await AnimalService.GetAnimal(Id);
-            AnimalEvents = (await AnimalEventService.GetBigEventByAnimalId(aid)).OrderBy(p => p.EventTime).ToList();
+            AnimalEvents = (await AnimalEventService.GetBigEventByAnimalId(Id)).OrderBy(p => p.EventTime).ToList();
         }
     }
 }
