@@ -11,6 +11,8 @@ serde = { version = "1.0", features = ["derive"] }
 chrono = "0.4"
 validator = { version = "0.13", features = ["derive"] }
 actix-web = "3"
+prost = "0.6.1"
+prost-derive = "0.6.1"
 bson = "1"
 async-graphql="2"
 

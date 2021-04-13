@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate prost_derive;
+
 use serde::{Deserialize, Serialize};
 use serialize::from_str;
 use tool::custom_error::CustomError;

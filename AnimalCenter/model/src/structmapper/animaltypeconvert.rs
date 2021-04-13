@@ -12,7 +12,7 @@ impl From<AnimalTypeSearchRequest> for Document {
         filter
     }
 }
-impl From<AnimalTypeEntity> for AnimalTypeSearchResponse {
+impl From<AnimalTypeEntity> for AnimalTypeSearchResponseItem {
     fn from(entity: AnimalTypeEntity) -> Self {
         Self {
             id: entity.id,

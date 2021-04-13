@@ -12,14 +12,29 @@ pub struct AnimalTypeSearchRequest {
     pub animal_type: Vec<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+// #[derive(Debug, Serialize, Deserialize)]
+// pub struct AnimalTypeSearchResponse {
+//     #[serde(default)]
+//     pub id: String,
+//     #[serde(default)]
+//     pub pid: String,
+//     #[serde(default)]
+//     #[serde(rename = "type")]
+//     pub animal_type: String,
+// }
+#[derive(Clone, PartialEq, Message)]
 pub struct AnimalTypeSearchResponse {
-    #[serde(default)]
+    #[prost(message, repeated, tag = "1")]
+    pub item: Vec<AnimalTypeSearchResponseItem>,
+}
+
+#[derive(Clone, PartialEq, Message)]
+pub struct AnimalTypeSearchResponseItem {
+    #[prost(string, tag = "1")]
     pub id: String,
-    #[serde(default)]
+    #[prost(string, tag = "2")]
     pub pid: String,
-    #[serde(default)]
-    #[serde(rename = "type")]
+    #[prost(string, tag = "3")]
     pub animal_type: String,
 }
 

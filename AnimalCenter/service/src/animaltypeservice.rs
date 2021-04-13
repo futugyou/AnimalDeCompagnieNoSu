@@ -10,7 +10,7 @@ pub trait IAnimalTypeService {
     async fn search_animal_types(
         &self,
         request: AnimalTypeSearchRequest,
-    ) -> Vec<AnimalTypeSearchResponse>;
+    ) -> AnimalTypeSearchResponse;
     async fn modfiy_animal_type(
         &self,
         request: AnimalTypeUpdateRequest,
@@ -36,10 +36,10 @@ impl IAnimalTypeService for AnimalTypeService {
     async fn search_animal_types(
         &self,
         request: AnimalTypeSearchRequest,
-    ) -> Vec<AnimalTypeSearchResponse> {
+    ) -> AnimalTypeSearchResponse {
         let doc = request.into();
         let result = self.animaltype_repository.findmany(doc).await;
-        let mut reposonse = Vec::<AnimalTypeSearchResponse>::new();
+        let mut reposonse = Vec::<AnimalTypeSearchResponseItem>::new();
         match result {
             Ok(r) => {
                 for elem in r {
@@ -50,8 +50,9 @@ impl IAnimalTypeService for AnimalTypeService {
                 tracing::warn!("can not fonud data : {:#?}", e);
             }
         }
-        reposonse
+        AnimalTypeSearchResponse { item: reposonse }
     }
+
     #[tracing::instrument(skip(self))]
     async fn modfiy_animal_type(
         &self,
