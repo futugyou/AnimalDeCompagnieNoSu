@@ -1,3 +1,4 @@
+use cloudevents::{EventBuilder, EventBuilderV10};
 use entity::animalentity::AnimalEntity;
 use infrastruct::context::mqcontext::{IMQContext, MQContext};
 use model::animal::{animalinsertmodel::*, animalsearchmodel::*, animalupdatemodel::*, *};
@@ -90,8 +91,14 @@ impl IAnimalService for AnimalService {
                         if update {
                             let mq = MQContext::new();
                             let json_message = serde_json::to_string(&entity)?;
-                            mq.send_message(&json_message, "modfiy_animal", "update")
-                                .await?;
+                            let event = EventBuilderV10::new()
+                                .id("0001")
+                                .ty("modfiy_animal")
+                                .source("http://localhost/")
+                                .data("application/json", json_message)
+                                .build()
+                                .unwrap();
+                            mq.send_message(event, "modfiy_animal", "update").await?;
                             tracing::info!("call animal_repository update result: {:#?}", update);
                             results = (*entity).into();
                         } else {
@@ -132,8 +139,14 @@ impl IAnimalService for AnimalService {
                 let mut results: AnimalInsertResponse = entity.clone().into();
                 let insertresult = self.animal_repository.add(entity).await?;
                 let mq = MQContext::new();
-                mq.send_message(&json_message, "modfiy_animal", "insert")
-                    .await?;
+                let event = EventBuilderV10::new()
+                    .id("0002")
+                    .ty("insert_animal")
+                    .source("http://localhost/")
+                    .data("application/json", json_message)
+                    .build()
+                    .unwrap();
+                mq.send_message(event, "modfiy_animal", "insert").await?;
                 tracing::info!("call animal_repository add result: {:#?}", insertresult);
                 results.id = insertresult;
                 return Ok(results);
@@ -153,8 +166,14 @@ impl IAnimalService for AnimalService {
         let deleteresult = self.animal_repository.delete(entity).await?;
         if deleteresult {
             let mq = MQContext::new();
-            mq.send_message(&json_message, "modfiy_animal", "delete")
-                .await?;
+            let event = EventBuilderV10::new()
+                .id("0003")
+                .ty("delete_animal")
+                .source("http://localhost/")
+                .data("application/json", json_message)
+                .build()
+                .unwrap();
+            mq.send_message(event, "modfiy_animal", "delete").await?;
         }
         Ok(())
     }

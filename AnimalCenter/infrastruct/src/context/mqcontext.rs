@@ -1,5 +1,6 @@
 use crate::config::Config;
 use async_trait::async_trait;
+use cloudevents::Event;
 use lapin::{
     options::*, types::FieldTable, BasicProperties, Connection, ConnectionProperties, ExchangeKind,
 };
@@ -10,7 +11,7 @@ pub trait IMQContext {
     async fn get_mq_connection(&self) -> Result<Connection, CustomError>;
     async fn send_message(
         &self,
-        message: &str,
+        message: Event,
         queue: &str,
         routing_key: &str,
     ) -> Result<(), CustomError>;
@@ -33,10 +34,11 @@ impl IMQContext for MQContext {
         Ok(connect)
     }
 
+    // wait for AMQP impl cloudevent
     #[tracing::instrument(skip(self))]
     async fn send_message(
         &self,
-        message: &str,
+        _message: Event,
         queue_name: &str,
         routing_key: &str,
     ) -> Result<(), CustomError> {
@@ -78,7 +80,7 @@ impl IMQContext for MQContext {
                 "animal-exchange",
                 routing_key,
                 BasicPublishOptions::default(),
-                message.as_bytes().to_vec(),
+                "message".as_bytes().to_vec(),
                 BasicProperties::default(),
             )
             .await?;

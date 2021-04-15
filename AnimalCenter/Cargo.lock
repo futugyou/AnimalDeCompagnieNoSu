@@ -1036,6 +1036,7 @@ dependencies = [
  "libc",
  "num-integer",
  "num-traits 0.2.14",
+ "serde 1.0.121",
  "time 0.1.43",
  "winapi 0.3.9",
 ]
@@ -1048,6 +1049,25 @@ checksum = "2554a3155fec064362507487171dcc4edc3df60cb10f3a1fb10ed8094822b120"
 dependencies = [
  "chrono",
  "parse-zoneinfo",
+]
+
+[[package]]
+name = "cloudevents-sdk"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a7c9f6054fbd2d641a2d275e44f922a3816a6cf51751fb0f72fcf26e27209dfd"
+dependencies = [
+ "base64 0.12.3",
+ "bitflags",
+ "chrono",
+ "delegate-attr",
+ "hostname",
+ "serde 1.0.121",
+ "serde_json",
+ "snafu",
+ "url",
+ "uuid",
+ "web-sys",
 ]
 
 [[package]]
@@ -1230,6 +1250,17 @@ checksum = "e77a43b28d0668df09411cb0bc9a8c2adc40f9a048afe863e05fd43251e8e39c"
 dependencies = [
  "cfg-if 1.0.0",
  "num_cpus",
+]
+
+[[package]]
+name = "delegate-attr"
+version = "0.2.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee7e7ea0dba407429d816e8e38dda1a467cd74737722f2ccc8eae60429a1a3ab"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -1590,8 +1621,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c9495705279e7140bf035dde1f6e750c162df8b625267cd52cc44e0b156732c8"
 dependencies = [
  "cfg-if 1.0.0",
+ "js-sys",
  "libc",
  "wasi 0.10.1+wasi-snapshot-preview1",
+ "wasm-bindgen",
 ]
 
 [[package]]
@@ -1743,6 +1776,7 @@ version = "0.1.0"
 dependencies = [
  "async-trait",
  "async_once",
+ "cloudevents-sdk",
  "config",
  "lapin",
  "lazy_static",
@@ -3105,6 +3139,7 @@ dependencies = [
  "async-std",
  "async-trait",
  "chrono",
+ "cloudevents-sdk",
  "entity",
  "infrastruct",
  "model",
@@ -3201,6 +3236,27 @@ name = "smallvec"
 version = "1.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fe0f37c9e8f3c5a4a66ad655a93c74daac4ad00c441533bf5c6e7990bb42604e"
+
+[[package]]
+name = "snafu"
+version = "0.6.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eab12d3c261b2308b0d80c26fffb58d17eba81a4be97890101f416b478c79ca7"
+dependencies = [
+ "doc-comment",
+ "snafu-derive",
+]
+
+[[package]]
+name = "snafu-derive"
+version = "0.6.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1508efa03c362e23817f96cde18abed596a25219a8b2c66e8db33c03543d315b"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
 
 [[package]]
 name = "socket2"
@@ -3843,6 +3899,7 @@ dependencies = [
  "idna",
  "matches",
  "percent-encoding",
+ "serde 1.0.121",
 ]
 
 [[package]]
