@@ -12,29 +12,13 @@ use async_graphql::Schema;
 use dotenv::dotenv;
 use graphql::*;
 use route::{route as orgroute, route_fake, route_graphql};
-use rustls::internal::pemfile::{certs, pkcs8_private_keys};
-use rustls::{NoClientAuth, ServerConfig};
-use std::fs::File;
-use std::io::BufReader;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
-
-    // load ssl keys
-    let mut config = ServerConfig::new(NoClientAuth::new());
-    let cert_file = &mut BufReader::new(File::open("cert.pem").unwrap());
-    let key_file = &mut BufReader::new(File::open("key.pem").unwrap());
-    let cert_chain = certs(cert_file).unwrap();
-    let mut keys = pkcs8_private_keys(key_file).unwrap();
-    config.set_single_cert(cert_chain, keys.remove(0)).unwrap();
-
-    // telemetry
     let metrics = telemetry::initmetrics();
     let _uninstall = telemetry::inittracer();
     let schema = Schema::new(QueryRoot {}, MutationRoot {}, SubscriptionRoot {});
-
-    // server
     HttpServer::new(move || {
         let mut app = App::new();
         app = route_fake::makefakeroute(app);
@@ -61,8 +45,7 @@ async fn main() -> std::io::Result<()> {
         .service(route_graphql::graphqlscope())
         // #endregion
     })
-    // .bind("127.0.0.1:8080")?
-    .bind_rustls("127.0.0.1:8080", config)?
+    .bind("127.0.0.1:8080")?
     .run()
     .await
 }
