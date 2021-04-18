@@ -26,10 +26,21 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         [Inject]
         private IOptionsMonitor<AnimalCenter> optionsMonitor { get; set; }
 
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+            var endpoint = optionsMonitor.CurrentValue;
+            uploadaction = endpoint.Host + "api/staticfile";
+            Headers = new Dictionary<string, string> { { endpoint.HttpHeadKey, endpoint.HttpHeadValue } };
+            AnimalViewModel = await AnimalService.GetAnimal(Id);
+            AnimalEvents = (await AnimalEventService.GetBigEventByAnimalId(Id)).OrderBy(p => p.EventTime).ToList();
+        }
+
         private AnimalViewModel AnimalViewModel = new();
         private List<AnimalEvent> AnimalEvents = new();
         private bool uploadImageVisable = false;
         private string uploadaction;
+        private string addDataType = "photoes";
 
         private readonly IList<TabPaneItem> _tabList = new List<TabPaneItem>
         {
@@ -47,6 +58,11 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
                 fileinfo.File.Url = result.url;
                 _avatarUrl = result.url;
             }
+        }
+
+        private void OnTabChange(string key)
+        {
+            addDataType = key;
         }
 
         private async Task HandleOk(MouseEventArgs e)
@@ -68,23 +84,15 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         {
             uploadImageVisable = false;
         }
+
         private void GotoUpdateInfoPage(MouseEventArgs e)
         {
             NavigationManager.NavigateTo("/animal/updateinfo/" + AnimalViewModel.Id);
         }
+
         private void OpenFaceChange()
         {
             uploadImageVisable = true;
-        }
-
-        protected override async Task OnInitializedAsync()
-        {
-            await base.OnInitializedAsync();
-            var endpoint = optionsMonitor.CurrentValue;
-            uploadaction = endpoint.Host + "api/staticfile";
-            Headers = new Dictionary<string, string> { { endpoint.HttpHeadKey, endpoint.HttpHeadValue } };
-            AnimalViewModel = await AnimalService.GetAnimal(Id);
-            AnimalEvents = (await AnimalEventService.GetBigEventByAnimalId(Id)).OrderBy(p => p.EventTime).ToList();
         }
     }
 }
