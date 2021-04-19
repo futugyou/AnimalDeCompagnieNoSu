@@ -50,7 +50,7 @@
 			<Extra>
 				@if (addDataType == "photoes")
 						{
-	<Button Type="primary">添加照片</Button>
+	<Button Type="primary" @onclick="_=>open()">添加照片</Button>
 				}
 						else
 						{
@@ -64,20 +64,30 @@
 							<span><Icon Type="picture" />照片墙</span>
 						</Tab>
 						<ChildContent>
-							@if (AnimalViewModel.Photoes.Count > 0)
+							<div style="overflow:hidden;position:relative;text-align:center">
+								@if (AnimalViewModel.Photoes.Count > 0)
 								{
-							<Carousel Effect="@CarouselEffect.Fade" Autoplay="TimeSpan.FromSeconds(4)">
-								@foreach (var photo in AnimalViewModel.Photoes)
+								<Carousel Effect="@CarouselEffect.Fade" Autoplay="TimeSpan.FromSeconds(4)">
+									@foreach (var photo in AnimalViewModel.Photoes)
 									{
-		<CarouselSlick>
-		 <div class="image-display-center">
-		  <img class="img" style="display:initial" alt="cat" src="@(photo)" onerror="this.src='/images/none-image.png'" />
-										@*<Image Src="@(photo)" Fallback="/images/none-image.png" class="img" style="display:initial" />*@
-		 </div>
-		</CarouselSlick>
+		 <CarouselSlick>
+		  <div class="image-display-center">
+		   <img class="img" style="display:initial" alt="cat" src="@(photo)" onerror="this.src='/images/none-image.png'" />
+											@*<Image Src="@(photo)" Fallback="/images/none-image.png" class="img" style="display:initial" />*@
+		  </div>
+		 </CarouselSlick>
+									}
+								</Carousel>
 								}
-							</Carousel>
-							}
+								<Drawer Style="position:absolute" Visible="visible" Placement="right" Title='("Basic Drawer")' OnClose="_=>close()">
+
+									<p>Some contents...</p>
+									<p>Some contents...</p>
+									<p>Some contents...</p>
+								</Drawer>
+							</div>
+
+
 						</ChildContent>
 					</TabPane>
 					<TabPane Key="events">
@@ -101,3 +111,21 @@
 		</Card>
 	</AntDesign.Col>
 </Row>
+@code{
+
+	bool visible = false;
+
+
+
+	void open()
+	{
+
+		this.visible = true;
+	}
+
+	void close()
+	{
+		this.visible = false;
+	}
+
+}
