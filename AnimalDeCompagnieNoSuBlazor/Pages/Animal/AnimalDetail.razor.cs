@@ -26,6 +26,16 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         [Inject]
         private IOptionsMonitor<AnimalCenter> optionsMonitor { get; set; }
 
+        bool visible = false; 
+        void open()
+        {
+            this.visible = true;
+        }
+
+        void close()
+        {
+            this.visible = false;
+        }
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();

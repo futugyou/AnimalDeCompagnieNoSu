@@ -11,33 +11,18 @@ namespace AnimalDeCompagnieNoSuBlazor
     public partial class AnimalEventDrawer : AntDomComponentBase
     {
         [Parameter]
-        public bool Visible
-        {
-            get => _show;
-            set => this._show = value;
-        }
+        public bool Visible { get; set; }
         [Parameter]
-        public bool MaskClosable
-        {
-            get => _closable;
-            set => this._closable = value;
-        }
-        private bool _show;
-        private bool _closable;
+        public bool MaskClosable { get; set; } 
         private void _onClose()
         {
-             
+            Visible = false;
+            StateHasChanged();
         }
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
-
         }
-        private void SetShow(MouseEventArgs args)
-        {
-            _show = !_show;
-        }
-
     }
 }
