@@ -24,12 +24,29 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         [Inject]
         private IAnimalEventService AnimalEventService { get; set; }
         [Inject]
+        private DrawerService DrawerService { get; set; }
+        [Inject]
         private IOptionsMonitor<AnimalCenter> optionsMonitor { get; set; }
 
-        bool visible = false; 
-        void open()
+        bool visible = false;
+        private async Task open()
         {
             this.visible = true;
+            var options = new DrawerOptions()
+            {
+                Title = "Component",
+                Width = 350,
+            };
+
+            var drawerRef = await DrawerService.CreateAsync<AnimalEventDrawer, string, string>(options, "");
+
+            drawerRef.OnClosed = async result =>
+            {
+                Console.WriteLine("OnAfterClosed:" + result);
+                //if (result != null)
+                //     value = result;
+                await InvokeAsync(StateHasChanged);
+            };
         }
 
         void close()

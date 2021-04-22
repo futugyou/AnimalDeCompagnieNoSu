@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace AnimalDeCompagnieNoSuBlazor
 {
-    public partial class AnimalEventDrawer : AntDomComponentBase
+    public partial class AnimalEventDrawer : FeedbackComponent<string, string>
     {
         [Parameter]
         public bool Visible { get; set; }
         [Parameter]
-        public bool MaskClosable { get; set; } 
+        public bool MaskClosable { get; set; }
         private void _onClose()
         {
             Visible = false;
@@ -23,6 +23,10 @@ namespace AnimalDeCompagnieNoSuBlazor
         protected override void OnInitialized()
         {
             base.OnInitialized();
+        }
+        private async void OnClose()
+        {
+            await this.CloseFeedbackAsync();
         }
     }
 }

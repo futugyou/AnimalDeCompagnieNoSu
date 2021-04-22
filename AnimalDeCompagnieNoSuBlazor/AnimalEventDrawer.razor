@@ -1,16 +1,32 @@
-﻿@namespace AnimalDeCompagnieNoSuBlazor
-@inherits AntDomComponentBase
+﻿@*@namespace AnimalDeCompagnieNoSuBlazor
+    @inherits AntDomComponentBase
 
 
-<Drawer Visible="Visible" MaskClosable="MaskClosable" Width="350" Placement="right" Style="z-index: 999;text-align:left;margin-right:5px;"   OnClose="_onClose">
-	<b>EventType:</b><br />
-	<Dropdown>
-	</Dropdown>
-	<div style="margin: 32px" />
-	<b>EventTime:</b><br />
-	<DatePicker TValue="DateTime?" Picker="@DatePickerType.Date" />
-	<div style="margin: 32px" />
-	<b>Event:</b><br />
-	<div style="margin: 32px" />
-	<Button Type="primary">Submit</Button>
-</Drawer>
+    <Drawer Visible="Visible" MaskClosable="MaskClosable" Width="350" Placement="right" Style="z-index: 999;text-align:left;margin-right:5px;" OnClose="_onClose">
+        <b>EventType:</b><br />
+        <Dropdown>
+        </Dropdown>
+        <div style="margin: 32px" />
+        <b>EventTime:</b><br />
+        <DatePicker TValue="DateTime?" Picker="@DatePickerType.Date" />
+        <div style="margin: 32px" />
+        <b>Event:</b><br />
+        <div style="margin: 32px" />
+        <Button Type="primary">Submit</Button>
+    </Drawer>*@
+
+@namespace AnimalDeCompagnieNoSuBlazor
+@inherits FeedbackComponent<string, string>
+
+<div style="z-index: 999;text-align:left;margin-right:5px;" OnClick="OnClose">
+    <b>EventType:</b><br />
+    <Dropdown>
+    </Dropdown>
+    <div style="margin: 32px" />
+    <b>EventTime:</b><br />
+    <DatePicker TValue="DateTime?" Picker="@DatePickerType.Date" />
+    <div style="margin: 32px" />
+    <b>Event:</b><br />
+    <div style="margin: 32px" />
+    <Button Type="primary">Submit</Button>
+</div>
