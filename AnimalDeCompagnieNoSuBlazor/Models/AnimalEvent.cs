@@ -11,7 +11,7 @@ namespace AnimalDeCompagnieNoSuBlazor.Models
         [JsonPropertyName("event")]
         public string Event { get; set; }
         [JsonPropertyName("event_type")]
-        public string EventYype { get; set; }
+        public string EventType { get; set; }
         [JsonPropertyName("event_time")]
         public DateTime EventTime { get; set; }
     }

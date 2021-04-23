@@ -50,11 +50,11 @@
 			<Extra>
 				@if (addDataType == "photoes")
 						{
-	<Button Type="primary" @onclick="_=>open()">添加照片</Button>
+	<Button Type="primary" >添加照片</Button>
 				}
 						else
 						{
-	<Button Type="primary">添加事件</Button>
+	<Button Type="primary" @onclick="_=>addEvent()">添加事件</Button>
 				}
 			</Extra>
 			<CardTabs>
@@ -79,7 +79,6 @@
 									}
 								</Carousel>
 								}
-								@*<AnimalEventDrawer Style="position:absolute" Visible="visible" MaskClosable="true" />*@
 							</div>
 
 

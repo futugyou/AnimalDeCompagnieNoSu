@@ -1,32 +1,20 @@
-﻿@*@namespace AnimalDeCompagnieNoSuBlazor
-    @inherits AntDomComponentBase
+﻿@namespace AnimalDeCompagnieNoSuBlazor
+@inherits FeedbackComponent<string, AnimalEvent>
 
-
-    <Drawer Visible="Visible" MaskClosable="MaskClosable" Width="350" Placement="right" Style="z-index: 999;text-align:left;margin-right:5px;" OnClose="_onClose">
-        <b>EventType:</b><br />
-        <Dropdown>
-        </Dropdown>
-        <div style="margin: 32px" />
-        <b>EventTime:</b><br />
-        <DatePicker TValue="DateTime?" Picker="@DatePickerType.Date" />
-        <div style="margin: 32px" />
-        <b>Event:</b><br />
-        <div style="margin: 32px" />
-        <Button Type="primary">Submit</Button>
-    </Drawer>*@
-
-@namespace AnimalDeCompagnieNoSuBlazor
-@inherits FeedbackComponent<string, string>
-
-<div style="z-index: 999;text-align:left;margin-right:5px;" OnClick="OnClose">
+<div style="z-index: 999;text-align:left;margin-right:5px;">
     <b>EventType:</b><br />
-    <Dropdown>
-    </Dropdown>
+    <Select DataSource="@_eventItems"
+            ValueName="Value"
+            DefaultActiveFirstOption="true"
+            LabelName="Text"
+            @bind-Value="AnimalEvent.EventType">
+    </Select>
     <div style="margin: 32px" />
     <b>EventTime:</b><br />
-    <DatePicker TValue="DateTime?" Picker="@DatePickerType.Date" />
+    <DatePicker TValue="DateTime" Picker="@DatePickerType.Date" DefaultValue="DateTime.Now" Format="yyyy/MM/dd" @bind-Value="AnimalEvent.EventTime" />
     <div style="margin: 32px" />
     <b>Event:</b><br />
+    <TextArea Placeholder="Autosize height based on content lines" AutoSize="true"   @bind-Value="AnimalEvent.Event" />
     <div style="margin: 32px" />
-    <Button Type="primary">Submit</Button>
+    <Button Type="primary" OnClick="AddNewEvent">Submit</Button>
 </div>

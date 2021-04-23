@@ -29,17 +29,18 @@ namespace AnimalDeCompagnieNoSuBlazor.Pages.Animal
         private IOptionsMonitor<AnimalCenter> optionsMonitor { get; set; }
 
         bool visible = false;
-        private async Task open()
+        private async Task addEvent()
         {
             this.visible = true;
             var options = new DrawerOptions()
             {
-                Title = "Component",
+                Title = "AddNewEvent",
+                MaskClosable = false,
                 Width = 350,
             };
 
-            var drawerRef = await DrawerService.CreateAsync<AnimalEventDrawer, string, string>(options, "");
-
+            var drawerRef = await DrawerService.CreateAsync<AnimalEventDrawer, string, AnimalEvent>(options, null);
+           
             drawerRef.OnClosed = async result =>
             {
                 Console.WriteLine("OnAfterClosed:" + result);
