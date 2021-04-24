@@ -1,4 +1,5 @@
-﻿using Adoption.Infrastruct.Data;
+﻿using Adoption.Application;
+using Adoption.Infrastruct.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +26,7 @@ namespace Adoption
         typeof(AbpAspNetCoreModule),
         typeof(AbpSwashbuckleModule),
         typeof(AbpAutofacModule),
-        typeof(AdoptionInfrastructDataModule))]
+        typeof(AdoptionApplicationModule))]
     public class AdoptionWebModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
