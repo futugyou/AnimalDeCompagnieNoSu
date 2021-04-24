@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Adoption
 {
     public static class InitializeContext
     {
-        public static IWebHost InitializeDbContexts(this IWebHost host)
+        public static IHost InitializeDbContexts(this IHost host)
         {
             using (var scope = host.Services.CreateScope())
             {

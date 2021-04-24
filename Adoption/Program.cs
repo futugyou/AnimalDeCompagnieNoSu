@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace Adoption
 {
@@ -7,16 +8,20 @@ namespace Adoption
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args)
+            CreateHostBuilder(args)
             .Build()
             .InitializeDbContexts()
             .Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            var builder = WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+            var builder = Host.CreateDefaultBuilder(args)
+             .ConfigureWebHostDefaults(webBuilder =>
+             {
+                 webBuilder.UseStartup<Startup>();
+             })
+             .UseAutofac();
             return builder;
         }
     }

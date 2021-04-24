@@ -8,6 +8,7 @@ using Steeltoe.Connector.PostgreSql.EFCore;
 using Steeltoe.Connector.RabbitMQ;
 using Steeltoe.CircuitBreaker.Hystrix;
 using Steeltoe.Connector.Redis;
+using Microsoft.Extensions.Logging;
 
 namespace Adoption
 {
@@ -23,32 +24,13 @@ namespace Adoption
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRabbitMQConnection(Configuration);
-            // Add the Redis distributed cache.
-            // We are using the Steeltoe Redis Connector to pickup the CloudFoundry
-            // Redis Service binding and use it to configure the underlying RedisCache
-            // This adds a IDistributedCache to the container
-            services.AddDistributedRedisCache(Configuration);
-            // This works like the above, but adds a IConnectionMultiplexer to the container
-            // services.AddRedisConnectionMultiplexer(Configuration);
-            services.AddMongoClient(Configuration);
-            services.AddDbContext<TestContext>(options => options.UseNpgsql(Configuration));
-            services.AddControllers();
+            services.AddApplication<AdoptionWebModule>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.InitializeApplication();
         }
     }
 }
