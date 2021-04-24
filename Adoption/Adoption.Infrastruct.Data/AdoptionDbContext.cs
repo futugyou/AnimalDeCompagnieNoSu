@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Adoption.Domain.AnimalInfo;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Adoption.Infrastruct.Data
     [ConnectionStringName("Default")]
     public class AdoptionDbContext : AbpDbContext<AdoptionDbContext>
     {
+        public DbSet<Animals> Animals { get; set; }
         public AdoptionDbContext(DbContextOptions<AdoptionDbContext> options) : base(options)
         {
 

@@ -32,7 +32,7 @@ namespace Adoption
         {
             var services = context.Services;
             var configuration = context.Services.GetConfiguration();
-            services.AddRabbitMQConnection(configuration);
+            //services.AddRabbitMQConnection(configuration);
             // Add the Redis distributed cache.
             // We are using the Steeltoe Redis Connector to pickup the CloudFoundry
             // Redis Service binding and use it to configure the underlying RedisCache
@@ -40,8 +40,8 @@ namespace Adoption
             // services.AddDistributedRedisCache(configuration);
             // This works like the above, but adds a IConnectionMultiplexer to the container
             // services.AddRedisConnectionMultiplexer(configuration);
-            services.AddMongoClient(configuration);
-            services.AddDbContext<TestContext>(options => options.UseNpgsql(configuration));
+            //services.AddMongoClient(configuration);
+            //services.AddDbContext<TestContext>(options => options.UseNpgsql(configuration));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

@@ -3,4 +3,5 @@
 3. override ConfigureServices and OnApplicationInitialization
 4. move code from startup to AdoptionWebModule
 5. fill ConfigureServices and Configure in startup
-6. Install-Package Volo.Abp.Autofa and Volo.Abp.Swashbuckle
+6. Install-Package Volo.Abp.Autofac and Volo.Abp.Swashbuckle
+7. Install-Package Microsoft.EntityFrameworkCore.Design
