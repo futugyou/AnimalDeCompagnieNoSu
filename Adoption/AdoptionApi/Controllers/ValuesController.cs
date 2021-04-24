@@ -11,17 +11,25 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Threading;
+using Adoption.Infrastruct.Data;
+
 namespace Adoption.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly AdoptionDbContext adoptionDbContext;
+
+        public ValuesController(AdoptionDbContext adoptionDbContext)
+        {
+            this.adoptionDbContext = adoptionDbContext;
+        }
         [HttpGet]
-public ActionResult<string> Get()
-{
-    return "value";
-}
+        public ActionResult<string> Get()
+        {
+            return "value";
+        }
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)

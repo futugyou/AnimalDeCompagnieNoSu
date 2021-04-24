@@ -6,11 +6,13 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Adoption.csproj", "."]
-RUN dotnet restore "./Adoption.csproj"
+COPY "Adoption.sln" "Adoption.sln"
+COPY ["AdoptionApi/Adoption.csproj", "AdoptionApi/"]
+COPY ["Adoption.Infrastruct.Data/Adoption.Infrastruct.Data.csproj", "Adoption.Infrastruct.Data/"]
+RUN dotnet restore "Adoption.sln"
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "Adoption.csproj" -c Release -o /app/build
+WORKDIR "/src/AdoptionApi"
+#RUN dotnet build "Adoption.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "Adoption.csproj" -c Release -o /app/publish

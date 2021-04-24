@@ -6,3 +6,6 @@
 AnimalCenter/target
 AnimalCenter/fileupload
 */.env
+*/*/.vs/
+*/*/bin/
+*/*/obj/

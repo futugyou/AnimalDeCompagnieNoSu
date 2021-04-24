@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Adoption.Infrastruct.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,11 @@ using Volo.Abp.Swashbuckle;
 
 namespace Adoption
 {
-    [DependsOn(typeof(AbpAspNetCoreModule), typeof(AbpSwashbuckleModule), typeof(AbpAutofacModule))]
+    [DependsOn(
+        typeof(AbpAspNetCoreModule),
+        typeof(AbpSwashbuckleModule),
+        typeof(AbpAutofacModule),
+        typeof(AdoptionInfrastructDataModule))]
     public class AdoptionWebModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)

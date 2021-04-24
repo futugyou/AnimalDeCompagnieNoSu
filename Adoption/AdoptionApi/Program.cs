@@ -10,7 +10,7 @@ namespace Adoption
         {
             CreateHostBuilder(args)
             .Build()
-            .InitializeDbContexts()
+            //.InitializeDbContexts()
             .Run();
         }
 
