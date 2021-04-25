@@ -12,10 +12,13 @@ namespace Adoption.Infrastruct.Data
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var servers = context.Services;
-            servers.AddAbpDbContext<AdoptionDbContext>(builder => builder.AddDefaultRepositories(true));
-            Configure<AbpDbContextOptions>(opt =>
+            servers.AddAbpDbContext<AdoptionDbContext>(options =>
             {
-                opt.UseMySQL();
+                options.AddDefaultRepositories(true);
+            });
+            Configure<AbpDbContextOptions>(options =>
+            {
+                options.UseMySQL();
             });
         }
 
