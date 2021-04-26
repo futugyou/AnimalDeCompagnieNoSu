@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
-namespace Adoption
+namespace Adoption.Host
 {
     public class SampleData
     {

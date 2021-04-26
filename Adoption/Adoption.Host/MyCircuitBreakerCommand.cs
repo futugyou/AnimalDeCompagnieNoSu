@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Steeltoe.CircuitBreaker.Hystrix;
 
-namespace Adoption
+namespace Adoption.Host
 {
     public class MyCircuitBreakerCommand : HystrixCommand<string>
     {

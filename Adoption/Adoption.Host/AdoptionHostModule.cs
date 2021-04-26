@@ -20,14 +20,14 @@ using Volo.Abp.Autofac;
 using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
 
-namespace Adoption
+namespace Adoption.Host
 {
     [DependsOn(
         typeof(AbpAspNetCoreModule),
         typeof(AbpSwashbuckleModule),
         typeof(AbpAutofacModule),
         typeof(AdoptionApplicationModule))]
-    public class AdoptionWebModule : AbpModule
+    public class AdoptionHostModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {

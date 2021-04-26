@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Adoption
+namespace Adoption.Host
 {
     public static class InitializeContext
     {

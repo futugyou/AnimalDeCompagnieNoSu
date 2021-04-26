@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Adoption
+namespace Adoption.Host
 {
     public class Program
     {
@@ -16,12 +15,13 @@ namespace Adoption
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            var builder = Host.CreateDefaultBuilder(args)
-             .ConfigureWebHostDefaults(webBuilder =>
-             {
-                 webBuilder.UseStartup<Startup>();
-             })
-             .UseAutofac();
+            var builder = Microsoft.Extensions.Hosting.Host
+                .CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                })
+                .UseAutofac();
             return builder;
         }
     }

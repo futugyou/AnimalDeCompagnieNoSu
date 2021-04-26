@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Adoption.Domain;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using Volo.Abp.AspNetCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -6,7 +7,9 @@ using Volo.Abp.Modularity;
 
 namespace Adoption.Infrastruct.Data
 {
-    [DependsOn(typeof(AbpEntityFrameworkCoreModule))]
+    [DependsOn(
+        typeof(AbpEntityFrameworkCoreModule),
+        typeof(AdoptionDomainModule))]
     public class AdoptionInfrastructDataModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)

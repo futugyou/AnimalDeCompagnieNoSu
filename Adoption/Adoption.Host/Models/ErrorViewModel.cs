@@ -1,6 +1,6 @@
 using System;
 
-namespace Adoption
+namespace Adoption.Host
 {
     public class ErrorViewModel
     {

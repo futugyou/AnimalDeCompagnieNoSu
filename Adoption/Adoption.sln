@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31019.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adoption", "AdoptionApi\Adoption.csproj", "{2E548ECF-2964-442A-B37E-8532A4F423C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adoption.Host", "Adoption.Host\Adoption.Host.csproj", "{2E548ECF-2964-442A-B37E-8532A4F423C4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adoption.Infrastruct.Data", "Adoption.Infrastruct.Data\Adoption.Infrastruct.Data.csproj", "{2EE9DEBB-DCFA-4D5B-A96F-3497180D2B6E}"
 EndProject
@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adoption.Domain", "Adoption
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adoption.Application", "Adoption.Application\Adoption.Application.csproj", "{2CB31AA7-161A-4787-B296-C011C3919A75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adoption.Application.Contracts", "Adoption.Application.Contracts\Adoption.Application.Contracts.csproj", "{41594373-C826-4EE7-AAB0-9EA5D2DF66B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adoption.Application.Contracts", "Adoption.Application.Contracts\Adoption.Application.Contracts.csproj", "{41594373-C826-4EE7-AAB0-9EA5D2DF66B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7F82C1DB-E058-4BB0-AFBE-5BCAE6E56683}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
