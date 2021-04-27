@@ -45,3 +45,5 @@ docker run -p 127.0.0.1:3306:3306  --name  mariadb -e MYSQL_ROOT_PASSWORD=123456
 add-migration init -Context AdoptionDbContext
 update-database -Context AdoptionDbContext
 ```
+3. debug in docker 
+https://code.visualstudio.com/docs/containers/quickstart-aspnet-core

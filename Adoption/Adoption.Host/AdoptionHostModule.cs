@@ -1,24 +1,17 @@
 ﻿using Adoption.Application;
-using Adoption.Infrastruct.Data;
+using Adoption.Application.Contracts;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Steeltoe.Connector.MongoDb;
-using Steeltoe.Connector.PostgreSql.EFCore;
-using Steeltoe.Connector.RabbitMQ;
-using Steeltoe.Connector.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 using Volo.Abp;
 using Volo.Abp.AspNetCore;
 using Volo.Abp.Autofac;
+using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
+using Volo.Abp.VirtualFileSystem;
 
 namespace Adoption.Host
 {
@@ -43,7 +36,20 @@ namespace Adoption.Host
             // services.AddRedisConnectionMultiplexer(configuration);
             //services.AddMongoClient(configuration);
             //services.AddDbContext<TestContext>(options => options.UseNpgsql(configuration));
+            Configure<AbpLocalizationOptions>(options =>
+            {
+                options.Languages.Add(new LanguageInfo("en", "en", "English"));
+                options.Languages.Add(new LanguageInfo("zh", "zh", "Chinese"));
+            });
+            var hostingEnvironment = context.Services.GetHostingEnvironment();
+            Configure<AbpVirtualFileSystemOptions>(options =>
+            {
+                options.FileSets.ReplaceEmbeddedByPhysical<AdoptionApplicationContractsMdoule>(
+                    Path.Combine(hostingEnvironment.ContentRootPath,
+                        $"..{Path.DirectorySeparatorChar}Adoption.Application.Contracts"));
+            });
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AdoptionCenter", Version = "v1" });
@@ -59,9 +65,9 @@ namespace Adoption.Host
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AdoptionCenter v1"));
             }
-
+            app.UseAbpRequestLocalization();
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseAuthorization();
