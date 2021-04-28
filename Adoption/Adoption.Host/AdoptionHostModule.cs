@@ -25,36 +25,47 @@ namespace Adoption.Host
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var services = context.Services;
-            var configuration = context.Services.GetConfiguration();
-            //services.AddRabbitMQConnection(configuration);
-            // Add the Redis distributed cache.
-            // We are using the Steeltoe Redis Connector to pickup the CloudFoundry
-            // Redis Service binding and use it to configure the underlying RedisCache
-            // This adds a IDistributedCache to the container
-            // services.AddDistributedRedisCache(configuration);
-            // This works like the above, but adds a IConnectionMultiplexer to the container
-            // services.AddRedisConnectionMultiplexer(configuration);
-            //services.AddMongoClient(configuration);
-            //services.AddDbContext<TestContext>(options => options.UseNpgsql(configuration));
+            var _configuration = context.Services.GetConfiguration();
+            ConfigureLocalization();
+            ConfigureVirtualFileSystem(context);
+            services.AddControllers();
+            ConfigureSwaggerServices(context);
+        }
+
+        private void ConfigureLocalization()
+        {
             Configure<AbpLocalizationOptions>(options =>
             {
                 options.Languages.Add(new LanguageInfo("en", "en", "English"));
                 options.Languages.Add(new LanguageInfo("zh", "zh", "Chinese"));
             });
+        }
+
+        private void ConfigureVirtualFileSystem(ServiceConfigurationContext context)
+        {
             var hostingEnvironment = context.Services.GetHostingEnvironment();
-            Configure<AbpVirtualFileSystemOptions>(options =>
+
+            if (hostingEnvironment.IsDevelopment())
             {
-                options.FileSets.ReplaceEmbeddedByPhysical<AdoptionApplicationContractsMdoule>(
+                Configure<AbpVirtualFileSystemOptions>(options =>
+                {
+                    options.FileSets.ReplaceEmbeddedByPhysical<AdoptionApplicationContractsMdoule>(
                     Path.Combine(hostingEnvironment.ContentRootPath,
                         $"..{Path.DirectorySeparatorChar}Adoption.Application.Contracts"));
-            });
-            services.AddControllers();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AdoptionCenter", Version = "v1" });
-            });
+                });
+            }
         }
+
+        private static void ConfigureSwaggerServices(ServiceConfigurationContext context)
+        {
+            context.Services.AddSwaggerGen(
+                options =>
+                {
+                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "AdoptionCenter", Version = "v1" });
+                    options.DocInclusionPredicate((docName, description) => true);
+                });
+        }
+
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
             var app = context.GetApplicationBuilder();
@@ -62,15 +73,18 @@ namespace Adoption.Host
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AdoptionCenter v1"));
             }
             app.UseAbpRequestLocalization();
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseRouting();
 
+            app.UseStaticFiles();
+            //app.UseVirtualFiles();
+
+            app.UseRouting();
             app.UseAuthorization();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AdoptionCenter v1"));
 
             app.UseEndpoints(endpoints =>
             {

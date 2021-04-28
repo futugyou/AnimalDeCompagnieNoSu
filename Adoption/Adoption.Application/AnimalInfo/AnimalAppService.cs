@@ -1,5 +1,6 @@
 ﻿using Adoption.Application.Contracts.AnimalInfo;
 using Adoption.Application.Contracts.Localization;
+using Adoption.Application.Contracts.Localization.AnimalInfo;
 using Adoption.Domain.AnimalInfo;
 using Microsoft.Extensions.Localization;
 using System;
@@ -16,12 +17,11 @@ namespace Adoption.Application.AnimalInfo
     public class AnimalAppService : ApplicationService, IAnimalAppService
     {
         private readonly IRepository<Animals> animalRepository;
-        private readonly IStringLocalizer<AnimalInfoResource> localizer;
 
-        public AnimalAppService(IRepository<Animals> animalRepository, IStringLocalizer<AnimalInfoResource> localizer)
+        public AnimalAppService(IRepository<Animals> animalRepository)
         {
             this.animalRepository = animalRepository;
-            this.localizer = localizer;
+            LocalizationResource = typeof(AnimalInfoResource);
         }
 
         public async Task<List<AnimalDto>> GetAllAnimals()
@@ -29,7 +29,7 @@ namespace Adoption.Application.AnimalInfo
             var animals = await animalRepository.GetListAsync();
             if (animals.Count == 0)
             {
-                throw new UserFriendlyException(localizer["nodata"]);
+                throw new UserFriendlyException(L["nodata"]);
             }
             var animalDtos = ObjectMapper.Map<List<Animals>, List<AnimalDto>>(animals);
             return animalDtos;

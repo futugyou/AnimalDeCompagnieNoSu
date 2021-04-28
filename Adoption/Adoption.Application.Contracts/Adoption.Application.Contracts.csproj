@@ -2,10 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <PropertyConfig>
+      <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+    </PropertyConfig>
   </PropertyGroup>
-
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\AnimalInfo\*.json" />
+    <Content Remove="Localization\AnimalInfo\*.json" />
+  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="4.3.0" />
   </ItemGroup>
-
 </Project>

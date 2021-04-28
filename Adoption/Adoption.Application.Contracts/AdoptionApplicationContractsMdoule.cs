@@ -1,4 +1,5 @@
 ﻿using Adoption.Application.Contracts.Localization;
+using Adoption.Application.Contracts.Localization.AnimalInfo;
 using System;
 using Volo.Abp.Localization;
 using Volo.Abp.Localization.ExceptionHandling;
@@ -12,7 +13,6 @@ namespace Adoption.Application.Contracts
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
                 options.FileSets.AddEmbedded<AdoptionApplicationContractsMdoule>();
@@ -20,8 +20,12 @@ namespace Adoption.Application.Contracts
 
             Configure<AbpLocalizationOptions>(options =>
             {
+                options.Resources
+                    .Add<AnimalInfoResource>("en")
+                    //.AddBaseTypes(typeof(AbpValidationResource))
+                    .AddVirtualJson("/Localization/AnimalInfo");
+
                 options.DefaultResourceType = typeof(AnimalInfoResource);
-                options.Resources.Add<AnimalInfoResource>("en").AddVirtualJson("/Localization/AnimalInfo");
             });
 
             Configure<AbpExceptionLocalizationOptions>(options =>
