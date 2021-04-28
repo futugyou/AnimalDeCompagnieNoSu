@@ -35,6 +35,28 @@
 6. Configure<AbpAutoMapperOptions> in order to load all AutoMapperProfile in this module.
 7. Add AdoptionApplicationModule DependsOnAttribute to AdoptionHostModule.
 
+###### Localization and VirtualFiles
+1. Add localization file to project.
+2. Add typeof(AbpLocalizationModule) (include AbpVirtualFileSystemModule) to Module.
+3. Configure AbpVirtualFileSystemOptions/AbpLocalizationOptions/AbpExceptionLocalizationOptions.
+4. Edit csproj like this:
+```
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\**\*.json" />
+    <Content Remove="Localization\**\*.json" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.5" />
+  </ItemGroup>
+```
+5. Add Configure AbpLocalizationOptions and app.UseAbpRequestLocalization()/app.UseStaticFiles() to Host Module.
+
+###### FluentValidation
+1. Install-Package Volo.Abp.FluentValidation to Adoption.Application.Contracts.
+2. Add Validator impl AbstractValidator<T> ,then abp runtime will identify Validator automatically. 
+
 ###### Others
 1. mysql
 ```
