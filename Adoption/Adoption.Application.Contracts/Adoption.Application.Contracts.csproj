@@ -13,5 +13,6 @@
   
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="4.3.0" />
+    <PackageReference Include="Volo.Abp.FluentValidation" Version="4.3.0" />
   </ItemGroup>
 </Project>

@@ -14,6 +14,7 @@ namespace Adoption.Application
         public AdoptionApplicationAutoMapperProfile()
         {
             CreateMap<Animals, AnimalDto>();
+            CreateMap<CreateAnimalDto, Animals>();
         }
     }
 }

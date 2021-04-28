@@ -24,6 +24,13 @@ namespace Adoption.Application.AnimalInfo
             LocalizationResource = typeof(AnimalInfoResource);
         }
 
+        public async Task<bool> CreateAnimals(CreateAnimalDto animalDto)
+        {
+            var animal = ObjectMapper.Map<CreateAnimalDto, Animals>(animalDto);
+            var result = await animalRepository.InsertAsync(animal, true);
+            return result.Id > 0;
+        }
+
         public async Task<List<AnimalDto>> GetAllAnimals()
         {
             var animals = await animalRepository.GetListAsync();

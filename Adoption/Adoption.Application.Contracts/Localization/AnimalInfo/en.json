@@ -1,6 +1,7 @@
 ﻿{
   "culture": "en",
   "texts": {
-    "nodata": "NoData!!"
+    "nodata": "no data!",
+    "needname": "name can not be null!"
   }
 }

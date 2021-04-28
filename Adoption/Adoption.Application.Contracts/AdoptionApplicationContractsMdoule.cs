@@ -1,6 +1,7 @@
 ﻿using Adoption.Application.Contracts.Localization;
 using Adoption.Application.Contracts.Localization.AnimalInfo;
 using System;
+using Volo.Abp.FluentValidation;
 using Volo.Abp.Localization;
 using Volo.Abp.Localization.ExceptionHandling;
 using Volo.Abp.Modularity;
@@ -8,7 +9,9 @@ using Volo.Abp.VirtualFileSystem;
 
 namespace Adoption.Application.Contracts
 {
-    [DependsOn(typeof(AbpLocalizationModule))]
+    [DependsOn(
+        typeof(AbpLocalizationModule),
+        typeof(AbpFluentValidationModule))]
     public class AdoptionApplicationContractsMdoule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)

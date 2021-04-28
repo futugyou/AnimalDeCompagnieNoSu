@@ -22,5 +22,11 @@ namespace Adoption.Host.Controllers
         {
             return await animalAppService.GetAllAnimals();
         }
+
+        [HttpPost]
+        public async Task<bool> Post(CreateAnimalDto createAnimalDto)
+        {
+            return await animalAppService.CreateAnimals(createAnimalDto);
+        }
     }
 }

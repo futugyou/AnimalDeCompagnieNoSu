@@ -11,5 +11,6 @@ namespace Adoption.Application.AnimalInfo
     public interface IAnimalAppService : IApplicationService
     {
         Task<List<AnimalDto>> GetAllAnimals();
+        Task<bool> CreateAnimals(CreateAnimalDto animalDto);
     }
 }
