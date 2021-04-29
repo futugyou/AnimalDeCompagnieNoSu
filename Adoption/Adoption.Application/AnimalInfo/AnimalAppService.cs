@@ -11,16 +11,19 @@ using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.EventBus.Distributed;
 
 namespace Adoption.Application.AnimalInfo
 {
     public class AnimalAppService : ApplicationService, IAnimalAppService
     {
         private readonly IRepository<Animals> animalRepository;
+        private readonly IDistributedEventBus distributedEventBus;
 
-        public AnimalAppService(IRepository<Animals> animalRepository)
+        public AnimalAppService(IRepository<Animals> animalRepository, IDistributedEventBus distributedEventBus)
         {
             this.animalRepository = animalRepository;
+            this.distributedEventBus = distributedEventBus;
             LocalizationResource = typeof(AnimalInfoResource);
         }
 
@@ -28,6 +31,7 @@ namespace Adoption.Application.AnimalInfo
         {
             var animal = ObjectMapper.Map<CreateAnimalDto, Animals>(animalDto);
             var result = await animalRepository.InsertAsync(animal, true);
+            await distributedEventBus.PublishAsync(new AnimalCreatedEto { CardId=animalDto.CardId,Name=animalDto.Name});
             return result.Id > 0;
         }
 

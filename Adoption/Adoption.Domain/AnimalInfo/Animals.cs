@@ -11,5 +11,10 @@ namespace Adoption.Domain.AnimalInfo
     {
         public string CardId { get; set; }
         public string Name { get; set; }
+        public void AnimalCreateed()
+        {
+            // use in AuditedAggregateRoot<T>  not Entity<T>
+            //AddDistributedEvent(new AnimalCreatedEto { CardId = CardId, Name = Name });
+        }
     }
 }
