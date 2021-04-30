@@ -4,7 +4,7 @@ using System;
 using Volo.Abp.Application;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.BackgroundJobs.RabbitMQ;
-using Volo.Abp.EventBus.Kafka;
+using Volo.Abp.EventBus.RabbitMq;
 using Volo.Abp.Modularity;
 
 namespace Adoption.Application
@@ -14,22 +14,10 @@ namespace Adoption.Application
         typeof(AbpAutoMapperModule),
         typeof(AdoptionInfrastructDataModule),
         typeof(AdoptionApplicationContractsMdoule),
-        typeof(AbpEventBusKafkaModule),
+        typeof(AbpEventBusRabbitMqModule),
         typeof(AbpBackgroundJobsRabbitMqModule))]
     public class AdoptionApplicationModule : AbpModule
     {
-
-        //public override void PreConfigureServices(ServiceConfigurationContext context)
-        //{
-        //    PreConfigure<AbpRebusEventBusOptions>(options =>
-        //    {
-        //        options.InputQueueName = "animal.eventbus";
-        //        options.Configurer = rebusConfigurer =>
-        //        {
-        //            rebusConfigurer.Transport(t => t.UseRabbitMq("amqp://localhost", "animal.eventbus"));
-        //        };
-        //    });
-        //}
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             Configure<AbpAutoMapperOptions>(options =>

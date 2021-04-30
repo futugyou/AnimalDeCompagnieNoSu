@@ -1,12 +1,8 @@
-﻿using Adoption.Application.Contracts.AnimalInfo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 
-namespace Adoption.Application.AnimalInfo
+namespace Adoption.Application.Contracts.AnimalInfo
 {
     public interface IAnimalAppService : IApplicationService
     {

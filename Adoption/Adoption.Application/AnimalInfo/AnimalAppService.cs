@@ -1,13 +1,8 @@
 ﻿using Adoption.Application.Contracts.AnimalInfo;
-using Adoption.Application.Contracts.Localization;
 using Adoption.Application.Contracts.Localization.AnimalInfo;
 using Adoption.Application.EmailSender;
 using Adoption.Domain.AnimalInfo;
-using Microsoft.Extensions.Localization;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
