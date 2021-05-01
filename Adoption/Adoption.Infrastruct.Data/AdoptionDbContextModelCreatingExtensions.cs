@@ -1,5 +1,5 @@
 ﻿using Adoption.Domain;
-using Adoption.Domain.AnimalInfo;
+using Adoption.Domain.Adoption; 
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,13 +17,13 @@ namespace Adoption.Infrastruct.Data
         {
             Check.NotNull(builder, nameof(builder));
 
-            builder.Entity<Animals>(b =>
-            {
-                b.ToTable(AdoptionConsts.DbTablePrefix + "animals", AdoptionConsts.DbSchema);
-                b.ConfigureByConvention();
-                b.Property(x => x.Name).IsRequired().HasMaxLength(128);
-                b.Property(x => x.CardId).IsRequired().HasMaxLength(128);
-            });
+            //builder.Entity<Animal>(b =>
+            //{
+            //    b.ToTable(AdoptionConsts.DbTablePrefix + "animals", AdoptionConsts.DbSchema);
+            //    b.ConfigureByConvention();
+            //    b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+            //    b.Property(x => x.CardId).IsRequired().HasMaxLength(128);
+            //});
         }
     }
 }

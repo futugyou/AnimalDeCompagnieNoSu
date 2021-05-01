@@ -1,4 +1,5 @@
 ﻿using Adoption.Application.Contracts.AnimalInfo;
+using Adoption.Domain.Adoption;
 using Adoption.Domain.AnimalInfo;
 using AutoMapper;
 using System;
@@ -13,8 +14,8 @@ namespace Adoption.Application
     {
         public AdoptionApplicationAutoMapperProfile()
         {
-            CreateMap<Animals, AnimalDto>();
-            CreateMap<CreateAnimalDto, Animals>();
+            CreateMap<Animal, AnimalDto>();
+            CreateMap<CreateAnimalDto, Animal>();
         }
     }
 }

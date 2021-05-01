@@ -1,6 +1,7 @@
 ﻿using Adoption.Application.Contracts.AnimalInfo;
 using Adoption.Application.Contracts.Localization.AnimalInfo;
 using Adoption.Application.EmailSender;
+using Adoption.Domain.Adoption;
 using Adoption.Domain.AnimalInfo;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,12 +15,12 @@ namespace Adoption.Application.AnimalInfo
 {
     public class AnimalAppService : ApplicationService, IAnimalAppService
     {
-        private readonly IRepository<Animals> animalRepository;
+        private readonly IRepository<Animal> animalRepository;
         private readonly IDistributedEventBus distributedEventBus;
         private readonly IBackgroundJobManager backgroundJobManager;
 
         public AnimalAppService(
-            IRepository<Animals> animalRepository,
+            IRepository<Animal> animalRepository,
             IDistributedEventBus distributedEventBus,
             IBackgroundJobManager backgroundJobManager)
         {
@@ -31,7 +32,7 @@ namespace Adoption.Application.AnimalInfo
 
         public async Task<bool> CreateAnimals(CreateAnimalDto animalDto)
         {
-            var animal = ObjectMapper.Map<CreateAnimalDto, Animals>(animalDto);
+            var animal = ObjectMapper.Map<CreateAnimalDto, Animal>(animalDto);
             var result = await animalRepository.InsertAsync(animal, true);
             await distributedEventBus.PublishAsync(new AnimalCreatedEto { CardId = animalDto.CardId, Name = animalDto.Name });
             var _result = await backgroundJobManager.EnqueueAsync(
@@ -52,7 +53,7 @@ namespace Adoption.Application.AnimalInfo
             {
                 throw new UserFriendlyException(L["nodata"]);
             }
-            var animalDtos = ObjectMapper.Map<List<Animals>, List<AnimalDto>>(animals);
+            var animalDtos = ObjectMapper.Map<List<Animal>, List<AnimalDto>>(animals);
             return animalDtos;
         }
     }
