@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.Specifications;
 
 namespace Adoption.Infrastruct.Data.Adoption
 {
@@ -21,6 +22,11 @@ namespace Adoption.Infrastruct.Data.Adoption
         public async Task<List<AdoptionInfo>> FindByAdopterNameAsync(string name)
         {
             return await GetListAsync(p => p.Adopter.Name == name, true);
+        }
+
+        public async Task<List<AdoptionInfo>> GetAdoptionInfoAsync(ISpecification<AdoptionInfo> spec)
+        {
+            return await GetListAsync(spec.ToExpression(), true);
         }
     }
 }
