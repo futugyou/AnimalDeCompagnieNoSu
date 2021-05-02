@@ -16,7 +16,7 @@ namespace Adoption.Infrastruct.Data
         public static void ConfigureAdoption(this ModelBuilder builder)
         {
             Check.NotNull(builder, nameof(builder));
-
+            builder.Entity<Adopter>().OwnsOne(p => p.Address);
             //builder.Entity<Animal>(b =>
             //{
             //    b.ToTable(AdoptionConsts.DbTablePrefix + "animals", AdoptionConsts.DbSchema);

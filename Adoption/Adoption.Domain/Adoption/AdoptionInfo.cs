@@ -1,4 +1,5 @@
 ﻿using Adoption.Domain.AnimalInfo;
+using Adoption.Domain.Shared.Adoption;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,6 @@ namespace Adoption.Domain.Adoption
         public virtual Animal Animal { get; private set; }
         public virtual Adopter Adopter { get; private set; }
         public string AdoptionReasons { get; private set; }
-        public string AdoptionStatus { get; private set; }
+        public AdoptionStatus AdoptionStatus { get; private set; }
     }
 }
