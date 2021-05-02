@@ -11,10 +11,11 @@ namespace Adoption.Domain.Adoption
     public class AdoptionInfo : AggregateRoot<Guid>
     {
         protected AdoptionInfo() { }
-         
 
-        public virtual Animal Animal { get; set; }
-        public virtual Adopter Adopter { get; set; }
-        public string AdoptionReasons { get; set; }
+
+        public virtual Animal Animal { get; private set; }
+        public virtual Adopter Adopter { get; private set; }
+        public string AdoptionReasons { get; private set; }
+        public string AdoptionStatus { get; private set; }
     }
 }

@@ -9,18 +9,18 @@ namespace Adoption.Domain.Adoption
 
         }
 
-        public Adopter(string name, string gender, string address, string phone, string idnumber)
+        public Adopter(string name, string gender, string phone, string idnumber, Address address)
         {
             Name = name;
             Gender = gender;
-            Address = address;
             Phone = phone;
             IdNumber = idnumber;
+            Address = address;
         }
         public string Name { get; private set; }
         public string Gender { get; private set; }
-        public string Address { get; private set; }
         public string Phone { get; private set; }
         public string IdNumber { get; private set; }
+        public Address Address { get; private set; }
     }
 }
