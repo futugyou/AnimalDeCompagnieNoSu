@@ -2,7 +2,7 @@
 using Adoption.Application.Contracts.Localization.AnimalInfo;
 using Adoption.Application.EmailSender;
 using Adoption.Domain.Adoption;
-using Adoption.Domain.AnimalInfo;
+using Adoption.Domain.Adoption.DomainEvent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp;

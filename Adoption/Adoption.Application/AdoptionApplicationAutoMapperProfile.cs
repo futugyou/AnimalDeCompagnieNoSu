@@ -1,6 +1,5 @@
 ﻿using Adoption.Application.Contracts.AnimalInfo;
 using Adoption.Domain.Adoption;
-using Adoption.Domain.AnimalInfo;
 using AutoMapper;
 using System;
 using System.Collections.Generic;

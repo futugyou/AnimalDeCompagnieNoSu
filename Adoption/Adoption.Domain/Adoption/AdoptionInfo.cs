@@ -1,4 +1,4 @@
-﻿using Adoption.Domain.AnimalInfo;
+﻿using Adoption.Domain.Adoption.DomainEvent;
 using Adoption.Domain.Shared.Adoption;
 using System;
 using System.Collections.Generic;
@@ -13,10 +13,43 @@ namespace Adoption.Domain.Adoption
     {
         protected AdoptionInfo() { }
 
+        public AdoptionInfo(Animal animal, Adopter adopter, string adoptionReasons)
+        {
+            Animal = animal;
+            Adopter = adopter;
+            AdoptionReasons = adoptionReasons;
+            AdoptionStatus = AdoptionStatus.Auditing;
+        }
 
         public virtual Animal Animal { get; private set; }
         public virtual Adopter Adopter { get; private set; }
-        public string AdoptionReasons { get; private set; }
-        public AdoptionStatus AdoptionStatus { get; private set; }
+        public virtual string AdoptionReasons { get; private set; }
+        public virtual AdoptionStatus AdoptionStatus { get; private set; }
+        public virtual string AdoptionResult { get; private set; }
+        public void CancelAdoption(string cancelReason)
+        {
+            AdoptionStatus = AdoptionStatus.Cancel;
+            AdoptionResult = cancelReason;
+            AddDistributedEvent(new CancelAdoptionEto());
+        }
+        public void RejectAdoption(string rejectReason)
+        {
+            AdoptionStatus = AdoptionStatus.Reject;
+            AdoptionResult = rejectReason;
+        }
+        public void AuditedAdoption(string auditedReason)
+        {
+            AdoptionStatus = AdoptionStatus.Audited;
+            AdoptionResult = auditedReason;
+        }
+        public void CompleteAdoption()
+        {
+            if (AdoptionStatus != AdoptionStatus.Audited)
+            {
+                //TODO: ADD CustomException
+                throw new Exception("");
+            }
+            AdoptionStatus = AdoptionStatus.Complete;
+        }
     }
 }

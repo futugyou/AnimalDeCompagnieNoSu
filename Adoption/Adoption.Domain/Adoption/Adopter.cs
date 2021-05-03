@@ -17,10 +17,18 @@ namespace Adoption.Domain.Adoption
             IdNumber = idnumber;
             Address = address;
         }
-        public string Name { get; private set; }
-        public string Gender { get; private set; }
-        public string Phone { get; private set; }
-        public string IdNumber { get; private set; }
-        public Address Address { get; private set; }
+        public virtual string Name { get; private set; }
+        public virtual string Gender { get; private set; }
+        public virtual string Phone { get; private set; }
+        public virtual string IdNumber { get; private set; }
+        public virtual Address Address { get; private set; }
+        public void ChangeAdress(Address address)
+        {
+            Address = address;
+        }
+        public void ChangePhone(string phone)
+        {
+            Phone = phone;
+        }
     }
 }

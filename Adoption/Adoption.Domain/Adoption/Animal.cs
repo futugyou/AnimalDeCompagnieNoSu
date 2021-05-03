@@ -23,10 +23,10 @@ namespace Adoption.Domain.Adoption
             AnimalType = type;
             Name = name;
         }
-        public string CardId { get; private set; }
-        public DateTime Birthday { get; private set; }
-        public string Name { get; private set; }
-        public AnimalType AnimalType { get; private set; }
+        public virtual string CardId { get; private set; }
+        public virtual DateTime Birthday { get; private set; }
+        public virtual string Name { get; private set; }
+        public virtual AnimalType AnimalType { get; private set; }
         public void AnimalCreateed()
         {
             // use in AuditedAggregateRoot<T>  not Entity<T>
