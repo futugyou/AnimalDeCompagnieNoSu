@@ -36,11 +36,13 @@ namespace Adoption.Domain.Adoption
         {
             AdoptionStatus = AdoptionStatus.Reject;
             AdoptionResult = rejectReason;
+            AddDistributedEvent(new RejectAdoptionEto());
         }
         public void AuditedAdoption(string auditedReason)
         {
             AdoptionStatus = AdoptionStatus.Audited;
             AdoptionResult = auditedReason;
+            AddDistributedEvent(new AuditedAdoptionEto());
         }
         public void CompleteAdoption()
         {
@@ -50,6 +52,7 @@ namespace Adoption.Domain.Adoption
                 throw new Exception("");
             }
             AdoptionStatus = AdoptionStatus.Complete;
+            AddDistributedEvent(new CompleteAdoptionEto());
         }
     }
 }

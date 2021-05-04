@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +7,8 @@ using Volo.Abp.EventBus;
 
 namespace Adoption.Domain.Adoption.DomainEvent
 {
-    [EventName("adoption.domain.adoption.canceled")]
-    public class CancelAdoptionEto
+    [EventName("adoption.domain.adoption.audited")]
+    public class AuditedAdoptionEto
     {
     }
 }
