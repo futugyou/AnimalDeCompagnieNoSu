@@ -11,8 +11,8 @@ namespace Adoption.Domain.Shared.Adoption
         Submitted,
         Auditing,
         Audited,
-        Reject,
-        Cancel,
-        Complete,
+        Rejected,
+        Canceled,
+        Completed,
     }
 }

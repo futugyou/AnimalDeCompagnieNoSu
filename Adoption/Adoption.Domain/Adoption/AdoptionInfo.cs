@@ -26,32 +26,36 @@ namespace Adoption.Domain.Adoption
         public virtual string AdoptionReasons { get; private set; }
         public virtual AdoptionStatus AdoptionStatus { get; private set; }
         public virtual string AdoptionResult { get; private set; }
+
         public void CancelAdoption(string cancelReason)
         {
-            AdoptionStatus = AdoptionStatus.Cancel;
+            AdoptionStatus = AdoptionStatus.Canceled;
             AdoptionResult = cancelReason;
             AddDistributedEvent(new CancelAdoptionEto());
         }
+
         public void RejectAdoption(string rejectReason)
         {
-            AdoptionStatus = AdoptionStatus.Reject;
+            AdoptionStatus = AdoptionStatus.Rejected;
             AdoptionResult = rejectReason;
             AddDistributedEvent(new RejectAdoptionEto());
         }
+
         public void AuditedAdoption(string auditedReason)
         {
             AdoptionStatus = AdoptionStatus.Audited;
             AdoptionResult = auditedReason;
             AddDistributedEvent(new AuditedAdoptionEto());
         }
+
         public void CompleteAdoption()
         {
             if (AdoptionStatus != AdoptionStatus.Audited)
             {
                 //TODO: ADD CustomException
-                throw new Exception("");
+                throw new Exception("prev step not finish");
             }
-            AdoptionStatus = AdoptionStatus.Complete;
+            AdoptionStatus = AdoptionStatus.Completed;
             AddDistributedEvent(new CompleteAdoptionEto());
         }
     }

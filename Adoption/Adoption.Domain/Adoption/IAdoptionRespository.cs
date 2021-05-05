@@ -12,5 +12,6 @@ namespace Adoption.Domain.Adoption
     {
         Task<List<AdoptionInfo>> FindByAdopterNameAsync(string name);
         Task<List<AdoptionInfo>> GetAdoptionInfoAsync(ISpecification<AdoptionInfo> spec);
+        Task<List<AdoptionInfo>> FindByAnimalCardIdAsync(string cardId);
     }
 }
