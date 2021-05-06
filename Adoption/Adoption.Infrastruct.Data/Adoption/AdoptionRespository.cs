@@ -28,9 +28,9 @@ namespace Adoption.Infrastruct.Data.Adoption
         {
             return await GetListAsync(spec.ToExpression(), true);
         }
-        pbulic async Task<List<AdoptionInfo>> FindByAnimalCardIdAsync(string cardId)
+        public async Task<List<AdoptionInfo>> FindByAnimalCardIdAsync(string cardId)
         {
-            return  await GetListAsync(p => p.Animal.CardId == cardId, true);
+            return await GetListAsync(p => p.Animal.CardId == cardId, true);
         }
     }
 }

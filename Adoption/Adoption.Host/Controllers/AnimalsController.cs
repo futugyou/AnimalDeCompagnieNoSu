@@ -10,23 +10,23 @@ namespace Adoption.Host.Controllers
     [ApiController]
     public class AnimalsController : ControllerBase
     {
-        private readonly IAnimalAppService animalAppService;
+        private readonly IAnimalAppService _animalAppService;
 
         public AnimalsController(IAnimalAppService animalAppService)
         {
-            this.animalAppService = animalAppService;
+            _animalAppService = animalAppService;
         }
 
         [HttpGet]
         public async Task<List<AnimalDto>> Get()
         {
-            return await animalAppService.GetAllAnimals();
+            return await _animalAppService.GetAllAnimals();
         }
 
         [HttpPost]
         public async Task<bool> Post(CreateAnimalDto createAnimalDto)
         {
-            return await animalAppService.CreateAnimals(createAnimalDto);
+            return await _animalAppService.CreateAnimals(createAnimalDto);
         }
     }
 }

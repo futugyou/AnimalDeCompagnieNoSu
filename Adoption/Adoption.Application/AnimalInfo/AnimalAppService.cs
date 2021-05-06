@@ -15,27 +15,27 @@ namespace Adoption.Application.AnimalInfo
 {
     public class AnimalAppService : ApplicationService, IAnimalAppService
     {
-        private readonly IRepository<Animal> animalRepository;
-        private readonly IDistributedEventBus distributedEventBus;
-        private readonly IBackgroundJobManager backgroundJobManager;
+        private readonly IRepository<Animal> _animalRepository;
+        private readonly IDistributedEventBus _distributedEventBus;
+        private readonly IBackgroundJobManager _backgroundJobManager;
 
         public AnimalAppService(
             IRepository<Animal> animalRepository,
             IDistributedEventBus distributedEventBus,
             IBackgroundJobManager backgroundJobManager)
         {
-            this.animalRepository = animalRepository;
-            this.distributedEventBus = distributedEventBus;
-            this.backgroundJobManager = backgroundJobManager;
+            _animalRepository = animalRepository;
+            _distributedEventBus = distributedEventBus;
+            _backgroundJobManager = backgroundJobManager;
             LocalizationResource = typeof(AnimalInfoResource);
         }
 
         public async Task<bool> CreateAnimals(CreateAnimalDto animalDto)
         {
             var animal = ObjectMapper.Map<CreateAnimalDto, Animal>(animalDto);
-            var result = await animalRepository.InsertAsync(animal, true);
-            await distributedEventBus.PublishAsync(new AnimalCreatedEto { CardId = animalDto.CardId, Name = animalDto.Name });
-            var _result = await backgroundJobManager.EnqueueAsync(
+            var result = await _animalRepository.InsertAsync(animal, true);
+            await _distributedEventBus.PublishAsync(new AnimalCreatedEto { CardId = animalDto.CardId, Name = animalDto.Name });
+            var _result = await _backgroundJobManager.EnqueueAsync(
                  new EmailSendingArgs
                  {
                      EmailAddress = "this is email address",
@@ -48,7 +48,7 @@ namespace Adoption.Application.AnimalInfo
 
         public async Task<List<AnimalDto>> GetAllAnimals()
         {
-            var animals = await animalRepository.GetListAsync();
+            var animals = await _animalRepository.GetListAsync();
             if (animals.Count == 0)
             {
                 throw new UserFriendlyException(L["nodata"]);
