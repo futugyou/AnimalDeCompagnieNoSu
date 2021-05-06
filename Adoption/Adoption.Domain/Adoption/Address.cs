@@ -9,13 +9,6 @@ namespace Adoption.Domain.Adoption
 {
     public class Address : ValueObject
     {
-        public string Province { get; private set; }
-        public string City { get; private set; }
-
-        public string Street { get; private set; }
-
-        public string Home { get; private set; }
-
         private Address()
         {
 
@@ -32,6 +25,10 @@ namespace Adoption.Domain.Adoption
             Street = street;
             Home = home;
         }
+        public virtual string Province { get; private set; }
+        public virtual string City { get; private set; }
+        public virtual string Street { get; private set; }
+        public virtual string Home { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

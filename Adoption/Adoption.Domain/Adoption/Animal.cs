@@ -22,11 +22,13 @@ namespace Adoption.Domain.Adoption
             Birthday = birthday;
             AnimalType = type;
             Name = name;
+            Age = (DateTime.UtcNow - birthday).Days / 365;
         }
         public virtual string CardId { get; private set; }
         public virtual DateTime Birthday { get; private set; }
         public virtual string Name { get; private set; }
         public virtual AnimalType AnimalType { get; private set; }
+        public int Age { get; private set; }
         public void AnimalCreateed()
         {
             // use in AuditedAggregateRoot<T>  not Entity<T>
