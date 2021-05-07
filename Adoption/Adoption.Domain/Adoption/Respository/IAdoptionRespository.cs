@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace Adoption.Domain.Adoption
+namespace Adoption.Domain.Adoption.Respository
 {
     public interface IAdoptionRespository : IRepository<AdoptionInfo, Guid>
     {

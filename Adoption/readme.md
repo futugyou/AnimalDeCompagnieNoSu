@@ -96,7 +96,7 @@ docker run -itd --hostname Terraform --name AbpEventMQ -e RABBITMQ_DEFAULT_USER=
 5. kafka in docker 
 ```
 docker run -d --name zookeeper -p 2181:2181 -t wurstmeister/zookeeper
-docker run  -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=10.0.0.4:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://10.0.0.4:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
+docker run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=10.0.0.4:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://10.0.0.4:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
 
 docker exec -it 245317b191e2  /bin/bash
 cd opt/kafka/bin

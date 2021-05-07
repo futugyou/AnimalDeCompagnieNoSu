@@ -1,16 +1,15 @@
 using Adoption.Domain.Adoption.DomainEvent;
+using Adoption.Domain.Adoption.Respository;
 using Adoption.Domain.Shared.Adoption;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.EventBus.Distributed;
 
-namespace Adoption.Domain.Adoption
+namespace Adoption.Domain.Adoption.Service
 {
-    public class AdoptionDomainService : IDomainService
+    public class AdoptionDomainService : DomainService, IAdoptionDomainService
     {
         private readonly IAdoptionRespository _adoptionRespository;
         private readonly IDistributedEventBus _distributedEventBus;
