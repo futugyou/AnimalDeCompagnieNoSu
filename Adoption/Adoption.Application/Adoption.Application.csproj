@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Adoption.Application.Contracts\Adoption.Application.Contracts.csproj" />
-    <ProjectReference Include="..\Adoption.Infrastruct.Data\Adoption.Infrastruct.Data.csproj" />
+    <ProjectReference Include="..\Adoption.Domain\Adoption.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,4 @@
 ﻿using Adoption.Application.Contracts;
-using Adoption.Infrastruct.Data;
-using System;
 using Volo.Abp.Application;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.BackgroundJobs.RabbitMQ;
@@ -12,7 +10,6 @@ namespace Adoption.Application
     [DependsOn(
         typeof(AbpDddApplicationModule),
         typeof(AbpAutoMapperModule),
-        typeof(AdoptionInfrastructDataModule),
         typeof(AdoptionApplicationContractsMdoule),
         typeof(AbpEventBusRabbitMqModule),
         typeof(AbpBackgroundJobsRabbitMqModule))]

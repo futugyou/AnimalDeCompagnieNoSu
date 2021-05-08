@@ -1,5 +1,6 @@
 ﻿using Adoption.Application;
-using Adoption.Application.Contracts;
+using Adoption.Domain.Shared;
+using Adoption.Infrastruct.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,7 +22,8 @@ namespace Adoption.Host
         typeof(AbpAspNetCoreModule),
         typeof(AbpSwashbuckleModule),
         typeof(AbpAutofacModule),
-        typeof(AdoptionApplicationModule))]
+        typeof(AdoptionApplicationModule),
+        typeof(AdoptionInfrastructDataModule))]
     public class AdoptionHostModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
@@ -67,9 +69,9 @@ namespace Adoption.Host
             {
                 Configure<AbpVirtualFileSystemOptions>(options =>
                 {
-                    options.FileSets.ReplaceEmbeddedByPhysical<AdoptionApplicationContractsMdoule>(
+                    options.FileSets.ReplaceEmbeddedByPhysical<AdoptionDomainSharedModule>(
                     Path.Combine(hostingEnvironment.ContentRootPath,
-                        $"..{Path.DirectorySeparatorChar}Adoption.Application.Contracts"));
+                        $"..{Path.DirectorySeparatorChar}Adoption.Domain.Shared"));
                 });
             }
         }
