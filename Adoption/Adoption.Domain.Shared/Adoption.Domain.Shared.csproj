@@ -1,10 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Volo.Abp.AspNetCore" Version="4.3.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Localization\**\*.json" />
+		<Content Remove="Localization\**\*.json" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Volo.Abp.AspNetCore" Version="4.3.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.5" />
+	</ItemGroup>
 </Project>

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Entities;
 
-namespace Adoption.Domain.Adoption
+namespace Adoption.Domain.Adoption.Aggregate
 {
     public class Animal : Entity<int>
     {

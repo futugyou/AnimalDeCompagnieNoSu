@@ -1,9 +1,10 @@
+using Adoption.Domain.Adoption.Aggregate;
 using Adoption.Domain.Adoption.DomainEvent;
 using Adoption.Domain.Adoption.Respository;
 using Adoption.Domain.Shared.Adoption;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.EventBus.Distributed;
 
@@ -23,10 +24,9 @@ namespace Adoption.Domain.Adoption.Service
         public async Task<bool> CreateAdoption(AdoptionInfo info)
         {
             var adoptionList = await _adoptionRespository.FindByAnimalCardIdAsync(info.Animal.CardId);
-            if (adoptionList.Count(p => p.AdoptionStatus != AdoptionStatus.Rejected && p.AdoptionStatus != AdoptionStatus.Canceled) > 0)
+            if (adoptionList.Any(p => p.AdoptionStatus != AdoptionStatus.Rejected && p.AdoptionStatus != AdoptionStatus.Canceled))
             {
-                //TODO: ADD CustomException
-                throw new Exception("this pet have been adoption by other person");
+                throw new BusinessException(AdoptionDomainErrorCodes.AnimalHaveBeenAdoptioned).WithData("CardId", info.Animal.CardId);
             }
             await _adoptionRespository.InsertAsync(info);
             await _distributedEventBus.PublishAsync(new AdoptionCreated());

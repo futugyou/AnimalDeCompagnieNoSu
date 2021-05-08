@@ -1,0 +1,10 @@
+{
+  "culture": "zh",
+  "texts": {
+    "Adoption:A00001": "编号: {CardId} 已经被预定!",
+    "Adoption:A00002": "审核流程未完成!",
+    "nodata": "没有数据!",
+    "needname": "姓名不能为空!",
+    "needid": "收养者身份证号不能为空!"
+  }
+}

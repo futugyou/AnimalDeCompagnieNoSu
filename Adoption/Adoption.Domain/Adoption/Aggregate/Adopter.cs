@@ -1,7 +1,7 @@
 ﻿using Adoption.Domain.Shared.Adoption;
 using Volo.Abp.Domain.Entities;
 
-namespace Adoption.Domain.Adoption
+namespace Adoption.Domain.Adoption.Aggregate
 {
     public class Adopter : Entity<int>
     {

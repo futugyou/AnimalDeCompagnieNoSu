@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Localization;
 
-namespace Adoption.Application.Contracts.Localization.AnimalInfo
+namespace Adoption.Domain.Shared.Localization.Adoption
 {
-    [LocalizationResourceName("AnimalInfo")]
-    public class AnimalInfoResource
+    [LocalizationResourceName("AdoptionInfo")]
+    public class AdoptionInfoResource
     {
     }
 }

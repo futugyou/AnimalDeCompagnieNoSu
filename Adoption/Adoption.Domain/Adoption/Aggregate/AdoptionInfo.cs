@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace Adoption.Domain.Adoption
+namespace Adoption.Domain.Adoption.Aggregate
 {
     public class AdoptionInfo : AggregateRoot<Guid>
     {
@@ -52,8 +53,7 @@ namespace Adoption.Domain.Adoption
         {
             if (AdoptionStatus != AdoptionStatus.Audited)
             {
-                //TODO: ADD CustomException
-                throw new Exception("prev step not finish");
+                throw new BusinessException(AdoptionDomainErrorCodes.AuditeNotFinish);
             }
             AdoptionStatus = AdoptionStatus.Completed;
             AddDistributedEvent(new CompleteAdoptionEto());

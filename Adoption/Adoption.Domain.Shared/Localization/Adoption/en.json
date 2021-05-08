@@ -1,0 +1,10 @@
+﻿{
+  "culture": "en",
+  "texts": {
+    "Adoption:A00001": "Cardid：{CardId} has already adoption!",
+    "Adoption:A00002": "Audit process has not been completed!",
+    "nodata": "No data!",
+    "needname": "Name can not be null!",
+    "needid": "Adopter ID can not be null!"
+  }
+}

@@ -1,8 +1,8 @@
 ﻿using Adoption.Application.Contracts.AnimalInfo;
-using Adoption.Application.Contracts.Localization.AnimalInfo;
 using Adoption.Application.EmailSender;
-using Adoption.Domain.Adoption;
+using Adoption.Domain.Adoption.Aggregate;
 using Adoption.Domain.Adoption.DomainEvent;
+using Adoption.Domain.Shared.Localization.Adoption;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp;
@@ -13,6 +13,8 @@ using Volo.Abp.EventBus.Distributed;
 
 namespace Adoption.Application.AnimalInfo
 {
+    //TODO: remove this in future
+    [RemoteService(false)]
     public class AnimalAppService : ApplicationService, IAnimalAppService
     {
         private readonly IRepository<Animal> _animalRepository;
@@ -27,7 +29,7 @@ namespace Adoption.Application.AnimalInfo
             _animalRepository = animalRepository;
             _distributedEventBus = distributedEventBus;
             _backgroundJobManager = backgroundJobManager;
-            LocalizationResource = typeof(AnimalInfoResource);
+            LocalizationResource = typeof(AdoptionInfoResource);
         }
 
         public async Task<bool> CreateAnimals(CreateAnimalDto animalDto)

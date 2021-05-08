@@ -1,4 +1,5 @@
-﻿using Adoption.Domain.Shared.Adoption;
+﻿using Adoption.Domain.Adoption.Aggregate;
+using Adoption.Domain.Shared.Adoption;
 using System;
 using System.Collections.Generic;
 using System.Linq;

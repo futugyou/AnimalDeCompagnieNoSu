@@ -1,11 +1,7 @@
-﻿using Adoption.Application.Contracts.AnimalInfo;
-using Adoption.Domain.Adoption;
+﻿using Adoption.Application.Contracts.Adoption;
+using Adoption.Application.Contracts.AnimalInfo;
+using Adoption.Domain.Adoption.Aggregate;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Adoption.Application
 {
@@ -15,6 +11,8 @@ namespace Adoption.Application
         {
             CreateMap<Animal, AnimalDto>();
             CreateMap<CreateAnimalDto, Animal>();
+            //TODO: config this in future
+            CreateMap<CreateAdoptioninfoDto, AdoptionInfo>();
         }
     }
 }

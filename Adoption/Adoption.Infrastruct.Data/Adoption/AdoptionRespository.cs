@@ -1,4 +1,4 @@
-﻿using Adoption.Domain.Adoption;
+﻿using Adoption.Domain.Adoption.Aggregate;
 using Adoption.Domain.Adoption.Respository;
 using System;
 using System.Collections.Generic;

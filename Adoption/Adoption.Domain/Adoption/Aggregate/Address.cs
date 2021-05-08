@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Values;
 
-namespace Adoption.Domain.Adoption
+namespace Adoption.Domain.Adoption.Aggregate
 {
     public class Address : ValueObject
     {

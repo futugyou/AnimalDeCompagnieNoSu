@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 using System.IO;
 using Volo.Abp;
 using Volo.Abp.AspNetCore;
+using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Autofac;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
@@ -30,6 +32,22 @@ namespace Adoption.Host
             ConfigureVirtualFileSystem(context);
             services.AddControllers();
             ConfigureSwaggerServices(context);
+            ConfigureAutoAPIControllers();
+        }
+
+        private void ConfigureAutoAPIControllers()
+        {
+            Configure<AbpAspNetCoreMvcOptions>(options =>
+            {
+                options.ConventionalControllers
+                    .Create(typeof(AdoptionApplicationModule).Assembly, opts =>
+                    {
+                        // Can not be "" or "/" .
+                        // The route template separator character '/' cannot appear consecutively.
+                        // It must be separated by either a parameter or a literal value.
+                        //opts.RootPath = "/";
+                    });
+            });
         }
 
         private void ConfigureLocalization()
