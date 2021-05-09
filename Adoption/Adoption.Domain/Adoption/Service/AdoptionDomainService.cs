@@ -28,6 +28,7 @@ namespace Adoption.Domain.Adoption.Service
             {
                 throw new BusinessException(AdoptionDomainErrorCodes.AnimalHaveBeenAdoptioned).WithData("CardId", info.Animal.CardId);
             }
+            info.SetId(GuidGenerator.Create());
             await _adoptionRespository.InsertAsync(info);
             await _distributedEventBus.PublishAsync(new AdoptionCreated());
             return true;

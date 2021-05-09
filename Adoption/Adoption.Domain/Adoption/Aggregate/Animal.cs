@@ -11,12 +11,9 @@ namespace Adoption.Domain.Adoption.Aggregate
 {
     public class Animal : Entity<int>
     {
-        protected Animal()
-        {
+        protected Animal() { }
 
-        }
-
-        public Animal(string name, AnimalType type, string cardid, DateTime birthday)
+        internal Animal(string name, AnimalType type, string cardid, DateTime birthday)
         {
             CardId = cardid;
             Birthday = birthday;

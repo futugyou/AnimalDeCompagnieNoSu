@@ -9,12 +9,9 @@ namespace Adoption.Domain.Adoption.Aggregate
 {
     public class Address : ValueObject
     {
-        private Address()
-        {
+        private Address() { }
 
-        }
-
-        public Address(
+        internal Address(
             string province,
             string city,
             string street,

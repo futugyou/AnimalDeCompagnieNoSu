@@ -5,12 +5,9 @@ namespace Adoption.Domain.Adoption.Aggregate
 {
     public class Adopter : Entity<int>
     {
-        protected Adopter()
-        {
+        protected Adopter() { }
 
-        }
-
-        public Adopter(string name, Gender gender, string phone, string idnumber, Address address)
+        internal Adopter(string name, Gender gender, string phone, string idnumber, Address address)
         {
             Name = name;
             Gender = gender;

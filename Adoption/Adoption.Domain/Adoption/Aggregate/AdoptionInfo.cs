@@ -14,7 +14,7 @@ namespace Adoption.Domain.Adoption.Aggregate
     {
         protected AdoptionInfo() { }
 
-        public AdoptionInfo(Animal animal, Adopter adopter, string adoptionReasons)
+        internal AdoptionInfo(Animal animal, Adopter adopter, string adoptionReasons)
         {
             Animal = animal;
             Adopter = adopter;
@@ -27,6 +27,11 @@ namespace Adoption.Domain.Adoption.Aggregate
         public virtual string AdoptionReasons { get; private set; }
         public virtual AdoptionStatus AdoptionStatus { get; private set; }
         public virtual string AdoptionResult { get; private set; }
+
+        internal void SetId(Guid guid)
+        {
+            Id = guid;
+        }
 
         public void CancelAdoption(string cancelReason)
         {
@@ -41,6 +46,7 @@ namespace Adoption.Domain.Adoption.Aggregate
             AdoptionResult = rejectReason;
             AddDistributedEvent(new RejectAdoptionEto());
         }
+
 
         public void AuditedAdoption(string auditedReason)
         {
