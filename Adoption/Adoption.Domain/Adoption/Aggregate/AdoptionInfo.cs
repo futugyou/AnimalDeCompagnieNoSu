@@ -33,26 +33,50 @@ namespace Adoption.Domain.Adoption.Aggregate
             Id = guid;
         }
 
+        #region Change AdoptionStatus
         public void CancelAdoption(string cancelReason)
         {
+            if (AdoptionStatus == AdoptionStatus.Completed)
+            {
+                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionFinished);
+            }
+            if (AdoptionStatus == AdoptionStatus.Rejected)
+            {
+                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionRejected);
+            }
             AdoptionStatus = AdoptionStatus.Canceled;
             AdoptionResult = cancelReason;
-            AddDistributedEvent(new CancelAdoptionEto());
+            AddDistributedEvent(new CancelAdoptionEto(Id, cancelReason));
         }
 
         public void RejectAdoption(string rejectReason)
         {
+            if (AdoptionStatus == AdoptionStatus.Completed)
+            {
+                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionFinished);
+            }
+            if (AdoptionStatus == AdoptionStatus.Canceled)
+            {
+                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionCanceled);
+            }
             AdoptionStatus = AdoptionStatus.Rejected;
             AdoptionResult = rejectReason;
-            AddDistributedEvent(new RejectAdoptionEto());
+            AddDistributedEvent(new RejectAdoptionEto(Id, rejectReason));
         }
-
 
         public void AuditedAdoption(string auditedReason)
         {
+            if (AdoptionStatus == AdoptionStatus.Completed)
+            {
+                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionFinished);
+            }
+            if (AdoptionStatus == AdoptionStatus.Canceled)
+            {
+                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionCanceled);
+            }
             AdoptionStatus = AdoptionStatus.Audited;
             AdoptionResult = auditedReason;
-            AddDistributedEvent(new AuditedAdoptionEto());
+            AddDistributedEvent(new AuditedAdoptionEto(Id, auditedReason));
         }
 
         public void CompleteAdoption()
@@ -64,5 +88,6 @@ namespace Adoption.Domain.Adoption.Aggregate
             AdoptionStatus = AdoptionStatus.Completed;
             AddDistributedEvent(new CompleteAdoptionEto());
         }
+        #endregion
     }
 }

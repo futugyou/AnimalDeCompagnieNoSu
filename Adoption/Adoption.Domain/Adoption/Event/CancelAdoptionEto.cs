@@ -10,5 +10,13 @@ namespace Adoption.Domain.Adoption.DomainEvent
     [EventName("adoption.domain.adoption.canceled")]
     public class CancelAdoptionEto
     {
+        public Guid AdoptionId { get; }
+        public string Reason { get; }
+
+        public CancelAdoptionEto(Guid adoptionId, string reason)
+        {
+            AdoptionId = adoptionId;
+            Reason = reason;
+        }
     }
 }

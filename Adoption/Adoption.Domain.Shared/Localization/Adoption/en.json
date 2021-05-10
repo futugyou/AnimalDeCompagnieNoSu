@@ -3,6 +3,11 @@
   "texts": {
     "Adoption:A00001": "Cardid：{CardId} has already adoption!",
     "Adoption:A00002": "Audit process has not been completed!",
+    "Adoption:A00003": "Id: {id} can not found in system!",
+    "Adoption:A00004": "Id: {id} already finish!",
+    "Adoption:A00005": "Id: {id} audit rejected!",
+    "Adoption:A00006": "Id: {id} is canceled!",
+    "Adoption:A00007": "State: {status} Not Support!",
     "nodata": "No data!",
     "needname": "Name can not be null!",
     "needid": "Adopter ID can not be null!"
