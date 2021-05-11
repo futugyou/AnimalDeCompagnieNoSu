@@ -10,5 +10,7 @@ namespace Adoption.Application.Contracts.Adoption
     public interface IAdoptioninfoAppService : IApplicationService
     {
         Task<bool> Create(CreateAdoptioninfoDto adoptioninfoDto);
+        Task<bool> Cancel(Guid id, string cancelReason);
+        Task<bool> Complete(Guid id);
     }
 }

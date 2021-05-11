@@ -1,11 +1,9 @@
 ﻿using Adoption.Application.Contracts.Adoption;
 using Adoption.Domain.Adoption.Aggregate;
 using Adoption.Domain.Adoption.Service;
+using Adoption.Domain.Shared.Adoption;
 using Adoption.Domain.Shared.Localization.Adoption;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 
@@ -19,6 +17,16 @@ namespace Adoption.Application.Adoption
         {
             _adoptionDomainService = adoptionDomainService;
             LocalizationResource = typeof(AdoptionInfoResource);
+        }
+
+        public async Task<bool> Cancel(Guid id, string cancelReason)
+        {
+            return await _adoptionDomainService.ChangeAdoptionStatus(id, AdoptionStatus.Canceled, cancelReason);
+        }
+
+        public async Task<bool> Complete(Guid id)
+        {
+            return await _adoptionDomainService.ChangeAdoptionStatus(id, AdoptionStatus.Completed);
         }
 
         public async Task<bool> Create(CreateAdoptioninfoDto adoptioninfoDto)
