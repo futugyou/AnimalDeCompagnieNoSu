@@ -1,3 +1,4 @@
+using Adoption.Domain.Adoption.Aggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,11 @@ namespace Adoption.Domain.Adoption.DomainEvent
     [EventName("adoption.domain.adoption.audited")]
     public class AuditedAdoptionEto
     {
-        public AuditedAdoptionEto(Guid id, string auditedReason)
+        public AuditedAdoptionEto(AdoptionInfo adoptionInfo)
         {
-            Id = id;
-            AuditedReason = auditedReason;
+            AdoptionInfo = adoptionInfo;
         }
 
-        public Guid Id { get; }
-        public string AuditedReason { get; }
+        public AdoptionInfo AdoptionInfo { get; }
     }
 }

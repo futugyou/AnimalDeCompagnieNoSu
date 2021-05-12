@@ -1,3 +1,4 @@
+using Adoption.Domain.Adoption.Aggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,11 @@ namespace Adoption.Domain.Adoption.DomainEvent
     [EventName("adoption.domain.adoption.rejected")]
     public class RejectAdoptionEto
     {
-        public RejectAdoptionEto(Guid id, string rejectReason)
+        public RejectAdoptionEto(AdoptionInfo adoptionInfo)
         {
-            Id = id;
-            RejectReason = rejectReason;
+            AdoptionInfo = adoptionInfo;
         }
 
-        public Guid Id { get; }
-        public string RejectReason { get; }
+        public AdoptionInfo AdoptionInfo { get; }
     }
 }

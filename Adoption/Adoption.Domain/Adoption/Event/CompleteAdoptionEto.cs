@@ -1,3 +1,4 @@
+using Adoption.Domain.Adoption.Aggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,11 @@ namespace Adoption.Domain.Adoption.DomainEvent
     [EventName("adoption.domain.adoption.completed")]
     public class CompleteAdoptionEto
     {
+        public CompleteAdoptionEto(AdoptionInfo adoptionInfo)
+        {
+            AdoptionInfo = adoptionInfo;
+        }
+
+        public AdoptionInfo AdoptionInfo { get; }
     }
 }

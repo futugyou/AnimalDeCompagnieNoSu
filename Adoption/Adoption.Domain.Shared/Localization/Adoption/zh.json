@@ -2,14 +2,20 @@
   "culture": "zh",
   "texts": {
     "Adoption:A00001": "编号: {CardId} 已经被预定!",
-    "Adoption:A00002": "审核流程未完成!",
+    "Adoption:A00002": "编号: {id} 审核流程未完成!",
     "Adoption:A00003": "编号: {id} 的数据在系统中不存在!",
     "Adoption:A00004": "编号: {id} 已经完成!",
     "Adoption:A00005": "编号: {id} 审核不通过!",
     "Adoption:A00006": "编号: {id} 已经取消!",
     "Adoption:A00007": "不支持变更为: {status} 状态!",
-    "nodata": "没有数据!",
-    "needname": "姓名不能为空!",
-    "needid": "收养者身份证号不能为空!"
+    "InvaliddopterName": "收养者姓名验证不通过!",
+    "InvalidAdopterId": "收养者身份证验证不通过!",
+    "InvalidAdopterPhone": "收养者手机号验证不通过!",
+    "InvalidAdopterAddress": "收养者地址验证不通过!",
+    "InvalidAdopterReason": "收养原因验证不通过，过长或者过短!",
+    "InvalidAdopterGender": "收养者性别验证不通过!",
+    "InvalidAnimalCardId": "小动物编号验证不通过!",
+    "InvalidAnimalName": "小动物名字验证不通过!",
+    "InvalidAnimalType": "小动物类型验证不通过!"
   }
 }

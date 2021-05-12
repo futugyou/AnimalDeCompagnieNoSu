@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Adoption.Domain.Adoption.Aggregate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,13 +11,11 @@ namespace Adoption.Domain.Adoption.DomainEvent
     [EventName("adoption.domain.adoption.canceled")]
     public class CancelAdoptionEto
     {
-        public Guid AdoptionId { get; }
-        public string Reason { get; }
+        public AdoptionInfo AdoptionInfo { get; }
 
-        public CancelAdoptionEto(Guid adoptionId, string reason)
+        public CancelAdoptionEto(AdoptionInfo adoptionInfo)
         {
-            AdoptionId = adoptionId;
-            Reason = reason;
+            AdoptionInfo = adoptionInfo;
         }
     }
 }

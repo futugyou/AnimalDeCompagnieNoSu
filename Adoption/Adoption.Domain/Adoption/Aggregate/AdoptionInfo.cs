@@ -34,59 +34,59 @@ namespace Adoption.Domain.Adoption.Aggregate
         }
 
         #region Change AdoptionStatus
-        public void CancelAdoption(string cancelReason)
+        internal void CancelAdoption(string cancelReason)
         {
             if (AdoptionStatus == AdoptionStatus.Completed)
             {
-                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionFinished);
+                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionFinished).WithData("id", Id);
             }
             if (AdoptionStatus == AdoptionStatus.Rejected)
             {
-                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionRejected);
+                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionRejected).WithData("id", Id);
             }
             AdoptionStatus = AdoptionStatus.Canceled;
             AdoptionResult = cancelReason;
-            AddDistributedEvent(new CancelAdoptionEto(Id, cancelReason));
+            AddDistributedEvent(new CancelAdoptionEto(this));
         }
 
-        public void RejectAdoption(string rejectReason)
+        internal void RejectAdoption(string rejectReason)
         {
             if (AdoptionStatus == AdoptionStatus.Completed)
             {
-                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionFinished);
+                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionFinished).WithData("id", Id);
             }
             if (AdoptionStatus == AdoptionStatus.Canceled)
             {
-                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionCanceled);
+                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionCanceled).WithData("id", Id);
             }
             AdoptionStatus = AdoptionStatus.Rejected;
             AdoptionResult = rejectReason;
-            AddDistributedEvent(new RejectAdoptionEto(Id, rejectReason));
+            AddDistributedEvent(new RejectAdoptionEto(this));
         }
 
-        public void AuditedAdoption(string auditedReason)
+        internal void AuditedAdoption(string auditedReason)
         {
             if (AdoptionStatus == AdoptionStatus.Completed)
             {
-                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionFinished);
+                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionFinished).WithData("id", Id);
             }
             if (AdoptionStatus == AdoptionStatus.Canceled)
             {
-                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionCanceled);
+                throw new BusinessException(AdoptionDomainErrorCodes.AdoptionCanceled).WithData("id", Id);
             }
             AdoptionStatus = AdoptionStatus.Audited;
             AdoptionResult = auditedReason;
-            AddDistributedEvent(new AuditedAdoptionEto(Id, auditedReason));
+            AddDistributedEvent(new AuditedAdoptionEto(this));
         }
 
-        public void CompleteAdoption()
+        internal void CompleteAdoption()
         {
             if (AdoptionStatus != AdoptionStatus.Audited)
             {
-                throw new BusinessException(AdoptionDomainErrorCodes.AuditeNotFinish);
+                throw new BusinessException(AdoptionDomainErrorCodes.AuditeNotFinish).WithData("id", Id);
             }
             AdoptionStatus = AdoptionStatus.Completed;
-            AddDistributedEvent(new CompleteAdoptionEto());
+            AddDistributedEvent(new CompleteAdoptionEto(this));
         }
         #endregion
     }

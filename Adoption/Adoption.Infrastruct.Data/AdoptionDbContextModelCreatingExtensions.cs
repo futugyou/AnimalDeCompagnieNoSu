@@ -26,8 +26,8 @@ namespace Adoption.Infrastruct.Data
                 });
                 b.Navigation(p => p.Address).IsRequired();
 
-                b.Property(x => x.Name).IsRequired().HasMaxLength(128);
-                b.Property(x => x.IdNumber).IsRequired().HasMaxLength(20);
+                b.Property(x => x.Name).IsRequired().HasMaxLength(20);
+                b.Property(x => x.IdNumber).IsRequired().HasMaxLength(18);
                 b.Property(x => x.Phone).IsRequired().HasMaxLength(20);
             });
 
@@ -35,7 +35,7 @@ namespace Adoption.Infrastruct.Data
             {
                 b.ToTable(AdoptionConsts.DbTablePrefix + "animals", AdoptionConsts.DbSchema);
                 b.ConfigureByConvention();
-                b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+                b.Property(x => x.Name).IsRequired().HasMaxLength(20);
                 b.Property(x => x.CardId).IsRequired().HasMaxLength(28);
             });
 

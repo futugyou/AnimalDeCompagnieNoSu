@@ -59,7 +59,7 @@ namespace Adoption.Domain.Adoption.Service
             }
             info.SetId(GuidGenerator.Create());
             await _adoptionRespository.InsertAsync(info);
-            await _distributedEventBus.PublishAsync(new AdoptionCreated());
+            await _distributedEventBus.PublishAsync(new AdoptionCreated(info));
             return true;
         }
     }
