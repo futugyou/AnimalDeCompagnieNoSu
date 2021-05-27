@@ -1,10 +1,12 @@
 */.vs/
+*/.vscode/
 */bin/
 */obj/
 */node_modules/
 */*/debug.log
 AnimalCenter/target
 AnimalCenter/fileupload
+*/vendor
 */.env
 */*/.vs/
 */*/bin/

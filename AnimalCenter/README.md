@@ -23,3 +23,5 @@ replace-with = 'ustc'
 [source.ustc]
 registry = "http://mirrors.ustc.edu.cn/crates.io-index"
 ```
+
+cargo vendor
