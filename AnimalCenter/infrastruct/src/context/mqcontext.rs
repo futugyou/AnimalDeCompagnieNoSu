@@ -44,16 +44,16 @@ impl IMQContext for MQContext {
     ) -> Result<(), CustomError> {
         let connection = self.get_mq_connection().await?;
         let channel = connection.create_channel().await?;
-        // let queue = channel
-        //     .queue_declare(
-        //         queue_name,
-        //         QueueDeclareOptions {
-        //             durable: true,
-        //             ..QueueDeclareOptions::default()
-        //         },
-        //         FieldTable::default(),
-        //     )
-        //     .await?;
+        let queue = channel
+            .queue_declare(
+                queue_name,
+                QueueDeclareOptions {
+                    durable: true,
+                    ..QueueDeclareOptions::default()
+                },
+                FieldTable::default(),
+            )
+            .await?;
         channel
             .exchange_declare(
                 "animal-exchange",
@@ -65,15 +65,15 @@ impl IMQContext for MQContext {
                 FieldTable::default(),
             )
             .await?;
-        // channel
-        //     .queue_bind(
-        //         queue.name().as_str(),
-        //         "animal-exchange",
-        //         routing_key,
-        //         QueueBindOptions::default(),
-        //         FieldTable::default(),
-        //     )
-        //     .await?;
+        channel
+            .queue_bind(
+                queue.name().as_str(),
+                "animal-exchange",
+                routing_key,
+                QueueBindOptions::default(),
+                FieldTable::default(),
+            )
+            .await?;
 
         let publish_confirm = channel
             .basic_publish(

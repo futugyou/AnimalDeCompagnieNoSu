@@ -7,16 +7,16 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-actix-web = "3"
-actix-cors = "0.5"
-actix-multipart = "0.3"
-actix-files = "0.5"
-sanitize-filename = "0.3"
-actix-service = "1"
-async-graphql="2"
-async-graphql-actix-web = "2"
-dotenv = "0.15"
-futures = "0.3"
+actix-web = "3.3.2"
+actix-cors = "0.5.4"
+actix-multipart = "0.3.0"
+actix-files = "0.5.0"
+sanitize-filename = "0.3.0"
+actix-service = "1.0.6"
+async-graphql= { version = "2.8.5", features = ["apollo_tracing"] }
+async-graphql-actix-web = "2.8.5"
+dotenv = "0.15.0"
+futures = "0.3.15"
 
 opentelemetry = { version = "0.12", default-features = false, features = ["trace", "metrics","tokio-support"] }
 opentelemetry-jaeger = { version = "0.11"  }

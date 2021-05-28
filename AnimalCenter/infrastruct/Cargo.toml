@@ -7,19 +7,19 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies] 
-serde = { version = "1.0", features = ["derive"] }
-async_once = "0.2"
-async-trait = "0.1"
-lazy_static = "1"
-config = "0.11"
-lapin = "1.6"
-tracing = "0.1"
-tracing-futures = { version = "0.2", default-features = false }
+serde = { version = "1.0.126", features = ["derive"] }
+async_once = "0.2.1"
+async-trait = "0.1.50"
+lazy_static = "1.4.0"
+config = "0.11.0"
+lapin = "1.7.1"
+tracing = "0.1.26"
+tracing-futures = { version = "0.2.5", default-features = false }
 cloudevents-sdk = "0.3.1"
 
 tool = {path ="../tool"}
 
 [dependencies.mongodb]
-version = "1.2"
+version = "1.2.1"
 default-features = false
 features = ["async-std-runtime"]
