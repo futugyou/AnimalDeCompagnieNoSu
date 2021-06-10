@@ -10,6 +10,7 @@ COPY ["Adoption.Host/Adoption.Host.csproj", "Adoption.Host/"]
 COPY ["Adoption.Application/Adoption.Application.csproj", "Adoption.Application/"]
 COPY ["Adoption.Infrastruct.Data/Adoption.Infrastruct.Data.csproj", "Adoption.Infrastruct.Data/"]
 COPY ["Adoption.Domain/Adoption.Domain.csproj", "Adoption.Domain/"]
+COPY ["Adoption.Domain.Shared/Adoption.Domain.Shared.csproj", "Adoption.Domain.Shared/"]
 COPY ["Adoption.Application.Contracts/Adoption.Application.Contracts.csproj", "Adoption.Application.Contracts/"]
 RUN dotnet restore "Adoption.Host/Adoption.Host.csproj"
 COPY . .
