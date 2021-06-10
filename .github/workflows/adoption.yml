@@ -1,0 +1,47 @@
+name: .NET
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+    - Adoption/**
+    - .github/workflows/adoption.yml
+    
+  pull_request:
+    branches: [ master ]
+    paths:
+    - Adoption/**
+    - .github/workflows/adoption.yml
+    
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+        
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+       username: ${{ secrets.DOCKER_USERNAME }}
+       password: ${{ secrets.DOCKER_PASSWORD }}
+       
+    - name: Push to Docker Hub
+      uses: docker/build-push-action@v2
+      with:
+       push: true
+       tags: futugyousuzu/adoption:latest
+       context: ./Adoption
+       file: ./Adoption/Adoption.Host/Dockerfile
