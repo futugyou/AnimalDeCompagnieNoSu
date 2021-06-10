@@ -39,3 +39,4 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: futugyousuzu/animal-center
         tag_with_ref: true
+        context: AnimalCenter
