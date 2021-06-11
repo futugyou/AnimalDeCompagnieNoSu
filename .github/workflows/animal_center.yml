@@ -6,13 +6,13 @@ on:
     branches: [ master ]
     paths:
     - AnimalCenter/**
-    - .github/workflows/rust.yml
+    - .github/workflows/animal_center.yml
     
   pull_request:
     branches: [ master ]
     paths:
     - AnimalCenter/**
-    - .github/workflows/rust.yml
+    - .github/workflows/animal_center.yml
     
 env:
   CARGO_TERM_COLOR: always

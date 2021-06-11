@@ -6,7 +6,8 @@ WORKDIR /app/animal_center
 
 RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y pkg-config libssl-dev
 RUN mkdir fileupload
-
+COPY Cargo.toml Cargo.lock .env.template README.md ./
+RUN mv .env.template .env
 COPY entity/Cargo.toml ./entity/Cargo.toml
 COPY infrastruct/Cargo.toml ./infrastruct/Cargo.toml
 COPY model/Cargo.toml ./model/Cargo.toml
@@ -16,8 +17,8 @@ COPY service/Cargo.toml ./service/Cargo.toml
 COPY tool/Cargo.toml ./tool/Cargo.toml
 COPY web/Cargo.toml ./web/Cargo.toml
 
-RUN for file in $(ls */Cargo.toml); do mkdir ./${file%/*}/src/ && touch ./${file%/*}/src/lib.rs ; done
-RUN echo 'fn main() { println!("Dummy") }' > ./web/src/main.rs && rm -rf ./web/src/lib.rs
+RUN for file in $(ls */Cargo.toml); do mkdir ${file%/*}/src/ && touch ${file%/*}/src/lib.rs ; done
+RUN echo 'fn main() { println!("Dummy") }' > web/src/main.rs && rm -rf web/src/lib.rs
 
 RUN cargo build --release
 COPY . .
