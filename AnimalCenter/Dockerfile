@@ -5,8 +5,8 @@ RUN USER=root cargo new animal_center
 WORKDIR /app/animal_center
 
 RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y pkg-config libssl-dev
-RUN mkdir fileupload	
-COPY Cargo.toml Cargo.lock .env README.md ./
+RUN mkdir fileupload
+
 COPY entity/Cargo.toml ./entity/Cargo.toml
 COPY infrastruct/Cargo.toml ./infrastruct/Cargo.toml
 COPY model/Cargo.toml ./model/Cargo.toml
