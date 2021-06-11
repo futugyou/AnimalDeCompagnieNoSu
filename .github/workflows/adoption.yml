@@ -1,18 +1,18 @@
-name: Rust
+name: .NET
 
 on:
   workflow_dispatch:
   push:
     branches: [ master ]
     paths:
-    - AnimalCenter/**
-    - .github/workflows/rust.yml
+    - Adoption/**
+    - .github/workflows/adoption.yml
     
   pull_request:
     branches: [ master ]
     paths:
-    - AnimalCenter/**
-    - .github/workflows/rust.yml
+    - Adoption/**
+    - .github/workflows/adoption.yml
     
 env:
   CARGO_TERM_COLOR: always
@@ -42,6 +42,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
        push: true
-       tags: futugyousuzu/back_animal_center:latest
-       context: ./AnimalCenter
-       file: ./AnimalCenter/Dockerfile
+       tags: futugyousuzu/adoption:latest
+       context: ./Adoption
+       file: ./Adoption/Adoption.Host/Dockerfile
