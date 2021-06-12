@@ -11,7 +11,7 @@ RUN cargo build --release
  
 FROM alpine:latest
 COPY --from=base /app/animal_center/target/release/animal_center /usr/bin/animal_center
-COPY --from=base /app/animal_center/.env /usr/bin/animal_center
+COPY --from=base /app/animal_center/.env /usr/bin/.env
 EXPOSE 8080
 WORKDIR /usr/bin/
 RUN mkdir ./fileupload
