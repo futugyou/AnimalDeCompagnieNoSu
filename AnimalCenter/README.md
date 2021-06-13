@@ -24,4 +24,7 @@ replace-with = 'ustc'
 registry = "http://mirrors.ustc.edu.cn/crates.io-index"
 ```
 
-cargo vendor
+##### docker
+```
+docker run  -p 8080:8080 -v /.env:/usr/bin/.env --name animal_center -d futugyousuzu/back_animal_center
+```
