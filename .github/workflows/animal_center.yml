@@ -13,9 +13,6 @@ on:
     paths:
     - AnimalCenter/**
     - .github/workflows/animal_center.yml
-    
-env:
-  CARGO_TERM_COLOR: always
 
 jobs:
   build:
