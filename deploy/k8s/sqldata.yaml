@@ -1,0 +1,55 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: sqldata
+  namespace: animal
+  labels:
+    app: animal
+    service: sqldata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: sqldata
+  template:
+    metadata:
+      labels:
+        app: animal
+        service: sqldata
+    spec:
+      containers:
+        - name: sqldata
+          image: mariadb
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: mariadb
+              containerPort: 3306
+              protocol: TCP
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: abc@123456
+          resources:
+           limits:
+            memory: "128Mi"
+            cpu: "100m"
+            
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: sqldata
+  namespace: animal
+  labels:
+    app: animal
+    service: sqldata
+spec:
+  type: NodePort
+  ports:
+    - port: 3306
+      targetPort: 3306
+      nodePort: 33306
+      protocol: TCP
+      name: tds
+  selector:
+    service: sqldata

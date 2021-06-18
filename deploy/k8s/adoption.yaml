@@ -1,0 +1,80 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: adoption-cm
+  namespace: animal
+  labels:
+    app: animal
+    service: adoption
+data:
+  ASPNETCORE_ENVIRONMENT: Product
+  ConnectionStrings__Default: Server=sqldata;User Id=root;Password=abc@123456;Database=adoption
+  GrafanaLoki__Uri: http://localhost:3100 #fake
+  RabbitMQ__Connections__Default__HostName: localhost
+  RabbitMQ__Connections__Default__UserName: user
+  RabbitMQ__Connections__Default__Password: password
+  RabbitMQ__EventBus__ClientName: Animal.Adoption  
+  RabbitMQ__EventBus__ExchangeName: Animal
+  Kafka__Connections__Default__BootstrapServers: localhost:9092
+  Kafka__EventBus__GroupId: Animal.Adoption
+  Kafka__EventBus__TopicName: Animal
+  RemoteServices__Default__BaseUrl: adoption-api
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: adoption
+  namespace: animal
+  labels:
+    app: animal
+    service: adoption
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: adoption
+  template:
+    metadata:
+      labels:
+        app: animal
+        service: adoption
+    spec:
+      containers:
+        - name: adoption-api
+          image: futugyousuzu/adoption:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 81
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: adoption-cm
+          resources:
+           limits:
+            memory: "128Mi"
+            cpu: "100m"
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: adoption-api
+  namespace: animal
+  labels:
+    app: animal
+    service: adoption
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30003
+      protocol: TCP
+      name: http
+  selector:
+    service: adoption
