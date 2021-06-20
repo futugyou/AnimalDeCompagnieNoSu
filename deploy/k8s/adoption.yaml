@@ -9,13 +9,13 @@ metadata:
 data:
   ASPNETCORE_ENVIRONMENT: Product
   ConnectionStrings__Default: Server=sqldata;User Id=root;Password=abc@123456;Database=adoption
-  GrafanaLoki__Uri: http://localhost:3100 #fake
-  RabbitMQ__Connections__Default__HostName: localhost
+  GrafanaLoki__Uri: loki
+  RabbitMQ__Connections__Default__HostName: rabbitmq
   RabbitMQ__Connections__Default__UserName: user
   RabbitMQ__Connections__Default__Password: password
   RabbitMQ__EventBus__ClientName: Animal.Adoption  
   RabbitMQ__EventBus__ExchangeName: Animal
-  Kafka__Connections__Default__BootstrapServers: localhost:9092
+  Kafka__Connections__Default__BootstrapServers: kafka #fake
   Kafka__EventBus__GroupId: Animal.Adoption
   Kafka__EventBus__TopicName: Animal
   RemoteServices__Default__BaseUrl: adoption-api
