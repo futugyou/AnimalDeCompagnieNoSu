@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "AnimalApp.WinUI": {
+      "commandName": "AppContainer"
+    }
+  }
+}

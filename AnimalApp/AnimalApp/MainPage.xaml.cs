@@ -1,12 +1,9 @@
 ﻿using System;
-using Microsoft.Maui;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.Xaml;
 
 namespace AnimalApp
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class MainPage : ContentPage, IPage
+	public partial class MainPage : ContentPage
 	{
 		public MainPage()
 		{
@@ -14,13 +11,10 @@ namespace AnimalApp
 		}
 
 		int count = 0;
-
-		private void OnButtonClicked(object sender, EventArgs e)
+		private void OnCounterClicked(object sender, EventArgs e)
 		{
 			count++;
-			CountLabel.Text = $"You clicked {count} times!";
+			CounterLabel.Text = $"Current count: {count}";
 		}
-
-		public IView View { get => (IView)Content; set => Content = (View)value; }
 	}
 }
