@@ -48,8 +48,9 @@ spec:
   ports:
     - port: 3306
       targetPort: 3306
-      nodePort: 33306
+      nodePort: 32306
       protocol: TCP
       name: tds
   selector:
     service: sqldata
+# The Service "sqldata" is invalid: spec.ports[0].nodePort: Invalid value: 33306: provided port is not in the valid range. The range of valid ports is 30000-32767

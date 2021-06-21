@@ -8,10 +8,12 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 5672
-      targetPort: http
-      protocol: TCP
-      name: http
+  - name: "5672"
+    port: 5672
+    targetPort: 5672
+  - name: "15672"
+    port: 15672
+    targetPort: 15672
   selector:
     app: rabbitmq
 
@@ -38,9 +40,8 @@ spec:
           image: "rabbitmq:3-management"
           imagePullPolicy: IfNotPresent
           ports:
-            - name: http
-              containerPort: 5672
-              protocol: TCP
+            - containerPort: 5672
+            - containerPort: 15672
           env:
             - name: RABBITMQ_DEFAULT_USER
               value: "user"

@@ -9,7 +9,7 @@ metadata:
 data:
   ASPNETCORE_ENVIRONMENT: Product
   ConnectionStrings__Default: Server=sqldata;User Id=root;Password=abc@123456;Database=adoption
-  GrafanaLoki__Uri: loki
+  GrafanaLoki__Uri: http://loki:3100
   RabbitMQ__Connections__Default__HostName: rabbitmq
   RabbitMQ__Connections__Default__UserName: user
   RabbitMQ__Connections__Default__Password: password
