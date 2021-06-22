@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.*" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Adoption.Infrastruct.Data\Adoption.Infrastruct.Data.csproj" />
+	</ItemGroup>
+</Project>

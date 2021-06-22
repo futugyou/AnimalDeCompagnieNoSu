@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31019.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31410.414
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adoption.Host", "Adoption.Host\Adoption.Host.csproj", "{2E548ECF-2964-442A-B37E-8532A4F423C4}"
 EndProject
@@ -20,7 +20,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adoption.Domain.Shared", "Adoption.Domain.Shared\Adoption.Domain.Shared.csproj", "{AB17E6A8-7E28-4B3C-8571-B59B05EDB264}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adoption.API.Client", "Adoption.API.Client\Adoption.API.Client.csproj", "{FF74E56E-D84F-4D54-B6BE-9E3DC25CAF5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adoption.API.Client", "Adoption.API.Client\Adoption.API.Client.csproj", "{FF74E56E-D84F-4D54-B6BE-9E3DC25CAF5D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adoption.Infrastruct.Data.DbMigrations", "Adoption.Infrastruct.Data.DbMigrations\Adoption.Infrastruct.Data.DbMigrations.csproj", "{7E7142D5-5AB0-4AA1-99FE-AF8488C9384E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adoption.DbMigrator", "Adoption.DbMigrator\Adoption.DbMigrator.csproj", "{5BA763E0-5116-4E0B-9942-8242ADDBBACD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +60,14 @@ Global
 		{FF74E56E-D84F-4D54-B6BE-9E3DC25CAF5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF74E56E-D84F-4D54-B6BE-9E3DC25CAF5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF74E56E-D84F-4D54-B6BE-9E3DC25CAF5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E7142D5-5AB0-4AA1-99FE-AF8488C9384E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E7142D5-5AB0-4AA1-99FE-AF8488C9384E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E7142D5-5AB0-4AA1-99FE-AF8488C9384E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E7142D5-5AB0-4AA1-99FE-AF8488C9384E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BA763E0-5116-4E0B-9942-8242ADDBBACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BA763E0-5116-4E0B-9942-8242ADDBBACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BA763E0-5116-4E0B-9942-8242ADDBBACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BA763E0-5116-4E0B-9942-8242ADDBBACD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
