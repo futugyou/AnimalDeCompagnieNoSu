@@ -12,9 +12,23 @@ namespace Adoption.DbMigrator
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
-            await CreateHostBuilder(args).Build().RunAsync();
+            try
+            {
+                await CreateHostBuilder(args).RunConsoleAsync();
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly!");
+                return 1;
+            }
+            finally
+            {
+                Log.Information("Host stopped!");
+                Log.CloseAndFlush();
+            }
         }
 
         private static readonly Action<HostBuilderContext, LoggerConfiguration> InitSerilog = (context, config) =>
@@ -41,10 +55,11 @@ namespace Adoption.DbMigrator
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+            .UseAutofac()
+            .UseSerilog(InitSerilog)
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddHostedService<DbMigratorHostedService>();
-            })
-            .UseSerilog(InitSerilog);
+                services.AddApplication<AdoptionDbMigratorModule>();
+            });
     }
 }

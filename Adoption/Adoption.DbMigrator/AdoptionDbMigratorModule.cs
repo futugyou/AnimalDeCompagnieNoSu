@@ -1,6 +1,6 @@
 ﻿using Adoption.Infrastruct.Data.DbMigrations;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Autofac;
-using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Modularity;
 
 namespace Adoption.DbMigrator
@@ -12,7 +12,7 @@ namespace Adoption.DbMigrator
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            Configure<AbpBackgroundJobOptions>(options => options.IsJobExecutionEnabled = false);
+            context.Services.AddHostedService<DbMigratorHostedService>();
         }
     }
 }
