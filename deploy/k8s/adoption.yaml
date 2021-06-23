@@ -41,6 +41,13 @@ spec:
         app: animal
         service: adoption
     spec:
+      initContainers:
+        - name: init-adoption-database
+          image: futugyousuzu/adoption-migration:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: adoption-cm
       containers:
         - name: adoption-api
           image: futugyousuzu/adoption:latest
