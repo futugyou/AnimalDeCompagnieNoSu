@@ -1,25 +1,3 @@
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: adoption-cm
-  namespace: animal
-  labels:
-    app: animal
-    service: adoption
-data:
-  ASPNETCORE_ENVIRONMENT: Product
-  ConnectionStrings__Default: Server=sqldata;User Id=root;Password=abc@123456;Database=adoption
-  GrafanaLoki__Uri: http://loki:3100
-  RabbitMQ__Connections__Default__HostName: rabbitmq
-  RabbitMQ__Connections__Default__UserName: user
-  RabbitMQ__Connections__Default__Password: password
-  RabbitMQ__EventBus__ClientName: Animal.Adoption  
-  RabbitMQ__EventBus__ExchangeName: Animal
-  Kafka__Connections__Default__BootstrapServers: kafka #fake
-  Kafka__EventBus__GroupId: Animal.Adoption
-  Kafka__EventBus__TopicName: Animal
-  RemoteServices__Default__BaseUrl: adoption-api
-
 ---
 
 kind: Deployment
@@ -45,9 +23,17 @@ spec:
         - name: init-adoption-database
           image: futugyousuzu/adoption-migration:latest
           imagePullPolicy: IfNotPresent
-          envFrom:
-            - configMapRef:
-                name: adoption-cm
+          env:
+          - name: ASPNETCORE_ENVIRONMENT
+            valueFrom:
+             configMapKeyRef:
+              name: adoption-cm
+              key: ASPNETCORE_ENVIRONMENT
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/appsettings.json
+            subPath: appsettings.json
+            readOnly: true
       containers:
         - name: adoption-api
           image: futugyousuzu/adoption:latest
@@ -57,13 +43,29 @@ spec:
               protocol: TCP
             - containerPort: 81
               protocol: TCP
-          envFrom:
-            - configMapRef:
-                name: adoption-cm
+          env: # 定义环境变量
+          - name: ASPNETCORE_ENVIRONMENT # 请注意这里和 ConfigMap 中的键名是不一样的
+            valueFrom:
+             configMapKeyRef:
+              name: adoption-cm           # 这个值来自 ConfigMap
+              key: ASPNETCORE_ENVIRONMENT # 需要取值的键
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/appsettings.json
+            subPath: appsettings.json # 有subPath不能热更新，需要重新放置appsetting.json，修改代码
+            readOnly: true          
           resources:
            limits:
             memory: "128Mi"
             cpu: "100m"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: adoption-cm
+            # 来自 ConfigMap 的一组键，将被创建为文件
+            items:
+             - key: "appsettings"
+               path: "appsettings.json"
 
 ---
 

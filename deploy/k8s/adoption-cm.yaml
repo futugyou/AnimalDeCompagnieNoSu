@@ -1,0 +1,47 @@
+apiVersion: v1
+data:
+  ASPNETCORE_ENVIRONMENT: Product
+  appsettings: |
+    {
+      "ConnectionStrings": {
+        "Default": "Server=sqldata;User Id=root;Password=abc@123456;Database=adoption"
+      },
+      "Logging": {
+        "LogLevel": {
+          "Default": "Debug",
+          "System": "Information",
+          "Microsoft": "Information"
+        }
+      },
+      "GrafanaLoki": {
+        "Uri": "http://loki:3100"
+      },
+      "RabbitMQ": {
+        "Connections": {
+          "Default": {
+            "HostName": "rabbitmq",
+            "UserName": "user",
+            "Password": "password"
+          }
+        },
+        "EventBus": {
+          "ClientName": "Animal.Adoption",
+          "ExchangeName": "Animal"
+        }
+      },
+      "Kafka": {
+        "Connections": {
+          "Default": {
+            "BootstrapServers": "Kafka"
+          }
+        },
+        "EventBus": {
+          "GroupId": "Animal",
+          "TopicName": "Animal.Adoption"
+        }
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: adoption-cm
+  namespace: animal

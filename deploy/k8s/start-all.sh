@@ -14,6 +14,10 @@ kubectl apply -f ./sqldata.yaml
 # mq
 kubectl apply -f ./rabbitmq.yaml
 
+# adoption configmap 
+# kubectl create configmap adoption-cm --from-literal=ASPNETCORE_ENVIRONMENT=Product --from-file=appsettings=./appsettings.json -n animal
+kubectl apply -f ./adoption-cm.yaml
+
 # service
 kubectl apply -f ./adoption.yaml
 kubectl apply -f ./animal-center.yaml
