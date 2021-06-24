@@ -1,5 +1,4 @@
 ﻿using Adoption.Application.Contracts.Adoption;
-using Adoption.Application.Contracts.AnimalInfo;
 using Adoption.Domain.Adoption.Aggregate;
 using AutoMapper;
 
@@ -9,8 +8,6 @@ namespace Adoption.Application
     {
         public AdoptionApplicationAutoMapperProfile()
         {
-            CreateMap<Animal, AnimalDto>();
-            CreateMap<CreateAnimalDto, Animal>();
             CreateMap<CreateAdoptioninfoDto, AdoptionInfo>()
                 .ForPath(d => d.Adopter.Address.City, o => o.MapFrom(s => s.City))
                 .ForPath(d => d.Adopter.Address.Home, o => o.MapFrom(s => s.Home))
