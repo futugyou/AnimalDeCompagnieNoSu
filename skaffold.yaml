@@ -1,0 +1,28 @@
+apiVersion: skaffold/v2beta18
+kind: Config
+metadata:
+  name: animaldecompagnienosu
+build:
+  local: {}
+  artifacts:
+  - image: futugyousuzu/adoption
+    context: Adoption
+    docker:
+      dockerfile: Adoption.Host/Dockerfile
+  - image: futugyousuzu/adoption-migration
+    context: Adoption
+    docker:
+      dockerfile: Adoption.DbMigrator/Dockerfile
+  - image: futugyousuzu/back_animal_center
+    context: AnimalCenter
+    docker:
+      dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - deploy/k8s/adoption-cm.yaml
+    - deploy/k8s/adoption.yaml
+    - deploy/k8s/animal-center.yaml
+    - deploy/k8s/namespace.yaml
+    - deploy/k8s/rabbitmq.yaml
+    - deploy/k8s/sqldata.yaml

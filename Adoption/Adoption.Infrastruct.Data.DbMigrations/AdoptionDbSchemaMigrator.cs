@@ -9,7 +9,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace Adoption.Infrastruct.Data.DbMigrations
 {
-   public class AdoptionDbSchemaMigrator : ITransientDependency
+    public class AdoptionDbSchemaMigrator : ITransientDependency
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -26,7 +26,9 @@ namespace Adoption.Infrastruct.Data.DbMigrations
              * to properly get the connection string of the current tenant in the
              * current scope.
              */
-
+            //var context = _serviceProvider.GetRequiredService<AdoptionMigrationsDbContext>();
+            //var migration = context.GetInfrastructure().GetService<IMigrator>();
+            //await migration.MigrateAsync();
             await _serviceProvider
                 .GetRequiredService<AdoptionMigrationsDbContext>()
                 .Database

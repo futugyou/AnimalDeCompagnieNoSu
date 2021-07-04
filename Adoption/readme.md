@@ -77,7 +77,8 @@
 4. impl your own job logic impl AsyncBackgroundJob<T> and ITransientDependency, T is job parameter. Then abp runtime will identify Job automatically. 
 
 ### 9 Distributed Event Bus (rabbitmq)
-1. Install-Package Volo.Abp.EventBus.RabbitMQ to Adoption.Application.
+1. Install-Package Volo.Abp.EventBus.RabbitMQ to Adoption.Application. 
+*NOTES: WE DOT INSTALL TO Adoption.Domain, BECAUSE Adoption.DbMigrator REFERENCE Adoption.Domain BUT IT DON'T KOWN RABBITMQ!*
 2. Add AbpEventBusRabbitMqModule DependsOnAttribute to Module.
 3. (option) Configure AbpRabbitMqOptions. Same as Background Jobs.(ClientName is Queuename)
 4. Create Event Transfer Objects(Eto) With especial EventNameAttribute. It will be used as rabbitmq Routing key.
