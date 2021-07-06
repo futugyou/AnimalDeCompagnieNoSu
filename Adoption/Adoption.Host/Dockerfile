@@ -15,10 +15,10 @@ COPY ["Adoption.Application.Contracts/Adoption.Application.Contracts.csproj", "A
 RUN dotnet restore "Adoption.Host/Adoption.Host.csproj"
 COPY . .
 WORKDIR "/src/Adoption.Host"
-RUN dotnet build "Adoption.Host.csproj" -c Release -o /app/build
+# RUN dotnet build "Adoption.Host.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Adoption.Host.csproj" -c Release -o /app/publish
+RUN dotnet publish --no-restore "Adoption.Host.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

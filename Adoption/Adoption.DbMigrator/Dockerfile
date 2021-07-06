@@ -14,10 +14,10 @@ COPY ["Adoption.Domain.Shared/Adoption.Domain.Shared.csproj", "Adoption.Domain.S
 RUN dotnet restore "Adoption.DbMigrator/Adoption.DbMigrator.csproj"
 COPY . .
 WORKDIR "/src/Adoption.DbMigrator"
-RUN dotnet build "Adoption.DbMigrator.csproj" -c Release -o /app/build
+# RUN dotnet build "Adoption.DbMigrator.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Adoption.DbMigrator.csproj" -c Release -o /app/publish
+RUN dotnet publish --no-restore "Adoption.DbMigrator.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
