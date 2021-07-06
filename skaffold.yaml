@@ -4,6 +4,8 @@ metadata:
   name: animaldecompagnienosu
 build:
   local: {}
+  tagPolicy:
+    sha256: {}
   artifacts:
   - image: futugyousuzu/adoption
     context: Adoption
@@ -20,9 +22,40 @@ build:
 deploy:
   kubectl:
     manifests:
+    - deploy/k8s/namespace.yaml
     - deploy/k8s/adoption-cm.yaml
     - deploy/k8s/adoption.yaml
     - deploy/k8s/animal-center.yaml
-    - deploy/k8s/namespace.yaml
     - deploy/k8s/rabbitmq.yaml
     - deploy/k8s/sqldata.yaml
+portForward:
+- resourceType: service
+  resourceName: loki-grafana
+  namespace: animal
+  address: 0.0.0.0
+  port: 80
+  localPort: 30004 
+- resourceType: service
+  resourceName: rabbitmq
+  namespace: animal
+  address: 0.0.0.0
+  port: 5672
+  localPort: 30005 
+- resourceType: service
+  resourceName: sqldata
+  namespace: animal
+  address: 0.0.0.0
+  port: 3306
+  localPort: 30006 
+- resourceType: service
+  resourceName: adoption-api
+  namespace: animal
+  address: 0.0.0.0
+  port: 80
+  localPort: 30007 
+- resourceType: service
+  resourceName: animal-center
+  namespace: animal
+  address: 0.0.0.0
+  port: 80
+  localPort: 30008 
