@@ -22,19 +22,25 @@
 </PageHeader>
 <Tabs ActiveKeyChanged="OnTabChanged" TabPosition="@TabPosition.Top" Size="@TabSize.Large">
     <TabPane Key="1">
-        <Tab><Icon Type="line-chart" Theme="outline" />救助数量</Tab>
+        <TabTemplate>
+            <span><Icon Type="line-chart" Theme="outline" />救助数量</span>
+        </TabTemplate>
         <ChildContent>
             <StackedArea @ref="_rescueChart" TItem="ChartDataItem" Config="_rescueChartConfig" />
         </ChildContent>
     </TabPane>
     <TabPane Key="2">
-        <Tab><Icon Type="dot-chart" Theme="outline" />收养意向</Tab>
+        <TabTemplate>
+            <span><Icon Type="dot-chart" Theme="outline" />收养意向</span>
+        </TabTemplate>
         <ChildContent>
             <Funnel @ref="_funnelChart" TItem="ChartFunnelType" Config="_funnelConfig" />
         </ChildContent>
     </TabPane>
     <TabPane Key="3">
-        <Tab><Icon Type="crown" Theme="outline" />使用资源</Tab>
+        <TabTemplate>
+            <span><Icon Type="crown" Theme="outline" />使用资源</span>
+        </TabTemplate>
         <ChildContent>
             <Row>
                 <AntDesign.Col Span="12">
@@ -47,7 +53,9 @@
         </ChildContent>
     </TabPane>
     <TabPane Key="4">
-        <Tab><Icon Type="pie-chart" Theme="outline" />救助分类</Tab>
+        <TabTemplate>
+            <span><Icon Type="pie-chart" Theme="outline" />救助分类</span>
+        </TabTemplate>
         <ChildContent>
             <Row>
                 <AntDesign.Col Span="12">

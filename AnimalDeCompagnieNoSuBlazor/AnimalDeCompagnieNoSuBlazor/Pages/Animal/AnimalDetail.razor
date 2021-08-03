@@ -2,106 +2,104 @@
 @page "/animal/{id}"
 
 <Row Gutter="24">
-	<AntDesign.Col Span="6">
-		<Card>
-			<div class="col-detail">
-				<div class="box">
-					<img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" @onclick="OpenFaceChange" onerror="this.src='/images/none-image.png'" />
-					<Modal Visible="@uploadImageVisable"
-						   OnOk="@HandleOk"
-						   OnCancel="@HandleCancel">
-						<Upload Action="@uploadaction"
-								Accept="image/png, image/jpeg"
-								Headers="Headers"
-								Name="Avatar"
-								ListType="picture-card"
-								OnSingleCompleted="HandleChange"
-								Class="image-display-center">
-							<div>
-								<Icon Type="plus"></Icon>
-								<div className="ant-upload-text">上传</div>
-							</div>
-						</Upload>
-					</Modal>
-				</div>
-				<div className="name">@AnimalViewModel.Name</div>
-				<div>@AnimalViewModel.Idcard</div>
-			</div>
-		</Card>
-		<Card>
-			<Descriptions Bordered="false" Column="2" Layout="@DescriptionsLayout.Horizontal">
-				<DescriptionsItem Title="种类">@(AnimalViewModel.Type)</DescriptionsItem>
-				<DescriptionsItem Title="子类别">@(AnimalViewModel.SubType)</DescriptionsItem>
-				<DescriptionsItem Title="年龄">@(AnimalViewModel.Age) 岁</DescriptionsItem>
-				<DescriptionsItem Title="生日">@(AnimalViewModel.Birthday?.ToString("yyyy/MM/dd"))</DescriptionsItem>
-				@*<DescriptionsItem Title="简介" Class="animal-describe">@(AnimalViewModel.ShortDescribe)</DescriptionsItem>*@
-			</Descriptions>
-			<Divider Dashed />
-			<Statistic Title="疫苗状态" Value="@("已接种疫苗")" />
-			<Statistic Title="生育状态" Value="@("已绝育")" />
-			<Divider Dashed />
-			<div class="col-detail">
-				<Button Type="@ButtonType.Primary" OnClick="GotoUpdateInfoPage">信息修改</Button>
-			</div>
-		</Card>
-	</AntDesign.Col>
-	<AntDesign.Col Span="18">
-		<Card>
-			<Extra>
-				@if (addDataType == "photoes")
-						{
-	<Button Type="primary" >添加照片</Button>
-				}
-						else
-						{
-	<Button Type="primary" @onclick="_=>addEvent()">添加事件</Button>
-				}
-			</Extra>
-			<CardTabs>
-				<Tabs DefaultActiveKey="photoes" TabPosition="@TabPosition.Top" OnChange="OnTabChange">
-					<TabPane Key="photoes">
-						<Tab>
-							<span><Icon Type="picture" />照片墙</span>
-						</Tab>
-						<ChildContent>
-							<div style="overflow:hidden;position:relative;text-align:center">
-								@if (AnimalViewModel.Photoes.Count > 0)
-								{
-								<Carousel Effect="@CarouselEffect.Fade" Autoplay="TimeSpan.FromSeconds(4)">
-									@foreach (var photo in AnimalViewModel.Photoes)
-									{
-		 <CarouselSlick>
-		  <div class="image-display-center">
-		   <img class="img" style="display:initial" alt="cat" src="@(photo)" onerror="this.src='/images/none-image.png'" />
-											@*<Image Src="@(photo)" Fallback="/images/none-image.png" class="img" style="display:initial" />*@
-		  </div>
-		 </CarouselSlick>
-									}
-								</Carousel>
-								}
-							</div>
-
-
-						</ChildContent>
-					</TabPane>
-					<TabPane Key="events">
-						<Tab>
-							<span><Icon Type="schedule" />大事件</span>
-						</Tab>
-						<ChildContent>
-							<Timeline Mode="alternate">
-								@if (AnimalEvents != null)
-									{
-								@foreach (var @event in AnimalEvents)
-										{
-		<TimelineItem>@(@event.Event) @(@event.EventTime.ToString("yyyy/MM/dd HH:mm:ss"))</TimelineItem>
-								}
-								}
-							</Timeline>
-						</ChildContent>
-					</TabPane>
-				</Tabs>
-			</CardTabs>
-		</Card>
-	</AntDesign.Col>
+    <AntDesign.Col Span="6">
+        <Card>
+            <div class="col-detail">
+                <div class="box">
+                    <img alt="@AnimalViewModel.Name" src="@AnimalViewModel.Avatar" @onclick="OpenFaceChange" onerror="this.src='/images/none-image.png'" />
+                    <Modal Visible="@uploadImageVisable"
+                           OnOk="@HandleOk"
+                           OnCancel="@HandleCancel">
+                        <Upload Action="@uploadaction"
+                                Accept="image/png, image/jpeg"
+                                Headers="Headers"
+                                Name="Avatar"
+                                ListType="picture-card"
+                                OnSingleCompleted="HandleChange"
+                                Class="image-display-center">
+                            <div>
+                                <Icon Type="plus"></Icon>
+                                <div className="ant-upload-text">上传</div>
+                            </div>
+                        </Upload>
+                    </Modal>
+                </div>
+                <div className="name">@AnimalViewModel.Name</div>
+                <div>@AnimalViewModel.Idcard</div>
+            </div>
+        </Card>
+        <Card>
+            <Descriptions Bordered="false" Column="2" Layout="@DescriptionsLayout.Horizontal">
+                <DescriptionsItem Title="种类">@(AnimalViewModel.Type)</DescriptionsItem>
+                <DescriptionsItem Title="子类别">@(AnimalViewModel.SubType)</DescriptionsItem>
+                <DescriptionsItem Title="年龄">@(AnimalViewModel.Age) 岁</DescriptionsItem>
+                <DescriptionsItem Title="生日">@(AnimalViewModel.Birthday?.ToString("yyyy/MM/dd"))</DescriptionsItem>
+                @*<DescriptionsItem Title="简介" Class="animal-describe">@(AnimalViewModel.ShortDescribe)</DescriptionsItem>*@
+            </Descriptions>
+            <Divider Dashed />
+            <Statistic Title="疫苗状态" Value="@("已接种疫苗")" />
+            <Statistic Title="生育状态" Value="@("已绝育")" />
+            <Divider Dashed />
+            <div class="col-detail">
+                <Button Type="@ButtonType.Primary" OnClick="GotoUpdateInfoPage">信息修改</Button>
+            </div>
+        </Card>
+    </AntDesign.Col>
+    <AntDesign.Col Span="18">
+        <Card>
+            <Extra>
+                @if (addDataType == "photoes")
+                {
+                    <Button Type="primary">添加照片</Button>
+                }
+                else
+                {
+                    <Button Type="primary" @onclick="_=>addEvent()">添加事件</Button>
+                }
+            </Extra>
+            <CardTabs>
+                <Tabs DefaultActiveKey="photoes" TabPosition="@TabPosition.Top" OnChange="OnTabChange">
+                    <TabPane Key="photoes">
+                        <TabTemplate>
+                            <span><Icon Type="picture" />照片墙</span>
+                        </TabTemplate>
+                        <ChildContent>
+                            <div style="overflow:hidden;position:relative;text-align:center">
+                                @if (AnimalViewModel.Photoes.Count > 0)
+                                {
+                                    <Carousel Effect="@CarouselEffect.Fade" Autoplay="TimeSpan.FromSeconds(4)">
+                                        @foreach (var photo in AnimalViewModel.Photoes)
+                                        {
+                                            <CarouselSlick>
+                                                <div class="image-display-center">
+                                                    <img class="img" style="display:initial" alt="cat" src="@(photo)" onerror="this.src='/images/none-image.png'" />
+                                                    @*<Image Src="@(photo)" Fallback="/images/none-image.png" class="img" style="display:initial" />*@
+                                                </div>
+                                            </CarouselSlick>
+                                        }
+                                    </Carousel>
+                                }
+                            </div>
+                        </ChildContent>
+                    </TabPane>
+                    <TabPane Key="events">
+                        <TabTemplate>
+                            <span><Icon Type="schedule" />大事件</span>
+                        </TabTemplate>
+                        <ChildContent>
+                            <Timeline Mode="alternate">
+                                @if (AnimalEvents != null)
+                                {
+                                    @foreach (var @event in AnimalEvents)
+                                    {
+                                        <TimelineItem>@(@event.Event) @(@event.EventTime.ToString("yyyy/MM/dd HH:mm:ss"))</TimelineItem>
+                                    }
+                                }
+                            </Timeline>
+                        </ChildContent>
+                    </TabPane>
+                </Tabs>
+            </CardTabs>
+        </Card>
+    </AntDesign.Col>
 </Row> 
