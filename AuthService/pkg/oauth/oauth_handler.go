@@ -4,15 +4,25 @@ import (
 	"log"
 
 	"github.com/go-oauth2/oauth2/v4/errors"
+	"github.com/go-oauth2/oauth2/v4/generates"
 	"github.com/go-oauth2/oauth2/v4/manage"
 	"github.com/go-oauth2/oauth2/v4/models"
 	"github.com/go-oauth2/oauth2/v4/server"
 	"github.com/go-oauth2/oauth2/v4/store"
+	"github.com/golang-jwt/jwt"
 )
 
 func Init() *server.Server {
 	manager := manage.NewDefaultManager()
+	// set default code ttl
+	manager.SetAuthorizeCodeTokenCfg(manage.DefaultAuthorizeCodeTokenCfg)
+	// token store
 	manager.MustTokenStorage(store.NewMemoryTokenStore())
+
+	// generate jwt access token
+	manager.MapAccessGenerate(generates.NewJWTAccessGenerate("", []byte("00000000"), jwt.SigningMethodHS512))
+	manager.MapAccessGenerate(generates.NewAccessGenerate())
+
 	clientStore := store.NewClientStore()
 	clientStore.Set("000000", &models.Client{
 		ID:     "000000",
@@ -21,7 +31,15 @@ func Init() *server.Server {
 	})
 	manager.MapClientStorage(clientStore)
 
-	srv := server.NewDefaultServer(manager)
+	srv := server.NewServer(server.NewConfig(), manager)
+
+	srv.SetPasswordAuthorizationHandler(func(username, password string) (userID string, err error) {
+		if username == "test" && password == "test" {
+			userID = "test"
+		}
+		return
+	})
+
 	srv.SetAllowGetAccessRequest(true)
 	srv.SetClientInfoHandler(server.ClientFormHandler)
 
@@ -30,7 +48,7 @@ func Init() *server.Server {
 		return
 	})
 	srv.SetResponseErrorHandler(func(re *errors.Response) {
-		log.Println("Response Error: ", re.Error.Error())
+		log.Println("Response Error: ", re.Description)
 	})
 	return srv
 }
