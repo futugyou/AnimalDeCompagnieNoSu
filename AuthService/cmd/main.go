@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 
+	oauth "github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/oauth"
 	cron "github.com/robfig/cron/v3"
 )
 
@@ -14,9 +15,20 @@ const clientID = "clientID"
 const clientSecret = "clientSecret"
 
 func main() {
-	fs := http.FileServer(http.Dir("public"))
-	http.Handle("/", fs)
-	http.HandleFunc("/oauth/redirect", authRedirectHandleFunc)
+	// fs := http.FileServer(http.Dir("public"))
+	// http.Handle("/", fs)
+	// http.HandleFunc("/oauth/redirect", authRedirectHandleFunc)
+	srv := oauth.Init()
+	http.HandleFunc("/authorize", func(w http.ResponseWriter, r *http.Request) {
+		err := srv.HandleAuthorizeRequest(w, r)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		}
+	})
+
+	http.HandleFunc("/token", func(w http.ResponseWriter, r *http.Request) {
+		srv.HandleTokenRequest(w, r)
+	})
 	http.ListenAndServe(":8080", nil)
 	for i := 0; i < 2; i++ {
 		go func(i int) {
