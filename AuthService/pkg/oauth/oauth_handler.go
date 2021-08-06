@@ -1,6 +1,7 @@
 package oauth
 
 import (
+	"context"
 	"io"
 	"log"
 	"net/http"
@@ -17,7 +18,11 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func Init() *server.Server {
+type OAuthHandler struct {
+	*server.Server
+}
+
+func New() OAuthHandler {
 	manager := manage.NewDefaultManager()
 	// set default code ttl
 	manager.SetAuthorizeCodeTokenCfg(manage.DefaultAuthorizeCodeTokenCfg)
@@ -46,7 +51,9 @@ func Init() *server.Server {
 
 	srv.SetInternalErrorHandler(internalErrorHandler)
 	srv.SetResponseErrorHandler(responseErrorHandler)
-	return srv
+	return OAuthHandler{
+		Server: srv,
+	}
 }
 
 func responseErrorHandler(re *errors.Response) {
@@ -58,6 +65,7 @@ func internalErrorHandler(err error) (re *errors.Response) {
 	return
 }
 
+// get user id from username and password
 func passwordAuthorizationHandler(username, password string) (userID string, err error) {
 	if username == "test" && password == "test" {
 		userID = "test"
@@ -65,8 +73,8 @@ func passwordAuthorizationHandler(username, password string) (userID string, err
 	return
 }
 
+// get user id from request authorization
 func userAuthorizeHandler(w http.ResponseWriter, r *http.Request) (userID string, err error) {
-
 	_ = dumpRequest(os.Stdout, "userAuthorizeHandler", r) // Ignore the error
 
 	store, err := session.Start(r.Context(), w, r)
@@ -102,4 +110,62 @@ func dumpRequest(writer io.Writer, header string, r *http.Request) error {
 	writer.Write([]byte("\n" + header + ": \n"))
 	writer.Write(data)
 	return nil
+}
+
+func (handler *OAuthHandler) AuthorizeHandler(w http.ResponseWriter, r *http.Request) {
+	err := handler.HandleAuthorizeRequest(w, r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+}
+
+func (handler *OAuthHandler) TokenHandler(w http.ResponseWriter, r *http.Request) {
+	handler.HandleTokenRequest(w, r)
+}
+
+func (handler *OAuthHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
+	_ = dumpRequest(os.Stdout, "login", r)
+	store, err := session.Start(r.Context(), w, r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if r.Method == "POST" {
+		if r.Form == nil {
+			if err := r.ParseForm(); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+		}
+		store.Set("LoggedInUserID", r.Form.Get("username"))
+		store.Save()
+		w.Header().Set("Location", "/auth")
+		w.WriteHeader(http.StatusFound)
+		return
+	}
+}
+
+func (handler *OAuthHandler) AuthHandler(w http.ResponseWriter, r *http.Request) {
+	_ = dumpRequest(os.Stdout, "auth", r)
+	store, err := session.Start(context.TODO(), w, r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if _, ok := store.Get("LoggedInUserID"); ok {
+		w.Header().Set("Location", "/login")
+		w.WriteHeader(http.StatusFound)
+		return
+	}
+}
+
+func outputHTML(w http.ResponseWriter, req *http.Request, filename string) {
+	file, err := os.Open(filename)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	defer file.Close()
+	fi, _ := file.Stat()
+	http.ServeContent(w, req, file.Name(), fi.ModTime(), file)
 }

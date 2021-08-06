@@ -18,18 +18,14 @@ func main() {
 	// fs := http.FileServer(http.Dir("public"))
 	// http.Handle("/", fs)
 	// http.HandleFunc("/oauth/redirect", authRedirectHandleFunc)
-	srv := oauth.Init()
-	http.HandleFunc("/authorize", func(w http.ResponseWriter, r *http.Request) {
-		err := srv.HandleAuthorizeRequest(w, r)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-		}
-	})
-
-	http.HandleFunc("/token", func(w http.ResponseWriter, r *http.Request) {
-		srv.HandleTokenRequest(w, r)
-	})
+	srv := oauth.New()
+	http.HandleFunc("/authorize", srv.AuthorizeHandler)
+	http.HandleFunc("/token", srv.TokenHandler)
+	http.HandleFunc("/login", srv.LoginHandler)
+	http.HandleFunc("/auth", srv.AuthHandler)
 	http.ListenAndServe(":8080", nil)
+
+	// unuse code now
 	for i := 0; i < 2; i++ {
 		go func(i int) {
 			crontab := cron.New()
