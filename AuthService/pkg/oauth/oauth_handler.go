@@ -2,11 +2,14 @@ package oauth
 
 import (
 	"context"
+	"encoding/json"
 	"io"
 	"log"
 	"net/http"
 	"net/http/httputil"
+	"net/url"
 	"os"
+	"time"
 
 	"github.com/go-oauth2/oauth2/v4/errors"
 	"github.com/go-oauth2/oauth2/v4/generates"
@@ -113,14 +116,34 @@ func dumpRequest(writer io.Writer, header string, r *http.Request) error {
 }
 
 func (handler *OAuthHandler) AuthorizeHandler(w http.ResponseWriter, r *http.Request) {
-	err := handler.HandleAuthorizeRequest(w, r)
+	_ = dumpRequest(os.Stdout, "authoreze", r)
+
+	store, err := session.Start(r.Context(), w, r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	var form url.Values
+	if v, ok := store.Get("ReturnUri"); ok {
+		form = v.(url.Values)
+	}
+	r.Form = form
+	store.Delete("ReturnUri")
+	store.Save()
+
+	err = handler.HandleAuthorizeRequest(w, r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 }
 
 func (handler *OAuthHandler) TokenHandler(w http.ResponseWriter, r *http.Request) {
-	handler.HandleTokenRequest(w, r)
+	_ = dumpRequest(os.Stdout, "token", r)
+
+	err := handler.HandleTokenRequest(w, r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func (handler *OAuthHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -157,6 +180,24 @@ func (handler *OAuthHandler) AuthHandler(w http.ResponseWriter, r *http.Request)
 		w.WriteHeader(http.StatusFound)
 		return
 	}
+}
+
+func (handler *OAuthHandler) TestHandler(w http.ResponseWriter, r *http.Request) {
+	_ = dumpRequest(os.Stdout, "test", r)
+	token, err := handler.ValidationBearerToken(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	data := map[string]interface{}{
+		"expies_in": int64(time.Until(token.GetAccessCreateAt().Add(token.GetAccessExpiresIn())).Seconds()),
+		"client_id": token.GetClientID(),
+		"user_id":   token.GetUserID(),
+	}
+	e := json.NewEncoder(w)
+	e.SetIndent("", " ")
+	e.Encode(data)
 }
 
 func outputHTML(w http.ResponseWriter, req *http.Request, filename string) {
