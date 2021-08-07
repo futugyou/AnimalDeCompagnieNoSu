@@ -33,21 +33,25 @@ func New() OAuthHandler {
 	manager.MustTokenStorage(store.NewMemoryTokenStore())
 
 	// generate jwt access token
-	manager.MapAccessGenerate(generates.NewJWTAccessGenerate("", []byte("00000000"), jwt.SigningMethodHS512))
+	// kid is kid in jwt header
+	// key is 256-bit-secret
+	manager.MapAccessGenerate(generates.NewJWTAccessGenerate("thisiskid", []byte("thisiskey"), jwt.SigningMethodHS512))
+	// this is default
 	//manager.MapAccessGenerate(generates.NewAccessGenerate())
 
 	clientStore := store.NewClientStore()
-	clientStore.Set("000000", &models.Client{
-		ID:     "000000",
-		Secret: "999999",
-		Domain: "http://localhost:8080",
+	clientStore.Set("222222", &models.Client{
+		ID:     "222222",
+		Secret: "22222222",
+		Domain: "http://localhost:8082",
 	})
 	manager.MapClientStorage(clientStore)
 
 	srv := server.NewServer(server.NewConfig(), manager)
 
 	srv.SetAllowGetAccessRequest(true)
-	srv.SetClientInfoHandler(server.ClientFormHandler)
+	// default is ClientBasicHandler
+	//srv.SetClientInfoHandler(server.ClientFormHandler)
 
 	srv.SetPasswordAuthorizationHandler(passwordAuthorizationHandler)
 	srv.SetUserAuthorizationHandler(userAuthorizeHandler)
@@ -116,18 +120,20 @@ func dumpRequest(writer io.Writer, header string, r *http.Request) error {
 }
 
 func (handler *OAuthHandler) AuthorizeHandler(w http.ResponseWriter, r *http.Request) {
-	_ = dumpRequest(os.Stdout, "authoreze", r)
+	_ = dumpRequest(os.Stdout, "authorize", r)
 
 	store, err := session.Start(r.Context(), w, r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	var form url.Values
 	if v, ok := store.Get("ReturnUri"); ok {
 		form = v.(url.Values)
 	}
 	r.Form = form
+
 	store.Delete("ReturnUri")
 	store.Save()
 
@@ -153,6 +159,7 @@ func (handler *OAuthHandler) LoginHandler(w http.ResponseWriter, r *http.Request
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	if r.Method == "POST" {
 		if r.Form == nil {
 			if err := r.ParseForm(); err != nil {
@@ -162,10 +169,12 @@ func (handler *OAuthHandler) LoginHandler(w http.ResponseWriter, r *http.Request
 		}
 		store.Set("LoggedInUserID", r.Form.Get("username"))
 		store.Save()
+
 		w.Header().Set("Location", "/auth")
 		w.WriteHeader(http.StatusFound)
 		return
 	}
+	outputHTML(w, r, "public/login.html")
 }
 
 func (handler *OAuthHandler) AuthHandler(w http.ResponseWriter, r *http.Request) {
@@ -175,11 +184,14 @@ func (handler *OAuthHandler) AuthHandler(w http.ResponseWriter, r *http.Request)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if _, ok := store.Get("LoggedInUserID"); ok {
+
+	if _, ok := store.Get("LoggedInUserID"); !ok {
 		w.Header().Set("Location", "/login")
 		w.WriteHeader(http.StatusFound)
 		return
 	}
+
+	outputHTML(w, r, "public/auth.html")
 }
 
 func (handler *OAuthHandler) TestHandler(w http.ResponseWriter, r *http.Request) {

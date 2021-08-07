@@ -23,6 +23,7 @@ func main() {
 	http.HandleFunc("/token", srv.TokenHandler)
 	http.HandleFunc("/login", srv.LoginHandler)
 	http.HandleFunc("/auth", srv.AuthHandler)
+	http.HandleFunc("/test", srv.TestHandler)
 	http.ListenAndServe(":8080", nil)
 
 	// unuse code now
