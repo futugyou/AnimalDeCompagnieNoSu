@@ -11,3 +11,4 @@ AnimalCenter/fileupload
 */*/.vs/
 */*/bin/
 */*/obj/
+*.exe

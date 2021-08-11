@@ -3,7 +3,6 @@ package oauth
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -30,14 +29,7 @@ type OAuthHandler struct {
 }
 
 func New() OAuthHandler {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		config.DatabaseSetting.Host,
-		config.DatabaseSetting.Port,
-		config.DatabaseSetting.User,
-		config.DatabaseSetting.Password,
-		config.DatabaseSetting.Dbname,
-	)
-
+	psqlInfo := config.DatabaseSetting.ToConnectionString()
 	pgxConn, _ := pgx.Connect(context.TODO(), psqlInfo)
 	adapter := pgx4adapter.NewConn(pgxConn)
 	tokenStore, _ := pg.NewTokenStore(adapter, pg.WithTokenStoreGCInterval(time.Minute))
