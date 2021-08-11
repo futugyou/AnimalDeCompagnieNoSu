@@ -20,3 +20,9 @@ go get -u github.com/vgarvardt/go-pg-adapter/pgx4adapter
 go get -u github.com/jackc/pgx/v4/pgxpool
 go get -u github.com/jackc/pgx/v4
 ```
+
+### config
+```
+go get -u github.com/spf13/viper
+go get -u github.com/fsnotify/fsnotify
+```

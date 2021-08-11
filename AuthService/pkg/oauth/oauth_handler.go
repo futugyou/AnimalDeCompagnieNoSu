@@ -12,6 +12,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/config"
 	"github.com/go-oauth2/oauth2/v4/errors"
 	"github.com/go-oauth2/oauth2/v4/generates"
 	"github.com/go-oauth2/oauth2/v4/manage"
@@ -28,18 +29,14 @@ type OAuthHandler struct {
 	*server.Server
 }
 
-const (
-	host     = "192.168.15.136"
-	port     = 15432
-	user     = "postgres"
-	password = "123456"
-	dbname   = "go"
-)
-
 func New() OAuthHandler {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		config.DatabaseSetting.Host,
+		config.DatabaseSetting.Port,
+		config.DatabaseSetting.User,
+		config.DatabaseSetting.Password,
+		config.DatabaseSetting.Dbname,
+	)
 
 	pgxConn, _ := pgx.Connect(context.TODO(), psqlInfo)
 	adapter := pgx4adapter.NewConn(pgxConn)

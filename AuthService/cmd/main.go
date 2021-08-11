@@ -3,10 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
 
+	"github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/config"
 	oauth "github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/oauth"
 	cron "github.com/robfig/cron/v3"
 )
@@ -78,4 +80,24 @@ func authRedirectHandleFunc(w http.ResponseWriter, r *http.Request) {
 
 type OAuthAccessResponse struct {
 	AccessToken string `json:"access_token"`
+}
+
+func init() {
+	err := setConfig()
+	if err != nil {
+		log.Fatalf("config read error : %v", err)
+	}
+}
+
+func setConfig() error {
+	setting, err := config.NewSetting("./")
+	if err != nil {
+		return err
+	}
+
+	err = setting.ReadSection("Database", &config.DatabaseSetting)
+	if err != nil {
+		return err
+	}
+	return nil
 }

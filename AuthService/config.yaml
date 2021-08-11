@@ -1,0 +1,6 @@
+Database:
+    Host: 192.168.15.136
+    Port: 15432
+    User: postgres
+    Password: 123456
+    Dbname: go
