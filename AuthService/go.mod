@@ -13,6 +13,7 @@ require (
 	github.com/tidwall/gjson v1.8.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/tidwall/rtree v1.3.1 // indirect
+	github.com/vgarvardt/go-oauth2-pg/v4 v4.1.0 // indirect
 	golang.org/x/net v0.0.0-20210805182204-aaa1db679c0d // indirect
 	golang.org/x/oauth2 v0.0.0-20210805134026-6f1e6394065a // indirect
 	google.golang.org/appengine v1.6.7 // indirect
