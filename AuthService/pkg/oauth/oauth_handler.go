@@ -3,6 +3,7 @@ package oauth
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -16,22 +17,41 @@ import (
 	"github.com/go-oauth2/oauth2/v4/manage"
 	"github.com/go-oauth2/oauth2/v4/models"
 	"github.com/go-oauth2/oauth2/v4/server"
-	"github.com/go-oauth2/oauth2/v4/store"
 	"github.com/go-session/session"
 	"github.com/golang-jwt/jwt"
+	"github.com/jackc/pgx/v4"
+	pg "github.com/vgarvardt/go-oauth2-pg/v4"
+	"github.com/vgarvardt/go-pg-adapter/pgx4adapter"
 )
 
 type OAuthHandler struct {
 	*server.Server
 }
 
+const (
+	host     = "192.168.15.136"
+	port     = 15432
+	user     = "postgres"
+	password = "123456"
+	dbname   = "go"
+)
+
 func New() OAuthHandler {
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
+
+	pgxConn, _ := pgx.Connect(context.TODO(), psqlInfo)
+	adapter := pgx4adapter.NewConn(pgxConn)
+	tokenStore, _ := pg.NewTokenStore(adapter, pg.WithTokenStoreGCInterval(time.Minute))
+	defer tokenStore.Close()
+
 	manager := manage.NewDefaultManager()
 	// set default code ttl
 	manager.SetAuthorizeCodeTokenCfg(manage.DefaultAuthorizeCodeTokenCfg)
 	// token store
-	manager.MustTokenStorage(store.NewMemoryTokenStore())
-
+	//manager.MustTokenStorage(store.NewMemoryTokenStore())
+	manager.MapTokenStorage(tokenStore)
 	// generate jwt access token
 	// kid is kid in jwt header
 	// key is 256-bit-secret
@@ -39,12 +59,20 @@ func New() OAuthHandler {
 	// this is default
 	//manager.MapAccessGenerate(generates.NewAccessGenerate())
 
-	clientStore := store.NewClientStore()
-	clientStore.Set("222222", &models.Client{
+	//clientStore := store.NewClientStore()
+	// clientStore.Set("222222", &models.Client{
+	// 	ID:     "222222",
+	// 	Secret: "22222222",
+	// 	Domain: "http://localhost:8082",
+	// })
+
+	clientStore, _ := pg.NewClientStore(adapter)
+	client_info := models.Client{
 		ID:     "222222",
 		Secret: "22222222",
 		Domain: "http://localhost:8082",
-	})
+	}
+	clientStore.Create(&client_info)
 	manager.MapClientStorage(clientStore)
 
 	srv := server.NewServer(server.NewConfig(), manager)

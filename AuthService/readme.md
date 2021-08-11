@@ -16,4 +16,7 @@ go get github.com/go-session/session@v3.1.2+incompatible
 ### PostgreSQL 
 ```
 go get -u github.com/vgarvardt/go-oauth2-pg/v4
+go get -u github.com/vgarvardt/go-pg-adapter/pgx4adapter
+go get -u github.com/jackc/pgx/v4/pgxpool
+go get -u github.com/jackc/pgx/v4
 ```
