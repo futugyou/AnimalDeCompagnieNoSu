@@ -99,5 +99,11 @@ func setConfig() error {
 	if err != nil {
 		return err
 	}
+
+	err = setting.ReadSection("Client", &config.ClientSetting)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

@@ -15,7 +15,6 @@ import (
 	"github.com/go-oauth2/oauth2/v4/errors"
 	"github.com/go-oauth2/oauth2/v4/generates"
 	"github.com/go-oauth2/oauth2/v4/manage"
-	"github.com/go-oauth2/oauth2/v4/models"
 	"github.com/go-oauth2/oauth2/v4/server"
 	"github.com/go-session/session"
 	"github.com/golang-jwt/jwt"
@@ -36,32 +35,30 @@ func New() OAuthHandler {
 	defer tokenStore.Close()
 
 	manager := manage.NewDefaultManager()
-	// set default code ttl
-	manager.SetAuthorizeCodeTokenCfg(manage.DefaultAuthorizeCodeTokenCfg)
+	// this is default
+	// authorize code generate interface
+	// manager.MapAuthorizeGenerate(generates.NewAuthorizeGenerate())
+	// access code generate interface
+	// manager.MapAccessGenerate(generates.NewAccessGenerate())
+
 	// token store
 	//manager.MustTokenStorage(store.NewMemoryTokenStore())
 	manager.MapTokenStorage(tokenStore)
 	// generate jwt access token
-	// kid is kid in jwt header
-	// key is 256-bit-secret
+	// kid is kid in jwt header,  key is 256-bit-secret
 	manager.MapAccessGenerate(generates.NewJWTAccessGenerate("thisiskid", []byte("thisiskey"), jwt.SigningMethodHS512))
-	// this is default
-	//manager.MapAccessGenerate(generates.NewAccessGenerate())
 
-	//clientStore := store.NewClientStore()
-	// clientStore.Set("222222", &models.Client{
-	// 	ID:     "222222",
-	// 	Secret: "22222222",
-	// 	Domain: "http://localhost:8082",
-	// })
+	// set default authorize_code config
+	manager.SetAuthorizeCodeTokenCfg(manage.DefaultAuthorizeCodeTokenCfg)
 
 	clientStore, _ := pg.NewClientStore(adapter)
-	client_info := models.Client{
-		ID:     "222222",
-		Secret: "22222222",
-		Domain: "http://localhost:8082",
+
+	client_infos := config.ClientSetting
+
+	for _, client_info := range client_infos {
+		clientStore.Create(client_info)
 	}
-	clientStore.Create(&client_info)
+
 	manager.MapClientStorage(clientStore)
 
 	srv := server.NewServer(server.NewConfig(), manager)
