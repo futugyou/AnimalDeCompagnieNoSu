@@ -23,6 +23,7 @@ func (c *Client) GetDomain() string {
 func (c *Client) GetUserID() string {
 	return c.UserID
 }
+
 func (c *Client) GetScopes() []string {
 	return c.Scopes
 }

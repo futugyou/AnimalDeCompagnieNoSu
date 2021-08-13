@@ -12,6 +12,8 @@ import (
 	"time"
 
 	"github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/config"
+	inner_model "github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/oauth/models"
+	"github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/utils"
 	"github.com/go-oauth2/oauth2/v4/errors"
 	"github.com/go-oauth2/oauth2/v4/generates"
 	"github.com/go-oauth2/oauth2/v4/manage"
@@ -56,7 +58,9 @@ func New() OAuthHandler {
 	client_infos := config.ClientSetting
 
 	for _, client_info := range client_infos {
-		clientStore.Create(client_info)
+		c := inner_model.Client{}
+		utils.Map(client_info, &c)
+		clientStore.Create(&c)
 	}
 
 	manager.MapClientStorage(clientStore)
