@@ -26,3 +26,8 @@ go get -u github.com/jackc/pgx/v4
 go get -u github.com/spf13/viper
 go get -u github.com/fsnotify/fsnotify
 ```
+
+### automapper
+```
+go get -u github.com/petersunbag/coven
+```
