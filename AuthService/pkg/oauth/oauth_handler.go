@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/config"
+	inner_generates "github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/oauth/generates"
 	inner_model "github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/oauth/models"
 	"github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/utils"
 	"github.com/go-oauth2/oauth2/v4/errors"
@@ -49,7 +50,7 @@ func New() OAuthHandler {
 	// generate jwt access token
 	// kid is kid in jwt header,  key is 256-bit-secret
 	manager.MapAccessGenerate(generates.NewJWTAccessGenerate("thisiskid", []byte("thisiskey"), jwt.SigningMethodHS512))
-
+	manager.MapAuthorizeGenerate(inner_generates.NewCustomAuthorize())
 	// set default authorize_code config
 	manager.SetAuthorizeCodeTokenCfg(manage.DefaultAuthorizeCodeTokenCfg)
 
@@ -138,6 +139,12 @@ func dumpRequest(writer io.Writer, header string, r *http.Request) error {
 }
 
 func (handler *OAuthHandler) AuthorizeHandler(w http.ResponseWriter, r *http.Request) {
+	psqlInfo := config.DatabaseSetting.ToConnectionString()
+	pgxConn, _ := pgx.Connect(context.TODO(), psqlInfo)
+	adapter := pgx4adapter.NewConn(pgxConn)
+	tokenStore, _ := pg.NewTokenStore(adapter, pg.WithTokenStoreGCInterval(time.Minute))
+	defer tokenStore.Close()
+
 	_ = dumpRequest(os.Stdout, "authorize", r)
 
 	store, err := session.Start(r.Context(), w, r)
