@@ -15,6 +15,7 @@ import (
 	inner_generates "github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/oauth/generates"
 	inner_model "github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/oauth/models"
 	"github.com/futugyou/AnimalDeCompagnieNoSu/AuthService/pkg/utils"
+	"github.com/go-oauth2/oauth2/v4"
 	"github.com/go-oauth2/oauth2/v4/errors"
 	"github.com/go-oauth2/oauth2/v4/generates"
 	"github.com/go-oauth2/oauth2/v4/manage"
@@ -75,11 +76,20 @@ func New() OAuthHandler {
 	srv.SetPasswordAuthorizationHandler(passwordAuthorizationHandler)
 	srv.SetUserAuthorizationHandler(userAuthorizeHandler)
 
+	srv.SetExtensionFieldsHandler(extensionFieldsHandler)
 	srv.SetInternalErrorHandler(internalErrorHandler)
 	srv.SetResponseErrorHandler(responseErrorHandler)
 	return OAuthHandler{
 		Server: srv,
 	}
+}
+
+func extensionFieldsHandler(ti oauth2.TokenInfo) map[string]interface{} {
+	dic := map[string]interface{}{}
+	test := ti.GetScope()
+	log.Println("this is extension handler test :", test)
+	dic["test"] = test
+	return dic
 }
 
 func responseErrorHandler(re *errors.Response) {
