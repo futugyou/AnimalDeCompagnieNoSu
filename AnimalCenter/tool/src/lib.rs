@@ -1,6 +1,6 @@
 use crate::custom_error::CustomError;
 use chrono::{DateTime, Duration, NaiveDateTime, TimeZone, Utc};
-
+use std::str::FromStr;
 pub mod base64convert;
 pub mod custom_error;
 
@@ -23,5 +23,5 @@ pub fn getutcnowwithformat() -> DateTime<Utc> {
 
 #[allow(non_snake_case)]
 pub fn stringtoObjectId(str: &str) -> Result<bson::oid::ObjectId, CustomError> {
-    Ok(bson::oid::ObjectId::with_string(str)?)
+    Ok(bson::oid::ObjectId::from_str(str)?)
 }

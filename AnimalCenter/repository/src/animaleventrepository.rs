@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use bson::doc;
-use bson::{Bson, Document};
+use bson::{Bson};
 use entity::animaeventlentity::AnimalEventEntity;
 use futures::StreamExt;
 use infrastruct::context::dbcontext::{DBContext, IDbContext};
@@ -18,7 +18,7 @@ pub trait IAnimalEventRepository {
 
 #[derive(Debug)]
 pub struct AnimalEventRepository {
-    collection: mongodb::Collection,
+    collection: mongodb::Collection::<AnimalEventEntity>,
 }
 
 impl AnimalEventRepository {
@@ -36,8 +36,7 @@ impl AnimalEventRepository {
 impl IAnimalEventRepository for AnimalEventRepository {
     #[tracing::instrument(skip(self))]
     async fn add(&self, entity: AnimalEventEntity) -> Result<String, CustomError> {
-        let docs: Document = entity.into();
-        let result = self.collection.insert_one(docs, None).await?;
+        let result = self.collection.insert_one(entity, None).await?;
         tracing::info!("db insert_one result: {:#?}", result);
         if let Bson::ObjectId(oid) = result.inserted_id {
             return Ok(oid.to_hex());
@@ -68,7 +67,7 @@ impl IAnimalEventRepository for AnimalEventRepository {
         let mut cursor = self.collection.find(filter, find_options).await?;
         let mut animals = Vec::<AnimalEventEntity>::new();
         while let Some(result) = cursor.next().await {
-            animals.push(bson::from_bson(Bson::Document(result?))?);
+            animals.push(result?);
         }
         tracing::info!("findmany result: {:#?}", animals);
         Ok(animals)

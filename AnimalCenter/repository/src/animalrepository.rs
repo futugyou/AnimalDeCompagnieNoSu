@@ -26,7 +26,7 @@ pub trait IAnimalRepository {
 
 #[derive(Debug)]
 pub struct AnimalRepository {
-    collection: mongodb::Collection,
+    collection: mongodb::Collection::<AnimalEntity>,
 }
 
 impl AnimalRepository {
@@ -43,9 +43,8 @@ impl AnimalRepository {
 #[async_trait]
 impl IAnimalRepository for AnimalRepository {
     #[tracing::instrument(skip(self))]
-    async fn add(&self, entity: AnimalEntity) -> Result<String, CustomError> {
-        let docs: Document = (&entity).into();
-        let result = self.collection.insert_one(docs, None).await?;
+    async fn add(&self, entity: AnimalEntity) -> Result<String, CustomError> { 
+        let result = self.collection.insert_one(entity, None).await?;
         tracing::info!("db insert_one result: {:#?}", result);
         if let Bson::ObjectId(oid) = result.inserted_id {
             return Ok(oid.to_hex());
@@ -78,7 +77,7 @@ impl IAnimalRepository for AnimalRepository {
         let result = self.collection.find_one(filter, None).await?;
         let mut animal = AnimalEntity::new();
         if let Some(doc) = result {
-            animal = bson::from_bson(Bson::Document(doc))?;
+            animal = doc;
         }
         tracing::info!("findone result: {:#?}", animal);
         Ok(animal)
@@ -136,10 +135,10 @@ impl IAnimalRepository for AnimalRepository {
         filter: Document,
         pageing: Option<PageModel>,
     ) -> Result<Vec<AnimalEntity>, CustomError> {
-        let mut skip: i64 = 0;
+        let mut skip: u64 = 0;
         let mut limit: i64 = 0;
         if let Some(page) = pageing {
-            skip = page.pageindex * page.pagesize;
+            skip = (page.pageindex * page.pagesize) as u64;
             limit = page.pagesize;
         }
         let find_options = FindOptions::builder()
@@ -150,7 +149,7 @@ impl IAnimalRepository for AnimalRepository {
         let mut cursor = self.collection.find(filter, find_options).await?;
         let mut animals = Vec::<AnimalEntity>::new();
         while let Some(result) = cursor.next().await {
-            animals.push(bson::from_bson(Bson::Document(result?))?);
+            animals.push(result?);
         }
         tracing::info!("findmany result: {:#?}", animals);
         Ok(animals)

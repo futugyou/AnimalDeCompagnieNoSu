@@ -5,7 +5,7 @@ use tool::stringtoObjectId;
 
 use async_trait::async_trait;
 use bson::Bson;
-use bson::{doc, Document};
+use bson::{doc};
 use futures::StreamExt;
 use mongodb::options::FindOptions;
 
@@ -20,7 +20,7 @@ pub trait IFileRepository {
 
 #[derive(Debug)]
 pub struct FileRepository {
-    collection: mongodb::Collection,
+    collection: mongodb::Collection::<FileEntity>,
 }
 
 impl FileRepository {
@@ -38,13 +38,7 @@ impl FileRepository {
 impl IFileRepository for FileRepository {
     #[tracing::instrument(skip(self))]
     async fn add(&self, entity: FileEntity) -> Result<String, CustomError> {
-        let docs = doc! {
-                "name": entity.name,
-                "ext": entity.ext,
-                "base64src":entity.base64src,
-                "uploaddate":entity.uploaddate.unwrap() ,
-        };
-        let result = self.collection.insert_one(docs, None).await?;
+        let result = self.collection.insert_one(entity, None).await?;
         tracing::info!("db insert_one result: {:#?}", result);
         if let Bson::ObjectId(oid) = result.inserted_id {
             return Ok(oid.to_hex());
@@ -79,7 +73,7 @@ impl IFileRepository for FileRepository {
         let mut entity = FileEntity::default();
 
         if let Some(doc) = result {
-            entity = bson::from_bson(Bson::Document(doc))?;
+            entity = doc;
         }
         tracing::info!("findone result: {:#?}", entity);
         Ok(entity)
@@ -98,25 +92,14 @@ impl IFileRepository for FileRepository {
         let mut cursor = self.collection.find(filter, find_options).await?;
         let mut animals = Vec::<FileEntity>::new();
         while let Some(result) = cursor.next().await {
-            animals.push(bson::from_bson(Bson::Document(result?))?);
+            animals.push(result?);
         }
         tracing::info!("findmany result: {:#?}", animals);
         Ok(animals)
     }
 
     async fn addmany(&self, entitys: Vec<FileEntity>) -> Result<Vec<String>, CustomError> {
-        let docs = entitys
-            .into_iter()
-            .map(|entity| {
-                doc! {
-                        "name": entity.name,
-                        "ext": entity.ext,
-                        "base64src":entity.base64src,
-                        "uploaddate":  entity.uploaddate.unwrap(),
-                }
-            })
-            .collect::<Vec<Document>>();
-        let result = self.collection.insert_many(docs, None).await?;
+        let result = self.collection.insert_many(entitys, None).await?;
         tracing::info!("db insert_many result: {:#?}", result);
         if result.inserted_ids.len() > 0 {
             let ids = result

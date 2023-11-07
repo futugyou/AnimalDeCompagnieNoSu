@@ -20,7 +20,7 @@ pub trait IAnimalTypeRepository {
 
 #[derive(Debug)]
 pub struct AnimalTypeRepository {
-    collection: mongodb::Collection,
+    collection: mongodb::Collection::<AnimalTypeEntity>,
 }
 
 impl AnimalTypeRepository {
@@ -38,11 +38,7 @@ impl AnimalTypeRepository {
 impl IAnimalTypeRepository for AnimalTypeRepository {
     #[tracing::instrument(skip(self))]
     async fn add(&self, entity: AnimalTypeEntity) -> Result<String, CustomError> {
-        let docs = doc! {
-                "pid": entity.pid,
-                "type": entity.animal_type,
-        };
-        let result = self.collection.insert_one(docs, None).await?;
+        let result = self.collection.insert_one(entity, None).await?;
         tracing::info!("db insert_one result: {:#?}", result);
         if let Bson::ObjectId(oid) = result.inserted_id {
             return Ok(oid.to_hex());
@@ -75,7 +71,7 @@ impl IAnimalTypeRepository for AnimalTypeRepository {
         let mut animaltype = AnimalTypeEntity::new();
 
         if let Some(doc) = result {
-            animaltype = bson::from_bson(Bson::Document(doc))?;
+            animaltype = doc;
         }
         tracing::info!("findone result: {:#?}", animaltype);
         Ok(animaltype)
@@ -88,7 +84,7 @@ impl IAnimalTypeRepository for AnimalTypeRepository {
         let mut cursor = self.collection.find(filter, find_options).await?;
         let mut animaltypes = Vec::<AnimalTypeEntity>::new();
         while let Some(result) = cursor.next().await {
-            animaltypes.push(bson::from_bson(Bson::Document(result?))?);
+            animaltypes.push(result?);
         }
         tracing::info!("findmany result: {:#?}", animaltypes);
         Ok(animaltypes)

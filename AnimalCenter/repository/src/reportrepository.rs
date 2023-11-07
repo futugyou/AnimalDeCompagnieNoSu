@@ -34,7 +34,7 @@ impl IReportRepository for ReportRepository {
         &self,
         pipeline: Vec<Document>,
     ) -> Result<Vec<RescueEntity>, CustomError> {
-        let collection = self.context.collection(AnimalEntity::get_collection_name());
+        let collection = self.context.collection::<AnimalEntity>(AnimalEntity::get_collection_name());
         let mut cursor = collection.aggregate(pipeline, None).await?;
         let mut datas = Vec::<RescueEntity>::new();
         while let Some(result) = cursor.next().await {
