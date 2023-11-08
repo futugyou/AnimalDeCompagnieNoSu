@@ -11,7 +11,7 @@ serde = { version = "1.0.126", features = ["derive"] }
 async_once = "0.2.1"
 async-trait = "0.1.50"
 lazy_static = "1.4.0"
-config = "0.11.0"
+config = "0.13.3"
 lapin = "1.7.1"
 tracing = "0.1.40"
 tracing-futures = { version = "0.2.5", default-features = false }
