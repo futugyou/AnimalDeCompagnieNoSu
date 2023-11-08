@@ -16,7 +16,7 @@ actix-service = "2.0.2"
 async-graphql= { version = "4.0.1", features = ["apollo_tracing"] }
 async-graphql-actix-web = "2.8.5"
 dotenv = "0.15.0"
-futures = "0.3.15"
+futures = "0.3.29"
 
 opentelemetry = { version = "0.12", default-features = false, features = ["trace", "metrics","tokio-support"] }
 opentelemetry-jaeger = { version = "0.11"  }
