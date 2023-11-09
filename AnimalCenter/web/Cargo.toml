@@ -19,7 +19,7 @@ dotenv = "0.15.0"
 futures = "0.3.29"
 
 opentelemetry = { version = "0.12", default-features = false, features = ["trace", "metrics","tokio-support"] }
-opentelemetry-jaeger = { version = "0.11"  }
+opentelemetry-jaeger = { version = "0.20"  }
 actix-web-opentelemetry = {version = "0.15",features = ["metrics"]  }
 tracing = "0.1"
 tracing-opentelemetry = "0.11"
