@@ -19,6 +19,6 @@ config = "0.13.3"
 
 
 [dependencies.mongodb]
-version = "2.7.1"
+version = "2.8.0"
 default-features = false
 features = ["async-std-runtime"]
