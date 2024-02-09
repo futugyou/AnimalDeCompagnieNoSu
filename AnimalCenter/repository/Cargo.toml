@@ -19,6 +19,6 @@ model = { path= "../model" }
 tool = {path= "../tool" }
 
 [dependencies.mongodb]
-version = "2.7.1"
+version = "2.8.1"
 default-features = false
 features = ["async-std-runtime"]
