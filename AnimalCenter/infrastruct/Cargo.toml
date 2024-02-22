@@ -8,7 +8,7 @@ edition = "2018"
 
 [dependencies] 
 serde = { version = "1.0.126", features = ["derive"] }
-async_once = "0.2.1"
+async_once = "0.2.6"
 async-trait = "0.1.50"
 lazy_static = "1.4.0"
 config = "0.13.3"
