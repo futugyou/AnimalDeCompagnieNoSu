@@ -7,7 +7,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies] 
-serde = { version = "1.0.126", features = ["derive"] }
+serde = { version = "1.0.197", features = ["derive"] }
 async_once = "0.2.1"
 async-trait = "0.1.50"
 lazy_static = "1.4.0"
