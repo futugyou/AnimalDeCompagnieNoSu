@@ -3,7 +3,6 @@ name: .NET
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
     paths:
     - Adoption/**
     - .github/workflows/adoption.yml
@@ -16,7 +15,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -35,7 +33,26 @@ jobs:
        username: ${{ secrets.DOCKER_USERNAME }}
        password: ${{ secrets.DOCKER_PASSWORD }}     
        
+    - name: build migration image
+      if: github.ref_name != 'master'
+      uses: docker/build-push-action@v5
+      with:
+       push: false
+       tags: futugyousuzu/adoption-migration:latest
+       context: ./Adoption
+       file: ./Adoption/Adoption.DbMigrator/Dockerfile     
+       
+    - name: build adoption image
+      if: github.ref_name != 'master'
+      uses: docker/build-push-action@v5
+      with:
+       push: false
+       tags: futugyousuzu/adoption:latest
+       context: ./Adoption
+       file: ./Adoption/Adoption.Host/Dockerfile
+       
     - name: Push migration to Docker Hub
+      if: github.ref_name == 'master'
       uses: docker/build-push-action@v5
       with:
        push: true
@@ -44,6 +61,7 @@ jobs:
        file: ./Adoption/Adoption.DbMigrator/Dockerfile     
        
     - name: Push to Docker Hub
+      if: github.ref_name == 'master'
       uses: docker/build-push-action@v5
       with:
        push: true
