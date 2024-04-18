@@ -19,9 +19,9 @@ impl Config {
     }
 
     fn from_env() -> Result<Self, CustomError> {
-        let mut cfg = ::config::Config::new();
-        cfg.merge(::config::Environment::new())?;
-        Ok(cfg.try_into()?)
+        let builder = ::config::Config::builder().add_source(::config::Environment::default());
+        let app: Config = builder.build().unwrap().try_deserialize().unwrap();
+        Ok(app)
     }
 }
 impl IConfig for Config {}

@@ -7,13 +7,13 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-chrono = "0.4.21"
-rand = "0.8.3"
-async-trait = "0.1.50"
+chrono = "0.4.38"
+rand = "0.8.5"
+async-trait = "0.1.80"
 tracing = "0.1"
 tracing-futures = { version = "0.2.5", default-features = false }
 async-std = "1.12.0"
-serde_json = "1.0.108"
+serde_json = "1.0.116"
 cloudevents-sdk = "0.3.1"
 
 tool = {path= "../tool" }

@@ -1,4 +1,3 @@
-use async_graphql::validators::*;
 use async_graphql::*;
 
 use chrono::{DateTime, Utc};
@@ -6,11 +5,11 @@ use chrono::{DateTime, Utc};
 #[derive(Debug, InputObject)]
 pub struct AnimalUpdateRequest {
     pub id: String,
-    #[graphql(validator(and(StringMinLength(length = "2"), StringMaxLength(length = "20"))))]
+    #[graphql(default)]
     pub name: String,
-    #[graphql(validator(and(StringMinLength(length = "2"), StringMaxLength(length = "20"))))]
+    #[graphql(default)]
     pub animal_type: String,
-    #[graphql(validator(and(StringMinLength(length = "2"), StringMaxLength(length = "20"))))]
+    #[graphql(default)]
     pub sub_type: String,
     #[graphql(default)]
     pub birthday: Option<DateTime<Utc>>,
@@ -113,11 +112,11 @@ impl AnimalSearchResponse {
 
 #[derive(Debug, Default, InputObject)]
 pub struct AnimalInsertRequest {
-    #[graphql(validator(and(StringMinLength(length = "2"), StringMaxLength(length = "20"))))]
+    #[graphql(default)]
     pub name: String,
-    #[graphql(validator(and(StringMinLength(length = "2"), StringMaxLength(length = "20"))))]
+    #[graphql(default)]
     pub animal_type: String,
-    #[graphql(validator(and(StringMinLength(length = "2"), StringMaxLength(length = "20"))))]
+    #[graphql(default)]
     pub sub_type: String,
     #[graphql(default)]
     pub birthday: Option<DateTime<Utc>>,

@@ -1,7 +1,10 @@
+# actix
+
 https://actix.rs/docs/getting-started/
 
-##### git
-```
+## git
+
+```shell
 {user}/.cargo
 create config
 
@@ -12,8 +15,9 @@ replace-with = 'ustc'
 registry = "git://mirrors.ustc.edu.cn/crates.io-index"
 ```
 
-##### if git not support
-```
+## if git not support
+
+```shell
 {user}/.cargo
 create config
 
@@ -24,7 +28,15 @@ replace-with = 'ustc'
 registry = "http://mirrors.ustc.edu.cn/crates.io-index"
 ```
 
-##### docker
-```
+## docker
+
+```shell
 docker run  -p 8080:8080 -v /.env:/usr/bin/.env --name animal_center -d futugyousuzu/back_animal_center
+```
+
+## update package
+
+```shell
+cargo install -f cargo-edit
+cargo upgrade
 ```
