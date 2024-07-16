@@ -26,7 +26,7 @@ updates:
       abp:
         patterns:
         - "Volo.Abp*"
-  - package-ecosystem: "cargo" # See documentation for possible values
-    directory: "/AnimalCenter" # Location of package manifests
-    schedule:
-      interval: "daily" 
+  # - package-ecosystem: "cargo" # See documentation for possible values
+  #   directory: "/AnimalCenter" # Location of package manifests
+  #   schedule:
+  #     interval: "daily" 
