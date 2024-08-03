@@ -1,6 +1,6 @@
 # actix
 
-https://actix.rs/docs/getting-started/
+[actix doc](https://actix.rs/docs/getting-started/)
 
 ## git
 
