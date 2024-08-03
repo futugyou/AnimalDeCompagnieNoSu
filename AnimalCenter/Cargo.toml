@@ -1,12 +1,2 @@
 [workspace]
-members =[    
-    "web",
-    "model",
-    "serialize",
-    "entity",
-    "repository",
-    "service",
-    "tool",
-    "infrastruct",
-]
- 
+members = ["web"]
