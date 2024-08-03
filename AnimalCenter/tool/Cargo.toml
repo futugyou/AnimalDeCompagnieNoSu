@@ -1,0 +1,17 @@
+[package]
+name = "tool"
+version = "0.2.0"
+authors = ["futugyousuzu <17871902+futugyu@users.noreply.github.com>"]
+edition = "2021"
+
+[dependencies]
+rustc-serialize = "0.3.25"
+actix-web = "4"
+serde = { version = "1", features = ["derive"] }
+bson = "2"
+serde_json = "1"
+validator = "0.18"
+config = "0.14"
+lapin = "2"
+mongodb ="3"
+chrono = "0.4"

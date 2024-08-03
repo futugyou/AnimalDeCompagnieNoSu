@@ -2,7 +2,9 @@
 name = "animal_center"
 version = "0.2.0"
 authors = ["futugyousuzu <17871902+futugyu@users.noreply.github.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 actix-web = "4"
+
+tool = {path= "../tool" }

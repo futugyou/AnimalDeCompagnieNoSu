@@ -1,8 +1,11 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 
+use tool::*;
+
 #[get("/")]
 async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
+    let datetime = getdefaultdatetime();
+    HttpResponse::Ok().body(datetime.to_rfc3339())
 }
 
 #[post("/echo")]
