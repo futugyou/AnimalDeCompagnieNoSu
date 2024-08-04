@@ -315,6 +315,7 @@ name = "animal_center"
 version = "0.2.0"
 dependencies = [
  "actix-web",
+ "serialize",
  "tool",
 ]
 
@@ -2798,6 +2799,16 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "serialize"
+version = "0.2.0"
+dependencies = [
+ "chrono",
+ "serde",
+ "serde_json",
+ "tool",
 ]
 
 [[package]]
