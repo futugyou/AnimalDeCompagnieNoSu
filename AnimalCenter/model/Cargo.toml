@@ -1,0 +1,17 @@
+[package]
+name = "model"
+version = "0.2.0"
+authors = ["futugyousuzu <17871902+futugyu@users.noreply.github.com>"]
+edition = "2021"
+
+[dependencies]
+serde = "1"
+chrono = "0.4"
+validator = { version = "0.18", features = ["derive"] }
+actix-web = "4"
+bson = { version = "2", features = ["chrono-0_4"] }
+async-graphql = { version = "7", features = ["apollo_tracing"] }
+
+serialize = { path = "../serialize" }
+tool = { path = "../tool" }
+entity = { path = "../entity" }
