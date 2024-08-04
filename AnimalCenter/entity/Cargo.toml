@@ -1,0 +1,13 @@
+[package]
+name = "entity"
+version = "0.2.0"
+authors = ["futugyousuzu <17871902+futugyu@users.noreply.github.com>"]
+edition = "2021"
+
+[dependencies]
+serde = "1"
+chrono = "0.4"
+bson = { version = "2", features = ["chrono-0_4"] }
+
+serialize = { path = "../serialize" }
+tool = { path = "../tool" }

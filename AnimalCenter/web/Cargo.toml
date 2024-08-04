@@ -9,3 +9,4 @@ actix-web = "4"
 
 tool = {path= "../tool" }
 serialize = {path= "../serialize" }
+entity = {path= "../entity" }

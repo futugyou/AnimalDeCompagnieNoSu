@@ -315,6 +315,7 @@ name = "animal_center"
 version = "0.2.0"
 dependencies = [
  "actix-web",
+ "entity",
  "serialize",
  "tool",
 ]
@@ -686,6 +687,7 @@ dependencies = [
  "ahash",
  "base64 0.13.1",
  "bitvec",
+ "chrono",
  "hex",
  "indexmap",
  "js-sys",
@@ -1135,6 +1137,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b45de904aa0b010bce2ab45264d0631681847fa7b6f2eaa7dab7619943bc4f59"
 dependencies = [
  "cfg-if",
+]
+
+[[package]]
+name = "entity"
+version = "0.2.0"
+dependencies = [
+ "bson",
+ "chrono",
+ "serde",
+ "serialize",
+ "tool",
 ]
 
 [[package]]
