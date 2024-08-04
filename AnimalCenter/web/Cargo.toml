@@ -12,3 +12,4 @@ serialize = {path= "../serialize" }
 entity = {path= "../entity" }
 infrastruct = {path= "../infrastruct" }
 model = {path= "../model" }
+repository = {path= "../repository" }
