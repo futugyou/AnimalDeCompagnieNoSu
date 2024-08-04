@@ -1,0 +1,21 @@
+[package]
+name = "infrastruct"
+version = "0.2.0"
+authors = ["futugyousuzu <17871902+futugyu@users.noreply.github.com>"]
+edition = "2021"
+
+[dependencies]
+serde = "1"
+async_once = "0.2"
+async-trait = "0.1"
+lazy_static = "1.5"
+once_cell = "1"
+config = "0.14"
+lapin = "2.5"
+tracing = "0.1"
+tracing-futures = "0.2"
+cloudevents-sdk = "0.7"
+mongodb = "3"
+tokio = "1"
+
+tool = { path = "../tool" }
