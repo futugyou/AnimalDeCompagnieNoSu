@@ -44,14 +44,14 @@ RUN for member in $MEMBERS; do \
 COPY . .
 
 # Build the actual application
-RUN mv web/.env.template web/.env && cargo build --release
+RUN mv .env.template .env && cargo build --release
 
 # Use a smaller base image to run the application
 FROM debian:buster-slim
 
 # Copy the build results and .env file
 COPY --from=builder /app/target/release/animal_center /usr/bin/animal_center
-COPY --from=builder /app/web/.env /usr/bin/.env
+COPY --from=builder /app/.env /usr/bin/.env
 
 # Create upload directory
 RUN mkdir /usr/bin/fileupload
