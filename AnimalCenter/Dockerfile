@@ -13,13 +13,22 @@ RUN apt-get update && apt-get install -y pkg-config libssl-dev
 # Copy the workspace's Cargo.toml and Cargo.lock files
 COPY Cargo.toml Cargo.lock ./
 
+# Copy each crate's Cargo.toml file
+COPY entity/Cargo.toml entity/Cargo.toml
+COPY infrastruct/Cargo.toml infrastruct/Cargo.toml
+COPY model/Cargo.toml model/Cargo.toml
+COPY repository/Cargo.toml repository/Cargo.toml
+COPY serialize/Cargo.toml serialize/Cargo.toml
+COPY service/Cargo.toml service/Cargo.toml
+COPY tool/Cargo.toml tool/Cargo.toml
+COPY web/Cargo.toml web/Cargo.toml
+
 # Define a list of member crates
 ARG MEMBERS="entity infrastruct model repository serialize service tool web"
 
 # Copy each crate's Cargo.toml file and create a temporary src directory and lib.rs file for each member crate
 RUN for member in $MEMBERS; do \
     mkdir -p $member/src; \
-    cp -r $member/Cargo.toml $member/; \
     echo "fn main() {}" > $member/src/lib.rs; \
     done
 
