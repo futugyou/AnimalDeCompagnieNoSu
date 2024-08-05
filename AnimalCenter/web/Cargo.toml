@@ -10,6 +10,10 @@ actix-multipart = "0.7"
 futures = "0.3"
 sanitize-filename = "0.5"
 dotenv = "0.15"
+async-graphql= { version = "7", features = ["apollo_tracing"] }
+async-graphql-actix-web = "7"
+tokio = { version = "1", features = ["full"] }
+tokio-stream = "0.1"
 
 tool = {path= "../tool" }
 serialize = {path= "../serialize" }

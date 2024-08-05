@@ -1,10 +1,11 @@
 mod controller;
+mod graphql;
 mod route;
 
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 use dotenv::dotenv;
 
-use route::crudroute;
+use route::{crudroute,route_graphql};
 use tool::*;
 
 #[get("/")]
@@ -30,6 +31,7 @@ async fn main() -> std::io::Result<()> {
             .service(hello)
             .service(echo)
             .service(crudroute::bussisscope())
+            .service(route_graphql::graphqlscope())
             .route("/hey", web::get().to(manual_hello))
     })
     .bind(("127.0.0.1", 8080))?
