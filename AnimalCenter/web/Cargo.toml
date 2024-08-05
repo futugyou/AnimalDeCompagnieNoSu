@@ -13,3 +13,4 @@ entity = {path= "../entity" }
 infrastruct = {path= "../infrastruct" }
 model = {path= "../model" }
 repository = {path= "../repository" }
+service = {path= "../service" }
