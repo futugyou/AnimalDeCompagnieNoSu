@@ -1,5 +1,10 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+mod controller;
+mod route;
 
+use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use dotenv::dotenv;
+
+use route::crudroute;
 use tool::*;
 
 #[get("/")]
@@ -19,10 +24,12 @@ async fn manual_hello() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    dotenv().ok();
     HttpServer::new(|| {
         App::new()
             .service(hello)
             .service(echo)
+            .service(crudroute::bussisscope())
             .route("/hey", web::get().to(manual_hello))
     })
     .bind(("127.0.0.1", 8080))?

@@ -6,6 +6,10 @@ edition = "2021"
 
 [dependencies]
 actix-web = "4"
+actix-multipart = "0.7"
+futures = "0.3"
+sanitize-filename = "0.5"
+dotenv = "0.15"
 
 tool = {path= "../tool" }
 serialize = {path= "../serialize" }
