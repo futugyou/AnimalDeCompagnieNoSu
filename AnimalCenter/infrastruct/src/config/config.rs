@@ -6,6 +6,7 @@ pub trait IConfig {}
 #[derive(Deserialize)]
 pub struct Config {
     pub mongodb_uri: String,
+    pub table_name: String,
     pub api_key: String,
     pub api_value: String,
     pub amqp_addr: String,
