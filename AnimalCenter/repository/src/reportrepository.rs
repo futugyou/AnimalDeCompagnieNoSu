@@ -3,6 +3,7 @@ use bson::{Bson, Document};
 use entity::animalentity::AnimalEntity;
 use entity::rescueentity::*;
 use futures::StreamExt;
+use infrastruct::config::Config;
 use infrastruct::context::dbcontext::{DBContext, IDbContext};
 use tool::custom_error::*;
 
@@ -20,9 +21,11 @@ pub struct ReportRepository {
 
 impl ReportRepository {
     pub async fn new() -> Self {
+        let _config = Config::new();
+        let table_name = _config.table_name;
         let dbcontext = DBContext {};
         let dbclient = dbcontext.get_db_context().await.unwrap();
-        let context = dbclient.database("react-app");
+        let context = dbclient.database(&table_name);
         Self { context }
     }
 }
@@ -34,7 +37,9 @@ impl IReportRepository for ReportRepository {
         &self,
         pipeline: Vec<Document>,
     ) -> Result<Vec<RescueEntity>, CustomError> {
-        let collection = self.context.collection::<AnimalEntity>(AnimalEntity::get_collection_name());
+        let collection = self
+            .context
+            .collection::<AnimalEntity>(AnimalEntity::get_collection_name());
         let mut cursor = collection.aggregate(pipeline).await?;
         let mut datas = Vec::<RescueEntity>::new();
         while let Some(result) = cursor.next().await {

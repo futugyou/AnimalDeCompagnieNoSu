@@ -1,4 +1,5 @@
 use entity::animaltypeentity::AnimalTypeEntity;
+use infrastruct::config::Config;
 use infrastruct::context::dbcontext::{DBContext, IDbContext};
 use tool::custom_error::*;
 use tool::stringtoObjectId;
@@ -24,10 +25,12 @@ pub struct AnimalTypeRepository {
 
 impl AnimalTypeRepository {
     pub async fn new() -> Self {
+        let _config = Config::new();
+        let table_name = _config.table_name;
         let dbcontext = DBContext {};
         let dbclient = dbcontext.get_db_context().await.unwrap();
         let collection = dbclient
-            .database("react-app")
+            .database(&table_name)
             .collection(AnimalTypeEntity::get_collection_name());
         Self { collection }
     }
