@@ -12,3 +12,4 @@ AnimalCenter/***/fileupload
 */*/bin/
 */*/obj/
 *.exe
+*/Secrets*.toml

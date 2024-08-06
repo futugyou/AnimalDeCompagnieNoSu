@@ -418,6 +418,7 @@ version = "0.2.0"
 dependencies = [
  "actix-multipart",
  "actix-web",
+ "anyhow",
  "async-graphql",
  "async-graphql-actix-web",
  "dotenv",
