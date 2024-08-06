@@ -1,0 +1,24 @@
+name: Shuttle Deploy
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: shuttle-hq/deploy-action@main
+        with:
+          name: "animal-center"
+          deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+          secrets: |
+            mongodb_uri = '${{ secrets.MONGODB_URI }}'
+            table_name = '${{ secrets.TABLE_NAME }}'
+            api_key = '${{ secrets.API_KEY }}'
+            api_value = '${{ secrets.API_VALUE }}'
+            server_address = '${{ secrets.SERVER_ADDRESS }}'
+            amqp_addr = '${{ secrets.AMQP_ADDR }}'
+            file_upload_path = '${{ secrets.FILE_UPLOAD_PATH }}'
