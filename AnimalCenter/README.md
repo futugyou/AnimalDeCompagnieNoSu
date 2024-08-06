@@ -40,3 +40,13 @@ docker run  -p 8080:8080 -v /.env:/usr/bin/.env --name animal_center -d futugyou
 cargo install -f cargo-edit
 cargo upgrade
 ```
+
+## feature
+
+```shell
+cargo run --features actix
+cargo shuttle run
+
+cargo shuttle project start
+cargo shuttle deploy --allow-dirty
+```

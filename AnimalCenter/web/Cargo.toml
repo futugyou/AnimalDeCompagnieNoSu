@@ -4,21 +4,27 @@ version = "0.2.0"
 authors = ["futugyousuzu <17871902+futugyu@users.noreply.github.com>"]
 edition = "2021"
 
+[features]
+default = []
+actix = []
+
 [dependencies]
 actix-web = "4"
+shuttle-actix-web = "0.47"
+shuttle-runtime = "0.47"
 actix-multipart = "0.7"
 futures = "0.3"
 sanitize-filename = "0.5"
 dotenv = "0.15"
-async-graphql= { version = "7", features = ["apollo_tracing"] }
+async-graphql = { version = "7", features = ["apollo_tracing"] }
 async-graphql-actix-web = "7"
 tokio = { version = "1", features = ["full"] }
 tokio-stream = "0.1"
 
-tool = {path= "../tool" }
-serialize = {path= "../serialize" }
-entity = {path= "../entity" }
-infrastruct = {path= "../infrastruct" }
-model = {path= "../model" }
-repository = {path= "../repository" }
-service = {path= "../service" }
+tool = { path = "../tool" }
+serialize = { path = "../serialize" }
+entity = { path = "../entity" }
+infrastruct = { path = "../infrastruct" }
+model = { path = "../model" }
+repository = { path = "../repository" }
+service = { path = "../service" }
