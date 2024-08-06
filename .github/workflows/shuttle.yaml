@@ -14,6 +14,8 @@ jobs:
         with:
           name: "animal-center"
           deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+          working-directory: "AnimalCenter"
+          allow-dirty: "true"
           secrets: |
             mongodb_uri = '${{ secrets.MONGODB_URI }}'
             table_name = '${{ secrets.TABLE_NAME }}'
