@@ -3,18 +3,23 @@ name: Shuttle Deploy
 on:
   push:
     branches:
-      - master
+    - master
+    paths:
+    - AnimalCenter/**
+    - .github/workflows/animal_center.yml
+    - .github/workflows/shuttle.yml
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./AnimalCenter
     steps:
       - uses: shuttle-hq/deploy-action@main
         with:
-          name: "animal-center"
           deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
-          working-directory: "AnimalCenter"
+          working-directory: ${{env.working-directory}}
           allow-dirty: "true"
           secrets: |
             mongodb_uri = '${{ secrets.MONGODB_URI }}'

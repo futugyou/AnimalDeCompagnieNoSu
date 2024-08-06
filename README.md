@@ -7,5 +7,6 @@
 ![Docker Adoption Migration](https://img.shields.io/docker/automated/futugyousuzu/adoption-migration)
 ![Docker Animal Center](https://img.shields.io/docker/automated/futugyousuzu/back_animal_center)
 [![Markdownlint](https://github.com/futugyou/AnimalDeCompagnieNoSu/actions/workflows/markdownlint.yml/badge.svg)](https://github.com/futugyou/AnimalDeCompagnieNoSu/actions/workflows/markdownlint.yml)
+[![Shuttle Deploy](https://github.com/futugyou/AnimalDeCompagnieNoSu/actions/workflows/shuttle.yaml/badge.svg)](https://github.com/futugyou/AnimalDeCompagnieNoSu/actions/workflows/shuttle.yaml)
 
 ## [skaffold](https://skaffold.dev/docs/)
