@@ -41,12 +41,17 @@ cargo install -f cargo-edit
 cargo upgrade
 ```
 
+## shuttle
+
+```shell
+cargo install cargo-shuttle
+cargo shuttle project start
+cargo shuttle deploy --allow-dirty
+```
+
 ## feature
 
 ```shell
 cargo run --features actix
 cargo shuttle run
-
-cargo shuttle project start
-cargo shuttle deploy --allow-dirty
 ```
