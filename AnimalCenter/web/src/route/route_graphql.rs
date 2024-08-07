@@ -1,14 +1,36 @@
 use crate::graphql::AnimalSchema;
-use actix_web::HttpRequest;
-use async_graphql::Schema;
 
-use actix_web::{guard, Scope};
-use actix_web::{web, HttpResponse, Result};
-use async_graphql::http::{playground_source, GraphQLPlaygroundConfig};
+use actix_cors::Cors;
+use actix_web::{
+    body::MessageBody,
+    dev::{ServiceFactory, ServiceRequest, ServiceResponse},
+    guard, web, Error, HttpRequest, HttpResponse, Result, Scope,
+};
+use async_graphql::{
+    http::{playground_source, GraphQLPlaygroundConfig},
+    Schema,
+};
 use async_graphql_actix_web::{GraphQLRequest, GraphQLResponse, GraphQLSubscription};
 
-pub fn graphqlscope() -> Scope {
-    web::scope("/graphql").configure(playgroundroute)
+pub fn graphqlscope() -> Scope<
+    impl ServiceFactory<
+        ServiceRequest,
+        Response = ServiceResponse<impl MessageBody>,
+        Config = (),
+        InitError = (),
+        Error = Error,
+    >,
+> {
+    let cors = Cors::default()
+        // .send_wildcard()
+        // .allowed_origin("http://localhost:5000")
+        .allow_any_origin()
+        .allow_any_method()
+        .allow_any_header()
+        .supports_credentials()
+        .max_age(3600);
+
+    web::scope("/graphql").wrap(cors).configure(playgroundroute)
 }
 
 fn playgroundroute(cfg: &mut web::ServiceConfig) {

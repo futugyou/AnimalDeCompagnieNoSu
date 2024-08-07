@@ -1,13 +1,38 @@
 use crate::controller;
-use actix_web::{guard, web, Scope};
+
+use actix_cors::Cors;
+use actix_web::{
+    body::MessageBody,
+    dev::{ServiceFactory, ServiceRequest, ServiceResponse},
+    guard, web, Error, Scope,
+};
 
 use infrastruct::config::Config;
 
-pub fn bussisscope() -> Scope {
+pub fn bussisscope() -> Scope<
+    impl ServiceFactory<
+        ServiceRequest,
+        Response = ServiceResponse<impl MessageBody>,
+        Config = (),
+        InitError = (),
+        Error = Error,
+    >,
+> {
     let _config = Config::new();
     let apikey = _config.api_key;
     let apivalue = _config.api_value;
+
+    let cors = Cors::default()
+        // .send_wildcard()
+        // .allowed_origin("http://localhost:5000")
+        .allow_any_origin()
+        .allow_any_method()
+        .allow_any_header()
+        .supports_credentials()
+        .max_age(3600);
+
     web::scope("/api")
+        .wrap(cors)
         .guard(guard::fn_guard(move |req| {
             match req.head().headers.get(apikey.clone()) {
                 Some(value) => value == apivalue.as_str(),
