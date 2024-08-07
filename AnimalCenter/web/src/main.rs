@@ -1,3 +1,4 @@
+mod actix_config;
 mod controller;
 mod graphql;
 mod route;
@@ -10,7 +11,11 @@ mod actix_support;
 
 #[cfg(not(feature = "actix"))]
 #[shuttle_runtime::main]
-async fn main(#[shuttle_runtime::Secrets] secrets: shuttle_runtime::SecretStore) -> shuttle_actix_web::ShuttleActixWeb<impl FnOnce(&mut actix_web::web::ServiceConfig) + Send + Clone + 'static>  {
+async fn main(
+    #[shuttle_runtime::Secrets] secrets: shuttle_runtime::SecretStore,
+) -> shuttle_actix_web::ShuttleActixWeb<
+    impl FnOnce(&mut actix_web::web::ServiceConfig) + Send + Clone + 'static,
+> {
     shuttle_support::run_shuttle(secrets).await
 }
 
