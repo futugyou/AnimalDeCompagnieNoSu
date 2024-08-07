@@ -1,4 +1,4 @@
-use crate::graphql::AnimalSchema;
+use crate::graphql::{AnimalSchema, MutationRoot, QueryRoot, SubscriptionRoot};
 
 use actix_cors::Cors;
 use actix_web::{
@@ -29,8 +29,12 @@ pub fn graphqlscope() -> Scope<
         .allow_any_header()
         .supports_credentials()
         .max_age(3600);
+    let schema = Schema::new(QueryRoot {}, MutationRoot {}, SubscriptionRoot {});
 
-    web::scope("/graphql").wrap(cors).configure(playgroundroute)
+    web::scope("/graphql")
+        .app_data(web::Data::new(schema))
+        .wrap(cors)
+        .configure(playgroundroute)
 }
 
 fn playgroundroute(cfg: &mut web::ServiceConfig) {
