@@ -11,7 +11,6 @@ pub struct Config {
     pub api_value: String,
     pub amqp_addr: String,
     pub server_address: String,
-    pub file_upload_path: String,
 }
 
 impl Config {
