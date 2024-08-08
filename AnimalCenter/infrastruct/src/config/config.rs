@@ -11,6 +11,7 @@ pub struct Config {
     pub api_value: String,
     pub amqp_addr: String,
     pub server_address: String,
+    pub honeycomb_api_key: String,
 }
 
 impl Config {

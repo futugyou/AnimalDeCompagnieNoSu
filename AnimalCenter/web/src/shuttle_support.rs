@@ -15,6 +15,7 @@ pub async fn run_shuttle(
         .get("server_address")
         .context("secret was not found")?;
     let amqp_addr = secrets.get("amqp_addr").context("secret was not found")?;
+    let honeycomb_api_key = secrets.get("honeycomb_api_key").context("secret was not found")?;
 
     std::env::set_var("mongodb_uri", mongodb_uri);
     std::env::set_var("table_name", table_name);
@@ -22,6 +23,7 @@ pub async fn run_shuttle(
     std::env::set_var("api_value", api_value);
     std::env::set_var("server_address", server_address);
     std::env::set_var("amqp_addr", amqp_addr);
+    std::env::set_var("honeycomb_api_key", honeycomb_api_key);
 
     let config = move |cfg: &mut ServiceConfig| {
         actix_config::create_config(cfg);

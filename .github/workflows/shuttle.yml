@@ -29,3 +29,4 @@ jobs:
             server_address = '${{ secrets.SERVER_ADDRESS }}'
             amqp_addr = '${{ secrets.AMQP_ADDR }}'
             file_upload_path = '${{ secrets.FILE_UPLOAD_PATH }}'
+            honeycomb_api_key = '${{ secrets.HONEYCOMB_API_KEY }}'
