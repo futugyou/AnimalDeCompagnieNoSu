@@ -23,6 +23,23 @@ tokio = { version = "1", features = ["full"] }
 tokio-stream = "0.1"
 anyhow = "1"
 
+metrics = "0.23"
+metrics-exporter-prometheus = { version = "0.15.3", default-features = false }
+opentelemetry = "0.24.0"
+opentelemetry_sdk = { version = "0.24.1", features = [
+    "rt-tokio-current-thread",
+] }
+opentelemetry-otlp = { version = "0.17.0", features = ["tls-roots"] }
+tonic = "0.12.1"
+tracing-actix-web = { version = "0.7.11", features = [
+    "opentelemetry_0_23",
+    "uuid_v7",
+] }
+tracing-opentelemetry = "0.25.0"
+tracing-bunyan-formatter = "0.3.9"
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter", "json"] }
+
 tool = { path = "../tool" }
 serialize = { path = "../serialize" }
 entity = { path = "../entity" }

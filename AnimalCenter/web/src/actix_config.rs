@@ -2,6 +2,7 @@ use actix_web::web::ServiceConfig;
 use actix_web::{HttpResponse, Responder};
 use dotenv::dotenv;
 
+use crate::observable;
 use crate::route::{crudroute, route_graphql};
 
 async fn health_check() -> impl Responder {
@@ -10,6 +11,8 @@ async fn health_check() -> impl Responder {
 
 pub fn create_config(cfg: &mut ServiceConfig) {
     dotenv().ok();
+
+    observable::logging::init();
 
     cfg.route("/healthz", actix_web::web::get().to(health_check));
     cfg.service(crudroute::bussisscope());

@@ -1,6 +1,7 @@
 mod actix_config;
 mod controller;
 mod graphql;
+mod observable;
 mod route;
 
 #[cfg(not(feature = "actix"))]
