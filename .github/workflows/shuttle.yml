@@ -7,7 +7,7 @@ on:
     paths:
     - AnimalCenter/**
     - .github/workflows/animal_center.yml
-    
+    - .github/workflows/shuttle.yml    
   pull_request:
     branches: [ master ]
     paths:
