@@ -4,9 +4,9 @@ use actix_web::{
     body::MessageBody,
     dev::{ServiceRequest, ServiceResponse},
     http::header::{HeaderName, HeaderValue},
-    HttpMessage,
+    middleware::Next,
+    Error, HttpMessage,
 };
-use actix_web_lab::middleware::Next;
 use tracing_actix_web::RequestId;
 
 use crate::observable::metric_names::*;
@@ -14,7 +14,7 @@ use crate::observable::metric_names::*;
 pub async fn request_telemetry(
     req: ServiceRequest,
     next: Next<impl MessageBody>,
-) -> actix_web::Result<ServiceResponse<impl MessageBody>> {
+) -> actix_web::Result<ServiceResponse<impl MessageBody>, Error> {
     let now = Instant::now();
 
     metrics::gauge!(GAUGE_HTTP_CONCURRENT_REQUESTS).increment(1);
