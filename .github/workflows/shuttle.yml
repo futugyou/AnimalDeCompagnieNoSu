@@ -1,14 +1,19 @@
 name: Shuttle Deploy
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-    - master
+    branches: [ master ]
+    paths:
+    - AnimalCenter/**
+    - .github/workflows/animal_center.yml
+    
+  pull_request:
+    branches: [ master ]
     paths:
     - AnimalCenter/**
     - .github/workflows/animal_center.yml
     - .github/workflows/shuttle.yml
-  workflow_dispatch:
 
 jobs:
   deploy:
