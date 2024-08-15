@@ -1,0 +1,37 @@
+name: .NET Blazor
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+    - AnimalDeCompagnieNoSuBlazor/**
+    - .github/workflows/adoption-web.yml
+    
+  pull_request:
+    branches: [ master ]
+    paths:
+    - AnimalDeCompagnieNoSuBlazor/**
+    - .github/workflows/adoption-web.yml
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./AnimalDeCompagnieNoSuBlazor
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ${{env.working-directory}}
+    - name: Build
+      run: dotnet build --no-restore
+      working-directory: ${{env.working-directory}}
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      working-directory: ${{env.working-directory}}
