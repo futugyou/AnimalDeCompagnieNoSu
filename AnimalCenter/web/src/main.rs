@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 mod actix_config;
 mod controller;
 mod graphql;

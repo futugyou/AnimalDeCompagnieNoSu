@@ -13,14 +13,15 @@ async fn health_check() -> impl Responder {
 pub fn create_config(cfg: &mut ServiceConfig) {
     dotenv().ok();
 
-    observable::logging::init();
-    let handle = observable::prometheus::init();
+    // observable::logging::init();
+    // let handle = observable::prometheus::init();
 
-    cfg.app_data(ThinData(handle.clone()));
+    // cfg.app_data(ThinData(handle.clone()));
 
     cfg.route("/healthz", actix_web::web::get().to(health_check));
-    cfg.service(metrics);
-    cfg.service(crudroute::bussisscope().wrap(from_fn(observable::middleware::request_telemetry)));
+    // cfg.service(metrics);
+    // cfg.service(crudroute::bussisscope().wrap(from_fn(observable::middleware::request_telemetry)));
+    cfg.service(crudroute::bussisscope());
     cfg.service(route_graphql::graphqlscope());
 }
 
