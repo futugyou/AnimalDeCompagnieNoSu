@@ -25,7 +25,7 @@ anyhow = "1"
 
 metrics = "0.23"
 metrics-exporter-prometheus = { version = "0.15.3", default-features = false }
-opentelemetry = "0.24.0"
+opentelemetry = "0.25.0"
 opentelemetry_sdk = { version = "0.24.1", features = [
     "rt-tokio-current-thread",
 ] }
