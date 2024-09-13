@@ -29,4 +29,20 @@ updates:
   - package-ecosystem: "cargo" # See documentation for possible values
     directory: "/AnimalCenter" # Location of package manifests
     schedule:
-      interval: "daily" 
+      interval: "daily"
+    groups:
+      actix:
+        patterns:
+        - "actix*"
+      graphql:
+        patterns:
+        - "async-graphql*"
+      metrics:
+        patterns:
+        - "metrics*"
+      opentelemetry:
+        patterns:
+        - "opentelemetry*"
+      tracing:
+        patterns:
+        - "tracing*"
