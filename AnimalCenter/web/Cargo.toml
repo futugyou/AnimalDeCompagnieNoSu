@@ -31,7 +31,7 @@ opentelemetry_sdk = { version = "0.25.0", features = [
 ] }
 opentelemetry-otlp = { version = "0.25.0", features = ["tls-roots"] }
 tonic = "0.12.3"
-tracing-actix-web = { version = "0.7.12", features = [
+tracing-actix-web = { version = "0.7.13", features = [
     "opentelemetry_0_23",
     "uuid_v7",
 ] }
