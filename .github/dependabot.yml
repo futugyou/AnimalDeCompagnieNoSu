@@ -46,3 +46,6 @@ updates:
       tracing:
         patterns:
         - "tracing*"
+      shuttle:
+        patterns:
+        - "shuttle*"
