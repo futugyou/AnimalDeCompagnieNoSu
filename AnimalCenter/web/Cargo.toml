@@ -23,8 +23,8 @@ tokio = { version = "1", features = ["full"] }
 tokio-stream = "0.1"
 anyhow = "1"
 
-metrics = "0.23"
-metrics-exporter-prometheus = { version = "0.15.3", default-features = false }
+metrics = "0.24"
+metrics-exporter-prometheus = { version = "0.16.0", default-features = false }
 opentelemetry = "0.25.0"
 opentelemetry_sdk = { version = "0.25.0", features = [
     "rt-tokio-current-thread",
