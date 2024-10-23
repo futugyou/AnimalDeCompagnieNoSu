@@ -37,14 +37,10 @@ updates:
       graphql:
         patterns:
         - "async-graphql*"
-      metrics:
-        patterns:
-        - "metrics*"
       opentelemetry:
         patterns:
         - "opentelemetry*"
-      tracing:
-        patterns:
+        - "metrics*"
         - "tracing*"
       shuttle:
         patterns:
