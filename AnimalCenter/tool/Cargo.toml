@@ -11,7 +11,7 @@ serde = { version = "1", features = ["derive"] }
 bson = "2"
 serde_json = "1"
 validator = "0.19"
-config = "0.14"
+config = "0.15"
 lapin = "2"
 mongodb ="3"
 chrono = "0.4"
