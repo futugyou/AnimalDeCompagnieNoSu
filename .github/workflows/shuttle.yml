@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: shuttle-hq/deploy-action@v2
         with:
-          deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+          shuttle-api-key: ${{ secrets.SHUTTLE_API_KEY }}
           working-directory: ${{env.working-directory}}
           project-id: proj_01JFZ1JKVQTNJQ8R05BKV71Y9Y
           extra-args: --allow-dirty --debug
