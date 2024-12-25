@@ -21,11 +21,12 @@ jobs:
     env:
       working-directory: ./AnimalCenter
     steps:
-      - uses: shuttle-hq/deploy-action@main
+      - uses: shuttle-hq/deploy-action@v2
         with:
           deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+          project-id: proj_01JFZ1JKVQTNJQ8R05BKV71Y9Y
           working-directory: ${{env.working-directory}}
-          allow-dirty: "true"
+          extra-args: --allow-dirty --debug
           secrets: |
             mongodb_uri = '${{ secrets.MONGODB_URI }}'
             table_name = '${{ secrets.TABLE_NAME }}'
