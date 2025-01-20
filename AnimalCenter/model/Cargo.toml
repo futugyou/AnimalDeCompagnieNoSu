@@ -7,7 +7,7 @@ edition = "2021"
 [dependencies]
 serde = "1"
 chrono = "0.4"
-validator = { version = "0.19", features = ["derive"] }
+validator = { version = "0.20", features = ["derive"] }
 actix-web = "4"
 bson = { version = "2", features = ["chrono-0_4"] }
 async-graphql = { version = "7", features = ["apollo_tracing"] }
