@@ -10,7 +10,7 @@ actix-web = "4"
 serde = { version = "1", features = ["derive"] }
 bson = "2"
 serde_json = "1"
-validator = "0.19"
+validator = "0.20"
 config = "0.15"
 lapin = "2"
 mongodb ="3"
