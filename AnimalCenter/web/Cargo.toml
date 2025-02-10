@@ -25,11 +25,11 @@ anyhow = "1"
 
 metrics = "0.24"
 metrics-exporter-prometheus = { version = "0.16.2", default-features = false }
-opentelemetry = "0.27.1"
-opentelemetry_sdk = { version = "0.27.1", features = [
+opentelemetry = "0.28.0"
+opentelemetry_sdk = { version = "0.28.0", features = [
     "rt-tokio-current-thread",
 ] }
-opentelemetry-otlp = { version = "0.27.0", features = ["tls-roots"] }
+opentelemetry-otlp = { version = "0.28.0", features = ["tls-roots"] }
 tonic = "0.12.3"
 tracing-actix-web = { version = "0.7.15", features = [
     "opentelemetry_0_23",
