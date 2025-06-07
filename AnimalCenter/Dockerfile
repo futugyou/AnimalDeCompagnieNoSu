@@ -1,4 +1,4 @@
-FROM rust:1.83-slim-bullseye AS base
+FROM rust:1.87-slim-bullseye AS base
 ENV PKG_CONFIG_ALLOW_CROSS=1
 
 WORKDIR /app/animal_center
@@ -7,7 +7,7 @@ COPY . .
 RUN mv .env.temp .env
 RUN cargo build --release
 
-FROM rust:1.83-slim-bullseye
+FROM rust:1.87-slim-bullseye
 COPY --from=base /app/animal_center/target/release/animal_center /usr/bin/animal_center
 COPY --from=base /app/animal_center/.env /usr/bin/.env
 RUN mkdir ./usr/bin/fileupload
