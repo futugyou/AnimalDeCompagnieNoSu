@@ -131,7 +131,7 @@ impl IAnimalService for AnimalService {
                     "{}-{}-{:>04}",
                     &entity.animal_type,
                     Utc::now().format("%Y%m%d-%H%M%S"),
-                    rand::thread_rng().gen_range(0001..9999)
+                    rand::rng().random_range(1..=9999)
                 )
                 .as_str()
                 .to_ascii_uppercase();
