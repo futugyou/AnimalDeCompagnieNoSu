@@ -45,7 +45,7 @@ impl IStaticfileService for StaticfileService {
         filename = format!(
             "{}-{:>04}-{}",
             Utc::now().format("%Y%m%d-%H%M%S"),
-            rand::thread_rng().gen_range(0001..9999),
+            rand::rng().random_range(0001..9999),
             filename
         );
 
