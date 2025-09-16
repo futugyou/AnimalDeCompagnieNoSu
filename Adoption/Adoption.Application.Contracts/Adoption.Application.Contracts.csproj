@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Volo.Abp.AspNetCore" Version="9.3.3" />
     <ProjectReference Include="..\Adoption.Domain.Shared\Adoption.Domain.Shared.csproj" />
   </ItemGroup>
 </Project>
