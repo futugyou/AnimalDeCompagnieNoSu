@@ -12,6 +12,8 @@ COPY ["Adoption.Infrastruct.Data.DbMigrations/Adoption.Infrastruct.Data.DbMigrat
 COPY ["Adoption.Infrastruct.Data/Adoption.Infrastruct.Data.csproj", "Adoption.Infrastruct.Data/"]
 COPY ["Adoption.Domain/Adoption.Domain.csproj", "Adoption.Domain/"]
 COPY ["Adoption.Domain.Shared/Adoption.Domain.Shared.csproj", "Adoption.Domain.Shared/"]
+COPY ["Directory.Build.props", "./"]
+COPY ["Directory.Packages.props", "./"]
 RUN dotnet restore "Adoption.DbMigrator/Adoption.DbMigrator.csproj"
 COPY . .
 WORKDIR "/src/Adoption.DbMigrator"

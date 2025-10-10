@@ -13,6 +13,8 @@ COPY ["Adoption.Infrastruct.Data/Adoption.Infrastruct.Data.csproj", "Adoption.In
 COPY ["Adoption.Domain/Adoption.Domain.csproj", "Adoption.Domain/"]
 COPY ["Adoption.Domain.Shared/Adoption.Domain.Shared.csproj", "Adoption.Domain.Shared/"]
 COPY ["Adoption.Application.Contracts/Adoption.Application.Contracts.csproj", "Adoption.Application.Contracts/"]
+COPY ["Directory.Build.props", "./"]
+COPY ["Directory.Packages.props", "./"]
 RUN dotnet restore "Adoption.Host/Adoption.Host.csproj"
 COPY . .
 WORKDIR "/src/Adoption.Host"

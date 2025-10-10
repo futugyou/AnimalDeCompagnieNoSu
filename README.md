@@ -9,4 +9,11 @@
 [![Markdownlint](https://github.com/futugyou/AnimalDeCompagnieNoSu/actions/workflows/markdownlint.yml/badge.svg)](https://github.com/futugyou/AnimalDeCompagnieNoSu/actions/workflows/markdownlint.yml)
 [![Shuttle Deploy](https://github.com/futugyou/AnimalDeCompagnieNoSu/actions/workflows/shuttle.yml/badge.svg)](https://github.com/futugyou/AnimalDeCompagnieNoSu/actions/workflows/shuttle.yml)
 
-## [skaffold](https://skaffold.dev/docs/)
+## Docker
+
+```sh
+docker build -t futugyousuzu/adoption-migration:latest -f ./Adoption/Adoption.DbMigrator/Dockerfile ./Adoption
+docker build -t futugyousuzu/adoption:latest -f ./Adoption/Adoption.Host/Dockerfile ./Adoption
+
+docker build -t futugyousuzu/back_animal_center:latest -f ./AnimalCenter/Dockerfile ./AnimalCenter
+```
