@@ -1,0 +1,23 @@
+Restore complete (2.6s)
+  Adoption.Domain.Shared succeeded (0.5s) → Adoption.Domain.Shared/bin/Debug/net9.0/Adoption.Domain.Shared.dll
+  Adoption.Application.Contracts succeeded with 1 warning(s) (0.8s) → Adoption.Application.Contracts/bin/Debug/net9.0/Adoption.Application.Contracts.dll
+    /root/.nuget/packages/microsoft.extensions.fileproviders.embedded/9.0.6/build/netstandard2.0/Microsoft.Extensions.FileProviders.Embedded.targets(19,5): warning : GenerateEmbeddedFilesManifest was set, but no EmbeddedResource items were found that could be added to the manifest.
+  Adoption.Domain succeeded with 1 warning(s) (0.7s) → Adoption.Domain/bin/Debug/net9.0/Adoption.Domain.dll
+    /root/.nuget/packages/microsoft.extensions.fileproviders.embedded/9.0.6/build/netstandard2.0/Microsoft.Extensions.FileProviders.Embedded.targets(19,5): warning : GenerateEmbeddedFilesManifest was set, but no EmbeddedResource items were found that could be added to the manifest.
+  Adoption.Application succeeded with 1 warning(s) (0.8s) → Adoption.Application/bin/Debug/net9.0/Adoption.Application.dll
+    /root/.nuget/packages/microsoft.extensions.fileproviders.embedded/9.0.6/build/netstandard2.0/Microsoft.Extensions.FileProviders.Embedded.targets(19,5): warning : GenerateEmbeddedFilesManifest was set, but no EmbeddedResource items were found that could be added to the manifest.
+  Adoption.Infrastruct.Data succeeded with 3 warning(s) (1.9s) → Adoption.Infrastruct.Data/bin/Debug/net9.0/Adoption.Infrastruct.Data.dll
+    /root/.nuget/packages/microsoft.extensions.fileproviders.embedded/9.0.6/build/netstandard2.0/Microsoft.Extensions.FileProviders.Embedded.targets(19,5): warning : GenerateEmbeddedFilesManifest was set, but no EmbeddedResource items were found that could be added to the manifest.
+    /workspaces/AnimalDeCompagnieNoSu/Adoption/Adoption.Infrastruct.Data/Migrations/20210622025946_init.cs(7,26): warning CS8981: The type name 'init' only contains lower-cased ascii characters. Such names may become reserved for the language.
+    /workspaces/AnimalDeCompagnieNoSu/Adoption/Adoption.Infrastruct.Data/Migrations/20210622025946_init.Designer.cs(14,19): warning CS8981: The type name 'init' only contains lower-cased ascii characters. Such names may become reserved for the language.
+  Adoption.Infrastruct.Data.DbMigrations succeeded with 2 warning(s) (1.6s) → Adoption.Infrastruct.Data.DbMigrations/bin/Debug/net9.0/Adoption.Infrastruct.Data.DbMigrations.dll
+    /workspaces/AnimalDeCompagnieNoSu/Adoption/Adoption.Infrastruct.Data.DbMigrations/Migrations/20210622084615_init.cs(7,26): warning CS8981: The type name 'init' only contains lower-cased ascii characters. Such names may become reserved for the language.
+    /workspaces/AnimalDeCompagnieNoSu/Adoption/Adoption.Infrastruct.Data.DbMigrations/Migrations/20210622084615_init.Designer.cs(14,19): warning CS8981: The type name 'init' only contains lower-cased ascii characters. Such names may become reserved for the language.
+  Adoption.API.Client succeeded with 1 warning(s) (1.2s) → Adoption.API.Client/bin/Debug/net9.0/Adoption.API.Client.dll
+    /root/.nuget/packages/microsoft.extensions.fileproviders.embedded/9.0.6/build/netstandard2.0/Microsoft.Extensions.FileProviders.Embedded.targets(19,5): warning : GenerateEmbeddedFilesManifest was set, but no EmbeddedResource items were found that could be added to the manifest.
+  Adoption.DbMigrator succeeded with 1 warning(s) (6.1s) → Adoption.DbMigrator/bin/Debug/net9.0/Adoption.DbMigrator.dll
+    /root/.nuget/packages/microsoft.extensions.fileproviders.embedded/9.0.6/build/netstandard2.0/Microsoft.Extensions.FileProviders.Embedded.targets(19,5): warning : GenerateEmbeddedFilesManifest was set, but no EmbeddedResource items were found that could be added to the manifest.
+  Adoption.Host succeeded with 1 warning(s) (7.4s) → Adoption.Host/bin/Debug/net9.0/Adoption.Host.dll
+    /root/.nuget/packages/microsoft.extensions.fileproviders.embedded/9.0.6/build/netstandard2.0/Microsoft.Extensions.FileProviders.Embedded.targets(19,5): warning : GenerateEmbeddedFilesManifest was set, but no EmbeddedResource items were found that could be added to the manifest.
+
+Build succeeded with 11 warning(s) in 22.3s

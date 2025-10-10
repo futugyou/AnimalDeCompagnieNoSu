@@ -1,18 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+  <PropertyGroup> 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="9.0.6" />
-    <PackageReference Include="Volo.Abp.AspNetCore" Version="9.2.2" />
-    <PackageReference Include="Volo.Abp.AutoMapper" Version="9.2.2" />
-    <PackageReference Include="Volo.Abp.BackgroundJobs.Abstractions" Version="9.2.2" />
-    <PackageReference Include="Volo.Abp.BackgroundJobs.RabbitMQ" Version="9.2.2" />
-    <PackageReference Include="Volo.Abp.Ddd.Application" Version="9.2.2" />
-    <PackageReference Include="Volo.Abp.EventBus.Kafka" Version="9.2.2" />
-    <PackageReference Include="Volo.Abp.EventBus.RabbitMQ" Version="9.2.2" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" />
+    <PackageReference Include="Volo.Abp.AspNetCore" />
+    <PackageReference Include="Volo.Abp.AutoMapper" />
+    <PackageReference Include="Volo.Abp.BackgroundJobs.Abstractions" />
+    <PackageReference Include="Volo.Abp.BackgroundJobs.RabbitMQ" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" />
+    <PackageReference Include="Volo.Abp.EventBus.Kafka" />
+    <PackageReference Include="Volo.Abp.EventBus.RabbitMQ" />
   </ItemGroup>
 
   <ItemGroup>
