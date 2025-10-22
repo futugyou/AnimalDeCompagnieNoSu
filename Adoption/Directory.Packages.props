@@ -1,21 +1,21 @@
 <Project>
   <ItemGroup>
     <!-- ABP Framework -->
-    <PackageVersion Include="Volo.Abp.AspNetCore" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.AutoMapper" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.Autofac" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.BackgroundJobs" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.BackgroundJobs.Abstractions" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.BackgroundJobs.RabbitMQ" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.Ddd.Application" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.Ddd.Application.Contracts" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.Ddd.Domain" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.EntityFrameworkCore" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.EntityFrameworkCore.MySQL" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.EventBus.Kafka" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.EventBus.RabbitMQ" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.FluentValidation" Version="9.3.5" />
-    <PackageVersion Include="Volo.Abp.Http.Client" Version="9.3.5" />
+    <PackageVersion Include="Volo.Abp.AspNetCore" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.AutoMapper" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.Autofac" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.BackgroundJobs" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.BackgroundJobs.Abstractions" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.BackgroundJobs.RabbitMQ" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.Ddd.Application" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.Ddd.Application.Contracts" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.Ddd.Domain" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.EntityFrameworkCore" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.EntityFrameworkCore.MySQL" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.EventBus.Kafka" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.EventBus.RabbitMQ" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.FluentValidation" Version="9.3.6" />
+    <PackageVersion Include="Volo.Abp.Http.Client" Version="9.3.6" />
     <PackageVersion Include="Volo.Abp.Swashbuckle" Version="9.3.5" />
 
     <!-- EF Core -->
