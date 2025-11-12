@@ -2,6 +2,9 @@
 	"name": "C# + Rust Dev",
 	"image": "mcr.microsoft.com/devcontainers/base:bookworm",
 	"features": {
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "20"
+		},
 		"ghcr.io/devcontainers/features/dotnet:2": {},
 		"ghcr.io/devcontainers/features/rust:1": {},
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
