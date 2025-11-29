@@ -24,7 +24,7 @@ tokio-stream = "0.1"
 anyhow = "1"
 
 metrics = "0.24"
-metrics-exporter-prometheus = { version = "0.17.2", default-features = false }
+metrics-exporter-prometheus = { version = "0.18.0", default-features = false }
 opentelemetry = "0.31.0"
 opentelemetry_sdk = { version = "0.31.0", features = [
     "rt-tokio-current-thread",
@@ -37,8 +37,8 @@ tracing-actix-web = { version = "0.7.19", features = [
 ] }
 tracing-opentelemetry = "0.32.0"
 tracing-bunyan-formatter = "0.3.10"
-tracing = "0.1.41"
-tracing-subscriber = { version = "0.3.20", features = ["env-filter", "json"] }
+tracing = "0.1.43"
+tracing-subscriber = { version = "0.3.22", features = ["env-filter", "json"] }
 
 tool = { path = "../tool" }
 serialize = { path = "../serialize" }
