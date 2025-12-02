@@ -8,7 +8,7 @@ edition = "2021"
 rustc-serialize = "0.3.25"
 actix-web = "4"
 serde = { version = "1", features = ["derive"] }
-bson = "2"
+bson = "3"
 serde_json = "1"
 validator = "0.20"
 config = "0.15"
