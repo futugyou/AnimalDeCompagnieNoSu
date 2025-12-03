@@ -1,21 +1,21 @@
 <Project>
   <ItemGroup>
     <!-- ABP Framework -->
-    <PackageVersion Include="Volo.Abp.AspNetCore" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.AutoMapper" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.Autofac" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.BackgroundJobs" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.BackgroundJobs.Abstractions" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.BackgroundJobs.RabbitMQ" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.Ddd.Application" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.Ddd.Application.Contracts" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.Ddd.Domain" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.EntityFrameworkCore" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.EntityFrameworkCore.MySQL" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.EventBus.Kafka" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.EventBus.RabbitMQ" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.FluentValidation" Version="10.0.0" />
-    <PackageVersion Include="Volo.Abp.Http.Client" Version="10.0.0" />
+    <PackageVersion Include="Volo.Abp.AspNetCore" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.AutoMapper" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.Autofac" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.BackgroundJobs" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.BackgroundJobs.Abstractions" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.BackgroundJobs.RabbitMQ" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.Ddd.Application" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.Ddd.Application.Contracts" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.Ddd.Domain" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.EntityFrameworkCore" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.EntityFrameworkCore.MySQL" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.EventBus.Kafka" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.EventBus.RabbitMQ" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.FluentValidation" Version="10.0.1" />
+    <PackageVersion Include="Volo.Abp.Http.Client" Version="10.0.1" />
     <PackageVersion Include="Volo.Abp.Swashbuckle" Version="9.3.5" />
 
     <!-- EF Core -->
