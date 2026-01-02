@@ -35,7 +35,7 @@ jobs:
        
     - name: build migration image
       if: github.ref_name != 'master'
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
        push: false
        tags: futugyousuzu/adoption-migration:latest
@@ -44,7 +44,7 @@ jobs:
        
     - name: build adoption image
       if: github.ref_name != 'master'
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
        push: false
        tags: futugyousuzu/adoption:latest
@@ -53,7 +53,7 @@ jobs:
        
     - name: Push migration to Docker Hub
       if: github.ref_name == 'master'
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
        push: true
        tags: futugyousuzu/adoption-migration:latest
@@ -62,7 +62,7 @@ jobs:
        
     - name: Push to Docker Hub
       if: github.ref_name == 'master'
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
        push: true
        tags: futugyousuzu/adoption:latest
