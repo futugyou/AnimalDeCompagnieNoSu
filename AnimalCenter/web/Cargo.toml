@@ -35,7 +35,7 @@ tracing-actix-web = { version = "0.7.20", features = [
     "opentelemetry_0_23",
     "uuid_v7",
 ] }
-tracing-opentelemetry = "0.32.0"
+tracing-opentelemetry = "0.32.1"
 tracing-bunyan-formatter = "0.3.10"
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.22", features = ["env-filter", "json"] }
