@@ -30,7 +30,7 @@ opentelemetry_sdk = { version = "0.31.0", features = [
     "rt-tokio-current-thread",
 ] }
 opentelemetry-otlp = { version = "0.31.0", features = ["tls-roots"] }
-tonic = "0.14.4"
+tonic = "0.14.5"
 tracing-actix-web = { version = "0.7.21", features = [
     "opentelemetry_0_23",
     "uuid_v7",
