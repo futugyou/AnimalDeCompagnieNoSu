@@ -446,7 +446,7 @@ dependencies = [
  "shuttle-runtime",
  "tokio",
  "tokio-stream",
- "tonic 0.14.4",
+ "tonic 0.14.5",
  "tool",
  "tracing",
  "tracing-actix-web",
@@ -3297,7 +3297,7 @@ dependencies = [
  "prost 0.14.1",
  "reqwest 0.12.9",
  "thiserror 2.0.3",
- "tonic 0.14.4",
+ "tonic 0.14.5",
  "tracing",
 ]
 
@@ -3310,7 +3310,7 @@ dependencies = [
  "opentelemetry 0.31.0",
  "opentelemetry_sdk 0.31.0",
  "prost 0.14.1",
- "tonic 0.14.4",
+ "tonic 0.14.5",
  "tonic-prost",
 ]
 
@@ -5296,9 +5296,9 @@ dependencies = [
 
 [[package]]
 name = "tonic"
-version = "0.14.4"
+version = "0.14.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f32a6f80051a4111560201420c7885d0082ba9efe2ab61875c587bb6b18b9a0"
+checksum = "fec7c61a0695dc1887c1b53952990f3ad2e3a31453e1f49f10e75424943a93ec"
 dependencies = [
  "async-trait",
  "axum 0.8.1",
@@ -5333,7 +5333,7 @@ checksum = "66bd50ad6ce1252d87ef024b3d64fe4c3cf54a86fb9ef4c631fdd0ded7aeaa67"
 dependencies = [
  "bytes",
  "prost 0.14.1",
- "tonic 0.14.4",
+ "tonic 0.14.5",
 ]
 
 [[package]]
