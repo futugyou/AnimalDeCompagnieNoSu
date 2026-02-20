@@ -11,6 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+  	<PackageReference Include="Volo.Abp.Ddd.Domain" />
 	  <ProjectReference Include="..\Adoption.Infrastruct.Data\Adoption.Infrastruct.Data.csproj" />
 	</ItemGroup>
 </Project>
