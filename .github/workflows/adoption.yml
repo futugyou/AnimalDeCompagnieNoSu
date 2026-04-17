@@ -6,12 +6,16 @@ on:
     paths:
     - Adoption/**
     - .github/workflows/adoption.yml
+    - .github/workflows/dependabot-auto.yml
+    - .github/workflows/markdownlint.yml
     
   pull_request:
     branches: [ master ]
     paths:
     - Adoption/**
     - .github/workflows/adoption.yml
+    - .github/workflows/dependabot-auto.yml
+    - .github/workflows/markdownlint.yml
 
 jobs:
   build:
