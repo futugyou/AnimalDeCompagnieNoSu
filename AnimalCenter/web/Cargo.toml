@@ -11,7 +11,7 @@ actix = []
 [dependencies]
 actix-web = "4"
 actix-cors = "0.7"
-actix-multipart = "0.7"
+actix-multipart = "0.8"
 shuttle-actix-web = "0.50"
 shuttle-runtime = "0.50"
 futures = "0.3"
